@@ -1,5 +1,5 @@
 # Mensch-aergere-dich-nicht
-This is a simple board game most people know which can be played by CLI.
+This is a simple board game known by most people which can be played by CLI.
 ## How to get it
 ### Dependencies
 - boost library (version 1.78.0 was used for development)
