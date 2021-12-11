@@ -34,3 +34,5 @@ Must-Throw own pieces (only if no other possibility): Yes
 Throw also backwards: Yes
 Jump over pieces in "home"-row: No
 Throwable on "Start"-Field: Yes
+## License
+[GNU v3 License](https://raw.githubusercontent.com/JohnCoates/Aerial/master/LICENSE)
