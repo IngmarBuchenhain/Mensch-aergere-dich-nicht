@@ -35,4 +35,4 @@ Throw also backwards: Yes
 Jump over pieces in "home"-row: No
 Throwable on "Start"-Field: Yes
 ## License
-[GNU v3 License](https://raw.githubusercontent.com/JohnCoates/Aerial/master/LICENSE)
+[GPLv3 License](https://github.com/IngmarBuchenhain/Mensch-aergere-dich-nicht/blob/a9f37a3aa70579cdb452c9196e7cb0fd8359d22d/LICENSE)
