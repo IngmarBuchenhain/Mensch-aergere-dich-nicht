@@ -1,19 +1,19 @@
-### Mensch-aergere-dich-nicht
+# Mensch-aergere-dich-nicht
 This is a simple board game most people know which can be played by CLI.
 ## How to get it
-# Dependencies
+### Dependencies
 - boost library (version 1.78.0 was used for development)
 - GCC if use of provided MAKEFILE is wanted
-# Build the game
+### Build the game
 1. Load repository
 2. Run 'make' in 'Source'-directory with boost paths as arguments as follows: make boost=path/to/your/boost boostLib=path/to/your/boost/libs
 ## Rule Sets
 This game offers 3 different rule sets you can choose from. Use the number in brackets in the input arguments or the configuration file.
 Choose wisely!
-# General rules
+### General rules
 Apply for all rule sets.
 - If no piece is on the field you are allowed to roll the dice 3 times until you get a 6.
-# Boring Default Rules (0)
+### Boring Default Rules (0)
 Kein Schlagzwang
 Eigene Figuren werden nicht geschlagen
 Startfeld muss freigemacht werden, solange noch männchen im haus oder wenn wieder imhaus
@@ -27,8 +27,8 @@ Rückwärts schlagen
 Springen an Ecken
 Selbst rausschmeißen
 schlagzwang
-# For Wimps (1)
-# Only For The Real Players (2)
+### For Wimps (1)
+### Only For The Real Players (2)
 Must-Throw other pieces: Yes
 Must-Throw own pieces (only if no other possibility): Yes
 Throw also backwards: Yes
