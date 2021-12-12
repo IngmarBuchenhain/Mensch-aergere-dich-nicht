@@ -5,6 +5,6 @@
  * Main entry point to the application.
  * Creates needed objects and starts the logic.
  */
-int main();
+int main(int argc, char **argv);
 
 #endif
