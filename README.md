@@ -1,12 +1,20 @@
 # Mensch-aergere-dich-nicht
 This is a simple board game known by most people which can be played by CLI.
-## How to get it
+## How to play
 ### Dependencies
 - boost library (version 1.78.0 was used for development)
 - GCC if use of provided MAKEFILE is wanted
 ### Build the game
 1. Load repository
-2. Run 'make' in 'Source'-directory with boost paths as arguments as follows: make boost=path/to/your/boost boostLib=path/to/your/boost/libs
+2. Run 'make' in 'Source'-directory with boost paths as arguments as follows: make boost=path/to/your/boost boostlib=path/to/your/boost/libs
+### Run the game
+The settings of the game are selected by CL-parameters or by configuration file. Once the game started you can not change settings but has to restart (You should never change rules of a game midway...).
+There are different options:
+- Network or Local // Planned for future
+- Number of players
+- Number of game pieces
+- Ruleset
+- Names of players
 ## Rule Sets
 This game offers 3 different rule sets you can choose from. Use the number in brackets in the input arguments or the configuration file.
 Choose wisely!
@@ -35,4 +43,5 @@ Throw also backwards: Yes
 Jump over pieces in "home"-row: No
 Throwable on "Start"-Field: Yes
 ## License
+! Link not working right now because privat !
 [GPLv3 License](https://github.com/IngmarBuchenhain/Mensch-aergere-dich-nicht/blob/a9f37a3aa70579cdb452c9196e7cb0fd8359d22d/LICENSE)

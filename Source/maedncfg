@@ -1,0 +1,31 @@
+# Example for configuration file - WORK IN PROGRESS
+Must-Throw other pieces: 1
+Must-Throw own pieces (only if no other possibility): 1
+Throw also backwards: 1
+Jump over pieces in "home"-row: 0
+Throwable on "Start"-Field: 0
+
+NetworkConfiguration: 0
+NumberOfPlayers: 4
+NumberOfPieces: 3
+RuleSet: 2
+
+
+% Description
+NetworkConfiguration: 0
+NumberOfPlayers: 4
+NumberOfPieces: 3
+RuleSet: 2
+#if(NetworkConfiguration == 0)
+PlayersName1[Optional]:
+PlayersName2[Optional]:
+PlayersName3[Optional]:
+PlayersName4[Optional]:
+PlayersName5[Optional]:
+PlayersName6[Optional]:
+#else
+PlayersName[Optional]:
+#if(NetworkConfiguration == 1)
+ipToConnect:
+#endif
+#endif
