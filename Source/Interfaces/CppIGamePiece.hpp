@@ -1,6 +1,7 @@
 #ifndef MAEDN_I_GAME_PIECE_HPP
 #define MAEDN_I_GAME_PIECE_HPP
 
+
 #include<memory>
 
 #include "CppIGamePieceUI.hpp"
@@ -34,5 +35,6 @@ public:
 
 typedef std::shared_ptr<IGamePiece> IGamePiece_SPTR;
 //typedef std::unique_ptr<IGamePiece> IGamePiece_UPTR;
+
 
 #endif
