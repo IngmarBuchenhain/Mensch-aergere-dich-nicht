@@ -1,45 +1,47 @@
 #include "CppMenschAergereDichNicht.hpp"
 #include "CppDebugHelper.hpp"
 
-#include "CppILogic.hpp"
-
 #include<exception>
+#include<iostream>
 
-/**
- * Main entry point to the application.
- * Creates needed objects and starts the logic.
- */
+#include "CppClassMainLogic.hpp"
+#include "CppClassTestUI.hpp"
+
 int main(int argc, char **argv)
 {
     // Indicator whether exceptions occured. Used to show message to user before exit.
     bool errorsOccured = false;
 
     // Try read input arguments and determine what to do next
-    if(argc == 0){
-
-    } else if(argc == 1){
-
+    if(argc == 1){
+        std::cout << "Test1";
+        // No arguments were given. Use default rules and default player number/board. 
+    } else if(argc == 2){
+        std::cout << "Test2";
+        // One argument was given. We expect this to be a configuration file. Try read it. 
+        // If possible, use it to start game, otherwise give error.
     } else{
-
+        // We expect that configuration was given directly in arguments. Check for number of arguments and consistancy and start game.
+        std::cout << "Test3";
     }
 
     // Start logic-object
     try
     {
         // Create UI-Object
-
         printDebug("Try to create UI-Object");
+        TestUI testUI;
+
             // Create Network-Object
 
         printDebug("Try to create Network-Object");
-            // Create logic-object with In-Out-object and Network-object as parameters
-  
+        
+        // Create logic object with In-Out-object and Network-object as parameters
         printDebug("Try to create game logic");
+        MainLogic mainLogic(testUI);
+
         printDebug("Try to start game logic");
-
-        //ILogic ml = MainLogic(42);
-
-        throw std::invalid_argument( "received negative value" );
+        MainLogic.startGame();
     }
     catch(std::exception &ex){
         printError("Failure on start or while running game logic due to:", ex);

@@ -22,13 +22,15 @@ RuleSet::RuleSet()
     jumpOnEdgesIntern = false;
 
     goWithAnotherPieceOnSecondRollOfDiceIntern = false;
+
+    playUntilAllPlayersFinishedIntern = false;
 }
 
 /**
 * Individual constructor. 
 * Special rules are possible. Some combinations may not be sensible.
 */
-RuleSet::RuleSet(bool mustThrowOtherPieces, bool mustThrowOwnPieces, bool throwAlsoBackwards, bool jumpOverPiecesInTargetArea, bool walkByTargetAreaIfNotPossibleToWalkIn, bool saveOnStartField, bool mustAlwaysFreeStartField, bool allowedToUseOutsidePieceOnSixWhenPiecesLeftHome, bool onlyRollThreeTimesIfNoPieceOutAndTargetAreaOnEnd, bool jumpOnEdges, bool goWithAnotherPieceOnSecondRollOfDice)
+RuleSet::RuleSet(bool mustThrowOtherPieces, bool mustThrowOwnPieces, bool throwAlsoBackwards, bool jumpOverPiecesInTargetArea, bool walkByTargetAreaIfNotPossibleToWalkIn, bool saveOnStartField, bool mustAlwaysFreeStartField, bool allowedToUseOutsidePieceOnSixWhenPiecesLeftHome, bool onlyRollThreeTimesIfNoPieceOutAndTargetAreaOnEnd, bool jumpOnEdges, bool goWithAnotherPieceOnSecondRollOfDice, bool playUntilAllPlayersFinished)
 {
     mustThrowOtherPiecesIntern = mustThrowOtherPieces;
     mustThrowOwnPiecesIntern = mustThrowOwnPieces;
@@ -46,6 +48,8 @@ RuleSet::RuleSet(bool mustThrowOtherPieces, bool mustThrowOwnPieces, bool throwA
     jumpOnEdgesIntern = jumpOnEdges;
 
     goWithAnotherPieceOnSecondRollOfDiceIntern = goWithAnotherPieceOnSecondRollOfDice;
+
+    playUntilAllPlayersFinishedIntern = playUntilAllPlayersFinished;
 }
 
 // Public methods for reading the values of the rule set.
@@ -102,4 +106,8 @@ bool RuleSet::jumpOnEdges()
 bool RuleSet::goWithAnotherPieceOnSecondRollOfDice()
 {
     return goWithAnotherPieceOnSecondRollOfDiceIntern;
+}
+
+bool RuleSet::playUntilAllPlayersFinished(){
+    return playUntilAllPlayersFinishedIntern;
 }

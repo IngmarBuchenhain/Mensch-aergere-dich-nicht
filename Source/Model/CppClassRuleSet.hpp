@@ -1,6 +1,14 @@
 #ifndef MAEDN_RULE_SET_HPP
 #define MAEDN_RULE_SET_HPP
 
+#include<memory>
+
+enum class RuleSetCategory{
+    Default,
+    Boring,
+    Hard
+};
+
 /**
  * Representation of the rules of a maedn-game. An object of this class is read-only, as it has only private properties describing the rules.
  * Rules are configured on instantiation.
@@ -18,7 +26,7 @@ class RuleSet
     bool walkByTargetAreaIfNotPossibleToWalkInIntern;
 
     bool saveOnStartFieldIntern;
-    bool mustAlwaysFreeStartFieldIntern;
+    bool mustAlwaysFreeStartFieldIntern; // evtl weglassen, da im goWithAnother.. einbegriffen werden kann.
     bool allowedToUseOutsidePieceOnSixWhenPiecesLeftHomeIntern;
 
     bool onlyRollThreeTimesIfNoPieceOutAndTargetAreaOnEndIntern;
@@ -26,6 +34,8 @@ class RuleSet
     bool jumpOnEdgesIntern;
 
     bool goWithAnotherPieceOnSecondRollOfDiceIntern;
+
+    bool playUntilAllPlayersFinishedIntern;
 
 public:
     /**
@@ -39,7 +49,7 @@ public:
     * Individual constructor. 
     * Special rules are possible. Some combinations may not be sensible.
     */
-    RuleSet(bool mustThrowOtherPieces, bool mustThrowOwnPieces, bool throwAlsoBackwards, bool jumpOverPiecesInTargetArea, bool walkByTargetAreaIfNotPossibleToWalkIn, bool saveOnStartField, bool mustAlwaysFreeStartField, bool allowedToUseOutsidePieceOnSixWhenPiecesLeftHome, bool onlyRollThreeTimesIfNoPieceOutAndTargetAreaOnEnd, bool jumpOnEdges, bool goWithAnotherPieceOnSecondRollOfDice);
+    RuleSet(bool mustThrowOtherPieces, bool mustThrowOwnPieces, bool throwAlsoBackwards, bool jumpOverPiecesInTargetArea, bool walkByTargetAreaIfNotPossibleToWalkIn, bool saveOnStartField, bool mustAlwaysFreeStartField, bool allowedToUseOutsidePieceOnSixWhenPiecesLeftHome, bool onlyRollThreeTimesIfNoPieceOutAndTargetAreaOnEnd, bool jumpOnEdges, bool goWithAnotherPieceOnSecondRollOfDice, bool playUntilAllPlayersFinished);
 
     // Public methods for reading the values of the rule set.
 public:
@@ -74,6 +84,8 @@ public:
 
 public:
     bool goWithAnotherPieceOnSecondRollOfDice();
+public:
+    bool playUntilAllPlayersFinished();
 };
-
+typedef std::unique_ptr<RuleSet> RuleSet_UPTR;
 #endif

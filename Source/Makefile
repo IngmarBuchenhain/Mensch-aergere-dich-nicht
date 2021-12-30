@@ -1,7 +1,7 @@
 # Define boost path. SET this variable from environment when running make to provide your path to boost!
 boost ?= /usr/local/boost_1_78_0
 # Define boost path for library linking. SET this variable from environment when running make to provide your path to boost!
-#boostlib ?= /Users/Ingmar/VisualStudioCode/Boost/boost_1_78_0/stage/lib
+#boostlib ?= /usr/local/boost_1_78_0/stage/lib
 
 # Define output path. If not given from outside just working directory
 outpath ?= 
@@ -10,7 +10,7 @@ outpath ?=
 CXXFLAGS = '-I$(boost)# -L$(boostlib)'
 
 # Define c++ version
-lv = -std=c++11
+lv = -std=c++14
 
 # Define sub-directories to look for files. Can be easily renamed then. # ifs = Interfaces, lo = Logic, mo = Model, net = Networking, ui = UI
 ifs = Interfaces
@@ -18,16 +18,21 @@ lo = Logic
 mo = Model
 net = Networking
 ui = UI
+sc = ../Source
 
-# Define compiler include paths command for final linking
-carg = $(lv) -I $(ifs)
+# Define compiler include paths command for final linking and header include highest level
+carg = $(lv) -I $(ifs) -I $(mo) -I $(lo) -I $(ui) -I $(sc) -I $(net)
+# Define compiler include paths for ui building
+cargUI = $(lv) -I $(ifs) -I $(sc) -I $(ui)
+# Define compiler include paths for logic building
+cargLO = $(lv) -I $(ifs) -I $(sc) -I $(mo) -I $(lo)
 
 # Define executable file name to be able to rename easily.
 exeName = maedn
 
 # Linking
-$(outpath)$(exeName): CppMenschAergereDichNicht.o CppDebugHelper.o CppClassMainLogic.o
-	g++ $(lv) -o $(outpath)$(exeName) CppMenschAergereDichNicht.o CppDebugHelper.o CppClassMainLogic.o
+$(outpath)$(exeName): CppMenschAergereDichNicht.o CppDebugHelper.o CppClassMainLogic.o CppClassDice.o CppClassBoard.o CppClassGamePiece.o CppClassRuleSet.o
+	g++ $(lv) -o $(outpath)$(exeName) CppMenschAergereDichNicht.o CppDebugHelper.o CppClassMainLogic.o CppClassDice.o CppClassBoard.o CppClassGamePiece.o CppClassRuleSet.o
 
 # Source
 CppMenschAergereDichNicht.o: CppMenschAergereDichNicht.cpp 
@@ -39,10 +44,18 @@ CppDebugHelper.o: CppDebugHelper.cpp
 # Logic
 CppClassMainLogic.o: $(lo)/CppClassMainLogic.cpp
 	g++ $(carg) -o CppClassMainLogic.o -c $(lo)/CppClassMainLogic.cpp
+CppClassDice.o: $(lo)/CppClassDice.cpp
+	g++ $(carg) -o CppClassDice.o -c $(lo)/CppClassDice.cpp
 
 # Model
+CppClassBoard.o: $(mo)/CppClassBoard.cpp
+	g++ $(cargLO) -o CppClassBoard.o -c $(mo)/CppClassBoard.cpp
+CppClassGamePiece.o: $(mo)/CppClassGamePiece.cpp
+	g++ $(cargLO) -o CppClassGamePiece.o -c $(mo)/CppClassGamePiece.cpp
+CppClassJumpPair.o: $(mo)/CppClassJumpPair.cpp
+	g++ $(cargLO) -o CppClassJumpPair.o -c $(mo)/CppClassJumpPair.cpp
 CppClassRuleSet.o: $(mo)/CppClassRuleSet.cpp
-	g++ $(carg) -o CppClassRuleSet.o -c $(mo)/CppClassRuleSet.cpp
+	g++ $(cargLO) -o CppClassRuleSet.o -c $(mo)/CppClassRuleSet.cpp
 
 # Networking
 
@@ -52,6 +65,6 @@ CppClassRuleSet.o: $(mo)/CppClassRuleSet.cpp
 run: $(outpath)$(exeName)
 	./$(outpath)$(exeName)
 mostlyclean:
-	rm -f *.o
+	rm -f *.o a.out $(mo)/*.o $(lo)/*.o $(ui)/*.o $(ifs)/*.o $(net)/*.o $(mo)/*.out $(lo)/*.out $(ui)/*.out $(ifs)/*.out $(net)/*.out
 clean:
-	rm -f *.exe *.out *.o $(exeName) ../$(exeName) $(outpath)$(exeName)
+	rm -f *.exe *.out *.o $(exeName) ../$(exeName) $(outpath)$(exeName) $(mo)/*.o $(lo)/*.o $(ui)/*.o $(ifs)/*.o $(net)/*.o $(mo)/*.out $(lo)/*.out $(ui)/*.out $(ifs)/*.out $(net)/*.out
