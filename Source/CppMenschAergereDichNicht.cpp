@@ -4,7 +4,7 @@
 #include<exception>
 #include<iostream>
 
-#include "CppClassMainLogic.hpp"
+
 #include "CppClassMainLogicDefault.hpp"
 #include "CppClassTestUI.hpp"
 
@@ -19,15 +19,18 @@ int main(int argc, char **argv)
 
     // Try read input arguments and determine what to do next
     if(argc == 1){
-        std::cout << "Test1";
+       // std::cout << "Test1";
         // No arguments were given. Use default rules and default player number/board. 
     } else if(argc == 2){
-        std::cout << "Test2";
+        // NOT IMPLEMENTED YET
+        //std::cout << "Test2";
         // One argument was given. We expect this to be a configuration file. Try read it. 
         // If possible, use it to start game, otherwise give error.
-    } else{
+    } else if(argc >= 5){
         // We expect that configuration was given directly in arguments. Check for number of arguments and consistancy and start game.
-        std::cout << "Test3";
+       // std::cout << "Test3";
+
+       // Check number of
     }
 
     // Start logic-object
@@ -44,7 +47,7 @@ int main(int argc, char **argv)
         
         // Create logic object with In-Out-object and Network-object as parameters
         printDebug("Try to create game logic");
-        
+
         MainLogicDefault mainLogic(testUI);
 
         printDebug("Try to start game logic");

@@ -35,8 +35,8 @@ cargLO = $(lv) -I $(ifs) -I $(sc) -I $(mo) -I $(lo)
 exeName = maedn
 
 # Linking
-$(outpath)$(exeName): CppMenschAergereDichNicht.o CppDebugHelper.o CppClassMainLogic.o CppClassMainLogicBase.o CppClassMainLogicDefault.o CppClassDice.o CppClassBoard.o CppClassGamePiece.o CppClassJumpPair.o CppClassRuleSet.o
-	g++ $(lv) -o $(outpath)$(exeName) CppMenschAergereDichNicht.o CppDebugHelper.o CppClassMainLogic.o CppClassMainLogicBase.o CppClassMainLogicDefault.o CppClassDice.o CppClassBoard.o CppClassGamePiece.o CppClassJumpPair.o CppClassRuleSet.o
+$(outpath)$(exeName): CppMenschAergereDichNicht.o CppDebugHelper.o CppClassMainLogicBase.o CppClassMainLogicDefault.o CppClassDice.o CppClassBoard.o CppClassGamePiece.o CppClassJumpPair.o CppClassRuleSet.o
+	g++ $(lv) -o $(outpath)$(exeName) CppMenschAergereDichNicht.o CppDebugHelper.o CppClassMainLogicBase.o CppClassMainLogicDefault.o CppClassDice.o CppClassBoard.o CppClassGamePiece.o CppClassJumpPair.o CppClassRuleSet.o
 
 # Source
 CppMenschAergereDichNicht.o: CppMenschAergereDichNicht.cpp 
@@ -50,8 +50,6 @@ CppClassMainLogicBase.o: $(lo)/CppClassMainLogicBase.cpp
 	g++ $(carg) -o CppClassMainLogicBase.o -c $(lo)/CppClassMainLogicBase.cpp
 CppClassMainLogicDefault.o: $(lo)/CppClassMainLogicDefault.cpp
 	g++ $(carg) -o CppClassMainLogicDefault.o -c $(lo)/CppClassMainLogicDefault.cpp
-CppClassMainLogic.o: $(lo)/CppClassMainLogic.cpp
-	g++ $(carg) -o CppClassMainLogic.o -c $(lo)/CppClassMainLogic.cpp
 CppClassDice.o: $(lo)/CppClassDice.cpp
 	g++ $(carg) -o CppClassDice.o -c $(lo)/CppClassDice.cpp
 CppClassKI.o: $(lo)/CppClassKI.cpp
