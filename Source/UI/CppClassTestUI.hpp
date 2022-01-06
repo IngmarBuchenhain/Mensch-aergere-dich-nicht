@@ -40,7 +40,7 @@ public:
      void rollDice(int currentPlayer, int diceNumber){
          std::cout << std::endl << "Player " << currentPlayer << ": It's your turn! If you want to roll the dice, press 'Enter'";
        //  std::cin.ignore(10);
-         std::cin.ignore();
+         //std::cin.ignore();
          std::cout << std::endl << "Great! You rolled a -" << diceNumber << "-" << std::endl << std::flush;
      }
 
@@ -54,7 +54,7 @@ public:
        return gamePieces[0];
    }
 public:
-     std::pair<IGamePieceUI_SPTR, std::pair<int, bool>> chooseOneGamePiece(std::map<IGamePieceUI_SPTR, std::vector<std::pair<int, bool>>> &possiblePieces) override{
+     std::pair<IGamePieceUI_SPTR, std::pair<int, bool>> chooseOneGamePiece(std::map<IGamePieceUI_SPTR, std::vector<std::pair<int, bool>>> &possiblePieces, int currentPlayer) override{
        //printDebug("In converter");
        std::pair<IGamePieceUI_SPTR, std::pair<int, bool>> result;
        //printDebug("Not chosen");

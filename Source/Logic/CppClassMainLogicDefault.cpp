@@ -99,7 +99,7 @@ std::map<IGamePiece_SPTR, std::vector<std::pair<int, bool>>> moveAblePieces = ge
             printDebug("No pieces possible");
         }else{
             printDebug("Pieces possible");
-        std::pair<IGamePieceUI_SPTR, std::pair<int, bool>> selection = ui->chooseOneGamePiece(selectable);
+        std::pair<IGamePieceUI_SPTR, std::pair<int, bool>> selection = ui->chooseOneGamePiece(selectable, currentPlayer);
         printDebug("chosen");
         printDebug(selection.first->getID());
         // If we had a 6 mark it
