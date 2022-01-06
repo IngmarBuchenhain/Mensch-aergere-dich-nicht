@@ -1,40 +1,26 @@
 #include "CppClassMainLogicBase.hpp"
+#include "CppDebugHelper.hpp"
 
-MainLogicBase::MainLogicBase(){
-
-};
-    /** *************************************
-     * Private methods of MainLogicBase     *
-     * *************************************/
-
+/** ***************************************
+ * Protected methods of MainLogicBase     *
+ * ***************************************/
 
 int MainLogicBase::determineNextPlayer()
 {
     bool searchNextPlayer = true;
     int nextPlayer = currentPlayer;
-   // printDebug("CurrentPlayer:"); printDebug(nextPlayer);   // DEBUG
+    printDebug("CurrentPlayer: " + std::to_string(nextPlayer));
 
-    // Search so lang for next player until one is found which has not finished yet or until all were tested. If so the game is finished anyways.
-    for(int testedPlayers = 0; testedPlayers < board->getNumberOfPlayers(); testedPlayers++){
+    // Search so long for next player until one is found which has not finished yet or until all were tested. If so the game is finished anyways.
+    for (int testedPlayers = 0; testedPlayers < board->getNumberOfPlayers(); testedPlayers++)
+    {
         nextPlayer = (nextPlayer + 1) % board->getNumberOfPlayers();
         if (playerIsNotFinished(nextPlayer))
         {
-            //printDebug("Next player found");
-
+            printDebug("Next player found: " + std::to_string(nextPlayer));
             break;
         }
     }
-    // while (searchNextPlayer)
-    // {
-    //     nextPlayer = (nextPlayer + 1) % board->getNumberOfPlayers();
-    //     if (playerIsNotFinished(nextPlayer))
-    //     {
-    //         printDebug("Next player found");
-
-    //         searchNextPlayer = false;
-    //     }
-    // }
-    //printDebug("NextPlayer:"); printDebug(nextPlayer);
     return nextPlayer;
 }
 
@@ -48,13 +34,11 @@ bool MainLogicBase::playerIsNotFinished(int player)
             result = true;
         }
     }
-
     return result;
 }
 
 void MainLogicBase::addPlayerToWinnersIfNotPresent(int player)
 {
-
     // Check if already present
     bool alreadyPresent = false;
     for (int index = 0; index < winners.size(); index++)
@@ -81,6 +65,7 @@ int MainLogicBase::getJumpPosition(int field)
             return result;
         }
     }
+    return -1;
 }
 
 bool MainLogicBase::checkIfFree(std::vector<IGamePiece_SPTR> pieces, int position)
@@ -130,17 +115,21 @@ bool MainLogicBase::contains(std::vector<int> vector, int containedNumber)
     return isContained;
 }
 
-int MainLogicBase::containsEndField(int start, int steps, int player){
+int MainLogicBase::containsEndField(int start, int steps, int player)
+{
     int targetPosition;
-   // printDebug("Finding endField - EndField is:");
-    //printDebug(board->getEndFields()[player]);
-    for(int currentField = start; currentField < start + steps; currentField++){
-       // printDebug(currentField);
-        if(currentField == board->getEndFields()[player]){
+    printDebug("Searching endField contained - endField is: " + std::to_string(board->getEndFields()[player]));
+
+    for (int currentField = start; currentField < start + steps; currentField++)
+    {
+        printDebug("Current field which is checked: " + currentField);
+        if (currentField == board->getEndFields()[player])
+        {
             // Get new position
             targetPosition = (start + steps) - currentField;
-            if(targetPosition <= board->getNumberOfGamePiecesPerPlayer()){
-                printDebug("Really the right return?");
+            if (targetPosition <= board->getNumberOfGamePiecesPerPlayer())
+            {
+                printDebug("endField is contained. Return new position in target area");
                 return targetPosition;
             }
         }
@@ -148,88 +137,57 @@ int MainLogicBase::containsEndField(int start, int steps, int player){
     return -1;
 }
 
-bool MainLogicBase::currentPlayerHasInHousePieces()
+std::map<IGamePieceUI_SPTR, std::vector<std::pair<int, bool>>> MainLogicBase::convertMapForUI(std::map<IGamePiece_SPTR, std::vector<std::pair<int, bool>>> &origin)
 {
-    std::vector<IGamePiece_SPTR> team = board->getTeam(currentPlayer);
-    bool hasPiecesInHouse = false;
-    for (int piece = 0; piece < team.size(); piece++)
-    {
-        if (team[piece]->getPosition() == 0)
-        {
-            hasPiecesInHouse = true;
-            break;
-        }
-    }
-    return hasPiecesInHouse;
-}
-
-std::vector<IGamePiece_SPTR> MainLogicBase::convertForLogic(std::vector<IGamePieceUI_SPTR> &origin)
-{
-}
-
-std::vector<IGamePieceUI_SPTR> MainLogicBase::convertForUI(std::vector<IGamePiece_SPTR> &origin)
-{
-    std::vector<IGamePieceUI_SPTR> result;
-    for (int index = 0; index < origin.size(); index++)
-    {
-        result.push_back(origin[index]);
-    }
-    return result;
-}
-
-std::map<IGamePieceUI_SPTR, std::vector<std::pair<int, bool>>> MainLogicBase::convertMapForUI(std::map<IGamePiece_SPTR, std::vector<std::pair<int, bool>>> &origin){
     std::map<IGamePieceUI_SPTR, std::vector<std::pair<int, bool>>> result;
     std::map<IGamePiece_SPTR, std::vector<std::pair<int, bool>>>::iterator it = origin.begin();
-    while(it != origin.end()){
-        //printDebug("Looping map");
+    while (it != origin.end())
+    {
         IGamePieceUI_SPTR convertedPiece = it->first;
         result[convertedPiece] = it->second;
         it++;
     }
-
     return result;
 }
 
-// Checked
 void MainLogicBase::movePieceOnField(IGamePiece_SPTR piece, int position)
 {
-   // printDebug("CheckMark");
     // Argument checks
     if (piece->isInTargetArea())
     {
-        printDebug("HELP NEEDED");
+        printDebug("Unexpected GamePiece in MoveOnField");
         throw new unexpected_game_piece;
     }
     if (position < 1 || position > board->getNumberOfFields())
     {
-        printDebug("Help needed");
+        printDebug("Illegal position in MoveOnField");
         throw new illegal_position;
     }
-   // printDebug("Search conficts");
+    printDebug("Search conflicts");
     // Check if position is already used and resolve conflict
     IGamePiece_SPTR conflictGamePiece = getConflictGamePiece(position);
-    //printDebug("Got conflict pieces");
-    if(conflictGamePiece != nullptr){
-    conflictGamePiece->setPosition(0);
-    }
 
+    if (conflictGamePiece != nullptr)
+    {
+        printDebug("Got conflict pieces");
+        conflictGamePiece->setPosition(0);
+    }
 
     // Set new position
     piece->setPosition(position);
 }
 
-// Checked
 void MainLogicBase::movePieceInTargetArea(IGamePiece_SPTR piece, int position)
 {
     // Argument checks
     if (piece->isFinished())
     {
-        printDebug("Error");
+        printDebug("Unexpected GamePiece in MoveInTargetArea");
         throw new unexpected_game_piece;
     }
     if (position < 1 || position > board->getNumberOfGamePiecesPerPlayer())
-    {   
-        printDebug("Error number");
+    {
+        printDebug("Illegal position in MoveInTargetArea");
         throw new illegal_position;
     }
 
@@ -241,32 +199,52 @@ void MainLogicBase::movePieceInTargetArea(IGamePiece_SPTR piece, int position)
     markFinishedPiecesOfTeam(team);
 }
 
-// Checked
-IGamePiece_SPTR MainLogicBase::getConflictGamePiece(int position){
-        // If we are save on the start fields and our position to check is a start field there is no conflict
+IGamePiece_SPTR MainLogicBase::getConflictGamePiece(int position)
+{
+    // If we are save on the start fields and our position to check is a start field there is no conflict
     if (rules->saveOnStartField() && contains(board->getStartfields(), position))
     {
-        
-        //printDebug("Return null");
+        printDebug("Return nullptr as there is no conflict");
         return nullptr;
     }
+
     // Check if some other piece, which is not in target area is on this position.
     for (int player = 0; player < board->getNumberOfPlayers(); player++)
     {
-        //printDebug("In loop");
+        printDebug("In search-loop for other pieces");
         std::vector<IGamePiece_SPTR> currentTeam = board->getOutsideTeam(player);
         if (player != currentPlayer || rules->mustThrowOwnPieces())
         {
-            
+
             for (int inIndex = 0; inIndex < currentTeam.size(); inIndex++)
             {
                 if (currentTeam[inIndex]->getPosition() == position)
                 {
                     return currentTeam[inIndex];
-                 
                 }
             }
         }
     }
+    // No conflicting piece found
     return nullptr;
+}
+
+bool MainLogicBase::positionInTargetAreaIsFree(int field, int player){
+    std::vector<IGamePiece_SPTR> team = board->getTeam(player);
+    for(int index = 0; index < team.size(); index++){
+        if(team[index]->getPosition() == field){
+            return false;
+        }
+    }
+    return true;
+}
+
+bool MainLogicBase::noOwnPieceThere(int newPosition){
+    std::vector<IGamePiece_SPTR> team = board->getTeam(currentPlayer);
+    for(int index = 0; index < team.size(); index++){
+        if(team[index]->getPosition() == newPosition){
+            return false;
+        }
+    }
+    return true;
 }

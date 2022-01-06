@@ -26,10 +26,10 @@ void Statistics::showDiceStats(){
             std::cout << "  ";
         }
         std::cout << diceStats[diceNumber] << " ";
-        double normalizedNumber = ((double)diceStats[diceNumber] / (double)numberOfTotalRolls) * 100;
+        double normalizedNumber = ((double)diceStats[diceNumber] / (double)numberOfTotalRolls) * 400;
         int temp = (int)normalizedNumber;
         for(int index = 0; index < temp; index++){
-            std::cout << "\u25A0\u25A0\u25A0\u25A0\u25A0";//<< "|||||";
+            std::cout << "\u25A0";//\u25A0\u25A0\u25A0\u25A0";//<< "|||||";
         }
         std::cout << std::endl;
     }
