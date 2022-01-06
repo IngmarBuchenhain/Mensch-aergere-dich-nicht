@@ -109,7 +109,7 @@ public:
             //     }
             // }
         }
-std::cout << std::flush;
+std::cout << std::endl << std::flush;
         state++;
 
      }
