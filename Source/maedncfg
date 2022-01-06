@@ -6,6 +6,7 @@ Jump over pieces in "home"-row: 0
 Throwable on "Start"-Field: 0
 
 NetworkConfiguration: 0
+board
 NumberOfPlayers: 4
 NumberOfPieces: 3
 RuleSet: 2
