@@ -38,3 +38,5 @@
 # User files
 maedn
 
+# Apple FileSystem
+.DS_Store
