@@ -44,6 +44,7 @@ int main(int argc, char **argv)
         
         // Create logic object with In-Out-object and Network-object as parameters
         printDebug("Try to create game logic");
+        
         MainLogicDefault mainLogic(testUI);
 
         printDebug("Try to start game logic");
