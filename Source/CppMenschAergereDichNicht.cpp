@@ -5,6 +5,7 @@
 #include<iostream>
 
 #include "CppClassMainLogic.hpp"
+#include "CppClassMainLogicDefault.hpp"
 #include "CppClassTestUI.hpp"
 
 int main(int argc, char **argv)
@@ -30,7 +31,8 @@ int main(int argc, char **argv)
     {
         // Create UI-Object
         printDebug("Try to create UI-Object");
-        TestUI testUI;
+        IUI_SPTR testUI(new TestUI);
+ 
 
             // Create Network-Object
 
@@ -38,10 +40,18 @@ int main(int argc, char **argv)
         
         // Create logic object with In-Out-object and Network-object as parameters
         printDebug("Try to create game logic");
-        MainLogic mainLogic(testUI);
+        MainLogicDefault mainLogic(testUI);
 
         printDebug("Try to start game logic");
-        MainLogic.startGame();
+        mainLogic.startGame();
+    }
+    catch(unexpected_game_piece &ex){
+        printError("Failure on start or while running game logic due to:", ex);
+        errorsOccured = true;
+    }
+    catch(illegal_position &ex){
+        printError("Failure on start or while running game logic due to:", ex);
+        errorsOccured = true;
     }
     catch(std::exception &ex){
         printError("Failure on start or while running game logic due to:", ex);

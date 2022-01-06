@@ -7,7 +7,7 @@ class IJumpPair{
 
 
     public:
-        IJumpPair(int partnerOne, int partnerTwo);
+        //IJumpPair(int partnerOne, int partnerTwo);
         /**
          * Check if single is contained in here. If so, returns the partner.
          */

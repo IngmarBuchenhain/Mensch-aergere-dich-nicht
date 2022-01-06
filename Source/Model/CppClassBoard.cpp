@@ -19,10 +19,10 @@ Board::Board(){
         startFields.push_back(21);
         startFields.push_back(31);
         
+        endFields.push_back(39);
         endFields.push_back(9);
         endFields.push_back(19);
         endFields.push_back(29);
-        endFields.push_back(39);
 
         // Create game pieces
         
@@ -140,8 +140,17 @@ int Board::getNumberOfPlayers(){
 
 
      std::vector<std::vector<IGamePieceUI_SPTR>> Board::getGamePieces(){
-         std::vector<std::vector<IGamePieceUI_SPTR>> pain;
-         return pain;// teamsAndGamePieces;
+         std::vector<std::vector<IGamePieceUI_SPTR>> result;
+         
+        for(int index = 0; index < teamsAndGamePieces.size(); index++){
+            std::vector<IGamePieceUI_SPTR> team;
+            for(int i = 0; i < teamsAndGamePieces[index].size(); i++){
+                team.push_back(teamsAndGamePieces[index][i]);
+            }
+            result.push_back(team);
+        }
+
+         return result;
      }
 
  
@@ -172,6 +181,17 @@ int Board::getNumberOfPlayers(){
          }
 
          return homeTeam;
+     }
+
+     std::vector<IGamePiece_SPTR> Board::getOutsideTeam(int player){
+         std::vector<IGamePiece_SPTR> team = teamsAndGamePieces[player];
+         std::vector<IGamePiece_SPTR> outsideTeam;
+         for(int index = 0; index < team.size(); index++){
+             if(team[index]->getPosition() != 0 && !team[index]->isInTargetArea()){
+                 outsideTeam.push_back(team[index]);
+             }
+         }
+         return outsideTeam;
      }
 
 /** *************************************

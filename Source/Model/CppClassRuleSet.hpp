@@ -3,12 +3,6 @@
 
 #include<memory>
 
-enum class RuleSetCategory{
-    Default,
-    Boring,
-    Hard
-};
-
 /**
  * Representation of the rules of a maedn-game. An object of this class is read-only, as it has only private properties describing the rules.
  * Rules are configured on instantiation.
@@ -26,7 +20,7 @@ class RuleSet
     bool walkByTargetAreaIfNotPossibleToWalkInIntern;
 
     bool saveOnStartFieldIntern;
-    bool mustAlwaysFreeStartFieldIntern; // evtl weglassen, da im goWithAnother.. einbegriffen werden kann.
+    bool mustAlwaysFreeStartFieldIntern; 
     bool allowedToUseOutsidePieceOnSixWhenPiecesLeftHomeIntern;
 
     bool onlyRollThreeTimesIfNoPieceOutAndTargetAreaOnEndIntern;
@@ -87,5 +81,7 @@ public:
 public:
     bool playUntilAllPlayersFinished();
 };
+
 typedef std::unique_ptr<RuleSet> RuleSet_UPTR;
+
 #endif

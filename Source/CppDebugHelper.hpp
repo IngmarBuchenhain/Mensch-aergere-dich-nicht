@@ -4,12 +4,38 @@
 #include <string>
 #include <exception>
 
+class unexpected_game_piece : public std::exception{
+    virtual const char *what() const throw() override{
+        return "A game piece which was not applicable was used";
+    }
+};
+
+class illegal_position : public std::exception{
+    virtual const char *what() const throw() override{
+        return "The position is not on the board";
+    }
+};
+
 /**
  * Prints the given message to std::cout if in DEBUG-mode.
  * Use for control.
  * DEBUG-mode is switched in implementaion of DebugHelper.
  */
 void printDebug(std::string message);
+
+/**
+ * Prints the given message to std::cout if in DEBUG-mode.
+ * Use for control.
+ * DEBUG-mode is switched in implementaion of DebugHelper.
+ */
+void printDebug(int message);
+
+/**
+ * Prints the given message to std::cout if in DEBUG-mode.
+ * Use for control.
+ * DEBUG-mode is switched in implementaion of DebugHelper.
+ */
+void printDebug(std::vector<int> message);
 
 /**
  * Prints the given message to std::cout if in ERROR-mode.

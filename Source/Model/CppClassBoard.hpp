@@ -11,17 +11,14 @@
  * Representation of the board game. Not "only" the board itself but the full stacked board with game pieces.
  * Holds also the configuraton of the game, i.e. number of players, number of game pieces per player and how many players are possible.
  */
-class Board : IBoard
+class Board : public IBoard
 {
     /** *************************************
      * Members of Board                     *
      * *************************************/
 
     int numberOfWalkingFields;
-    public:
-    int numberOfPlayers();
-    public:
-    int numberOfGamePiecesPerPlayer();
+
     int numberOfHomes;
     
     std::vector<IJumpPair_SPTR> jumpFields;
@@ -38,7 +35,7 @@ class Board : IBoard
 /** *************************************
  * Constructors of Board                *
  * *************************************/
-
+public:
 Board();
 Board(bool bigField, int numberOfPlayers, int numberOfPieces);
 
@@ -76,7 +73,7 @@ public:
 
     public:
      std::vector<IGamePiece_SPTR> getHomeAreaTeam(int player) override;
-
+std::vector<IGamePiece_SPTR> getOutsideTeam(int player) override;
 
 /** *************************************
  * Private methods of Board             *

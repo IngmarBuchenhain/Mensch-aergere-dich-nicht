@@ -15,6 +15,9 @@ public:
     public:
     virtual std::vector<IGamePiece_SPTR> getHomeAreaTeam(int player) = 0;
 
+    public: 
+    virtual std::vector<IGamePiece_SPTR> getOutsideTeam(int player) = 0;
+
 };
 
 typedef std::shared_ptr<IBoard> IBoard_SPTR;

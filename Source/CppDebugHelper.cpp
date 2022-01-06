@@ -1,5 +1,6 @@
 #include <iostream>
 #include <exception>
+#include <vector>
 
 #include "CppDebugHelper.hpp"
 
@@ -7,7 +8,7 @@
  * Easily switch for whole application using this DebugHelper printing of debug messages.
  * Should be true only while developing.
  */
-extern const bool DEBUG = true;
+extern const bool DEBUG = false;
 
 /**
  * Easily switch for whole application using this DebugHelper printing of error messages.
@@ -25,7 +26,24 @@ void printDebug(std::string message)
     if (DEBUG)
     {
         std::cout << std::endl
-                  << "DEBUG: " << message;
+                  << "DEBUG: " << message << std::flush;
+    }
+}
+
+void printDebug(int message){
+    if(DEBUG){
+        std::cout << std::endl
+                 << "DEBUG: " << message << std::flush;
+    }
+}
+
+void printDebug(std::vector<int> message){
+    if(DEBUG){
+        std::cout << std::endl << "DEBUG: ";
+        for(int index = 0; index < message.size(); index++){
+            std::cout << message[index] << " - ";
+        }
+        std::cout << std::flush;
     }
 }
 
@@ -40,7 +58,7 @@ void printError(std::string message)
     if (ERROR)
     {
         std::cerr << std::endl
-                  << "ERROR: " << message;
+                  << "ERROR: " << message << std::flush;
     }
 }
 
@@ -55,6 +73,6 @@ void printError(std::string message, std::exception &ex)
     if (ERROR)
     {
         std::cerr << std::endl
-                  << "ERROR: " << message << " " << ex.what() << " ";
+                  << "ERROR: " << message << " " << ex.what() << " " << std::flush;
     }
 }

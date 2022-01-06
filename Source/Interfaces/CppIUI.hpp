@@ -59,6 +59,9 @@ public:
 
 
 public:
+    virtual std::pair<IGamePieceUI_SPTR, std::pair<int, bool>> chooseOneGamePiece(std::map<IGamePieceUI_SPTR, std::vector<std::pair<int, bool>>> &possiblePieces) = 0;
+
+public:
     /**
      * Updates the drawn board game with changed game pieces.
      * Must call 'initBoard'-method first!
@@ -66,7 +69,7 @@ public:
      */
 
    // virtual bool updateBoard(std::vector<IGamePieceUI_SPTR> &gamePieces) = 0;
-    virtual void updateBoard(std::vector<std::vector<IGamePieceUI_SPTR>> &gamePieces) = 0;
+    virtual void updateBoard(std::vector<std::vector<IGamePieceUI_SPTR>> gamePieces) = 0;
   
 };
 

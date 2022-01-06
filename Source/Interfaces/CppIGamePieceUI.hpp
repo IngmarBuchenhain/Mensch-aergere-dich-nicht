@@ -7,7 +7,7 @@
  * GamePiece ID counter. Shared global variable for giving each GamePiece a unique ID. Not Threadsafe!
  * Only increase in constructor of GamePiece.
  */
-int GLOBAL_I_GAME_PIECE_ID_COUNTER = 0;
+//extern int *GLOBAL_I_GAME_PIECE_ID_COUNTER;
 
 /**
  * Representaton of a game piece for the UI. 

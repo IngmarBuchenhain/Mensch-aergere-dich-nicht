@@ -10,7 +10,7 @@ outpath ?=
 
 # Define compiler include paths commands. ! May be wrong use fo CXXFLAGS !
 
-CXXFLAGS = '-I$(boost)# -L$(boostlib)'
+#CXXFLAGS = '-I$(boost)# -L$(boostlib)'
 
 
 # Define c++ version
@@ -35,8 +35,8 @@ cargLO = $(lv) -I $(ifs) -I $(sc) -I $(mo) -I $(lo)
 exeName = maedn
 
 # Linking
-$(outpath)$(exeName): CppMenschAergereDichNicht.o CppDebugHelper.o CppClassMainLogic.o CppClassDice.o CppClassBoard.o CppClassGamePiece.o CppClassRuleSet.o
-	g++ $(lv) -o $(outpath)$(exeName) CppMenschAergereDichNicht.o CppDebugHelper.o CppClassMainLogic.o CppClassDice.o CppClassBoard.o CppClassGamePiece.o CppClassRuleSet.o
+$(outpath)$(exeName): CppMenschAergereDichNicht.o CppDebugHelper.o CppClassMainLogic.o CppClassMainLogicBase.o CppClassMainLogicDefault.o CppClassDice.o CppClassBoard.o CppClassGamePiece.o CppClassJumpPair.o CppClassRuleSet.o
+	g++ $(lv) -o $(outpath)$(exeName) CppMenschAergereDichNicht.o CppDebugHelper.o CppClassMainLogic.o CppClassMainLogicBase.o CppClassMainLogicDefault.o CppClassDice.o CppClassBoard.o CppClassGamePiece.o CppClassJumpPair.o CppClassRuleSet.o
 
 # Source
 CppMenschAergereDichNicht.o: CppMenschAergereDichNicht.cpp 
@@ -46,10 +46,16 @@ CppDebugHelper.o: CppDebugHelper.cpp
 	g++ $(lv) -o CppDebugHelper.o -c CppDebugHelper.cpp
 
 # Logic
+CppClassMainLogicBase.o: $(lo)/CppClassMainLogicBase.cpp
+	g++ $(carg) -o CppClassMainLogicBase.o -c $(lo)/CppClassMainLogicBase.cpp
+CppClassMainLogicDefault.o: $(lo)/CppClassMainLogicDefault.cpp
+	g++ $(carg) -o CppClassMainLogicDefault.o -c $(lo)/CppClassMainLogicDefault.cpp
 CppClassMainLogic.o: $(lo)/CppClassMainLogic.cpp
 	g++ $(carg) -o CppClassMainLogic.o -c $(lo)/CppClassMainLogic.cpp
 CppClassDice.o: $(lo)/CppClassDice.cpp
 	g++ $(carg) -o CppClassDice.o -c $(lo)/CppClassDice.cpp
+CppClassKI.o: $(lo)/CppClassKI.cpp
+	g++ $(carg) -o CppClassKI.o -c $(lo)/CppClassKI.cpp
 
 # Model
 CppClassBoard.o: $(mo)/CppClassBoard.cpp
@@ -66,6 +72,11 @@ CppClassRuleSet.o: $(mo)/CppClassRuleSet.cpp
 
 # UI
 
+# Test compiling only
+testc: CppMenschAergereDichNicht.o CppDebugHelper.o CppClassDice.o CppClassBoard.o CppClassGamePiece.o CppClassJumpPair.o CppClassRuleSet.o CppClassMainLogic.o
+# Test all compiling
+testAll: CppMenschAergereDichNicht.cpp CppDebugHelper.cpp $(lo)/CppClassDice.cpp $(mo)/CppClassBoard.o $(mo)/CppClassGamePiece.o $(mo)/CppClassJumpPair.o $(mo)/CppClassRuleSet.o $(lo)/CppClassMainLogic.o
+	g++ $(carg) -o testAll CppMenschAergereDichNicht.cpp CppDebugHelper.cpp $(lo)/CppClassDice.cpp $(mo)/CppClassBoard.o $(mo)/CppClassGamePiece.o $(mo)/CppClassJumpPair.o $(mo)/CppClassRuleSet.o $(lo)/CppClassMainLogic.o
 # make
 run: $(outpath)$(exeName)
 	./$(outpath)$(exeName)
