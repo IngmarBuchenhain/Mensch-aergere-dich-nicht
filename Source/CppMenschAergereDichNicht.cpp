@@ -1,4 +1,4 @@
-#include "CppMenschAergereDichNicht.hpp"
+
 #include "CppDebugHelper.hpp"
 
 #include<exception>
@@ -8,6 +8,10 @@
 #include "CppClassMainLogicDefault.hpp"
 #include "CppClassTestUI.hpp"
 
+/**
+ * Main entry point to the application.
+ * Creates needed objects and starts the logic.
+ */
 int main(int argc, char **argv)
 {
     // Indicator whether exceptions occured. Used to show message to user before exit.
