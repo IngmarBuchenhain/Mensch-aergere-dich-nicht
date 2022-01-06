@@ -35,8 +35,8 @@ cargLO = $(lv) -I $(ifs) -I $(sc) -I $(mo) -I $(lo)
 exeName = maedn
 
 # Linking
-$(outpath)$(exeName): CppMenschAergereDichNicht.o CppDebugHelper.o CppClassMainLogicBase.o CppClassMainLogicDefault.o CppClassDice.o CppClassBoard.o CppClassGamePiece.o CppClassJumpPair.o CppClassRuleSet.o
-	g++ $(lv) -o $(outpath)$(exeName) CppMenschAergereDichNicht.o CppDebugHelper.o CppClassMainLogicBase.o CppClassMainLogicDefault.o CppClassDice.o CppClassBoard.o CppClassGamePiece.o CppClassJumpPair.o CppClassRuleSet.o
+$(outpath)$(exeName): CppMenschAergereDichNicht.o CppDebugHelper.o CppClassMainLogicBase.o CppClassMainLogicDefault.o CppClassDice.o CppClassBoard.o CppClassGamePiece.o CppClassStatistics.o CppClassJumpPair.o CppClassRuleSet.o CppClassKI.o
+	g++ $(lv) -o $(outpath)$(exeName) CppMenschAergereDichNicht.o CppDebugHelper.o CppClassMainLogicBase.o CppClassMainLogicDefault.o CppClassDice.o CppClassBoard.o CppClassGamePiece.o CppClassStatistics.o CppClassJumpPair.o CppClassRuleSet.o CppClassKI.o
 
 # Source
 CppMenschAergereDichNicht.o: CppMenschAergereDichNicht.cpp 
@@ -64,6 +64,8 @@ CppClassJumpPair.o: $(mo)/CppClassJumpPair.cpp
 	g++ $(cargLO) -o CppClassJumpPair.o -c $(mo)/CppClassJumpPair.cpp
 CppClassRuleSet.o: $(mo)/CppClassRuleSet.cpp
 	g++ $(cargLO) -o CppClassRuleSet.o -c $(mo)/CppClassRuleSet.cpp
+CppClassStatistics.o: $(mo)/CppClassStatistics.cpp
+	g++ $(cargLO) -o CppClassStatistics.o -c $(mo)/CppClassStatistics.cpp
 
 
 # Networking

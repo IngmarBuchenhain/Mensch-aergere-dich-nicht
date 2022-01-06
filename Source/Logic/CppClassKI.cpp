@@ -1,28 +1,36 @@
 #include "CppClassKI.hpp"
+#include<iostream>
 KI::KI(int endField, int numberFields){
     playerEndField = endField;
     numberOfFields = numberFields;
 }
-std::pair<IGamePiece_SPTR, std::pair<int, bool>> KI::chooseGamePiece(std::map<IGamePiece_SPTR, std::vector<std::pair<int, bool>>> &possiblePieces)
+std::pair<IGamePieceUI_SPTR, std::pair<int, bool>> KI::chooseGamePiece(std::map<IGamePieceUI_SPTR, std::vector<std::pair<int, bool>>> &possiblePieces)
 {
     //std::pair<IGamePiece_SPTR, std::pair<int, bool>> result;
     // Simple "KI"
     // 1. Go into target area if possible
     // 1.1 If multiple possible, take nearest
+    std::cout << "1" << std::flush;
     if (getBestPieceToWalkIntoTargetArea(possiblePieces))
     {
+        std::cout << "1.1" << std::flush;
         return returnValue;
     }
+    std::cout << "2" << std::flush;
     // 2. If not, walk with piece already in target area if possible
     // 2.1 If multiple possible, take furthest.
     if (getBestPieceToWalkInTargetArea(possiblePieces))
     {
+        std::cout << "2.1" << std::flush;
         return returnValue;
     }
+    std::cout << "3" << std::flush;
     // 3. If not, go from house to field if possible
     if(getPieceToWalkOnField(possiblePieces)){
+        std::cout << "3.1" << std::flush;
         return returnValue;
     }
+    std::cout << "4" << std::flush;
     // 4. If not, walk with piece nearest to target area. If multiple possibilities always throw.
     getBestPieceToWalkOutside(possiblePieces);
         return returnValue;
@@ -38,11 +46,12 @@ int KI::getDistanceToEnd(int position){
      return distance;
 }
 
-bool KI::getBestPieceToWalkIntoTargetArea(std::map<IGamePiece_SPTR, std::vector<std::pair<int, bool>>> &possiblePieces)
+bool KI::getBestPieceToWalkIntoTargetArea(std::map<IGamePieceUI_SPTR, std::vector<std::pair<int, bool>>> &possiblePieces)
 {
-    std::pair<IGamePiece_SPTR, std::pair<int, bool>> result;
+    std::cout << "1 In" << std::flush;
+    std::pair<IGamePieceUI_SPTR, std::pair<int, bool>> result;
     bool resultEmpty = true;
-    std::map<IGamePiece_SPTR, std::vector<std::pair<int, bool>>>::iterator it = possiblePieces.begin();
+    std::map<IGamePieceUI_SPTR, std::vector<std::pair<int, bool>>>::iterator it = possiblePieces.begin();
 
     while (it != possiblePieces.end())
     {
@@ -74,11 +83,11 @@ bool KI::getBestPieceToWalkIntoTargetArea(std::map<IGamePiece_SPTR, std::vector<
     return false;
 }
 
-bool KI::getBestPieceToWalkInTargetArea(std::map<IGamePiece_SPTR, std::vector<std::pair<int, bool>>> &possiblePieces)
+bool KI::getBestPieceToWalkInTargetArea(std::map<IGamePieceUI_SPTR, std::vector<std::pair<int, bool>>> &possiblePieces)
 {
-    std::pair<IGamePiece_SPTR, std::pair<int, bool>> result;
+    std::pair<IGamePieceUI_SPTR, std::pair<int, bool>> result;
     bool resultEmpty = true;
-    std::map<IGamePiece_SPTR, std::vector<std::pair<int, bool>>>::iterator it = possiblePieces.begin();
+    std::map<IGamePieceUI_SPTR, std::vector<std::pair<int, bool>>>::iterator it = possiblePieces.begin();
 
     while (it != possiblePieces.end())
     {
@@ -106,11 +115,11 @@ bool KI::getBestPieceToWalkInTargetArea(std::map<IGamePiece_SPTR, std::vector<st
     return false;
 }
 
-bool KI::getPieceToWalkOnField(std::map<IGamePiece_SPTR, std::vector<std::pair<int, bool>>> &possiblePieces)
+bool KI::getPieceToWalkOnField(std::map<IGamePieceUI_SPTR, std::vector<std::pair<int, bool>>> &possiblePieces)
 {
-    std::pair<IGamePiece_SPTR, std::pair<int, bool>> result;
+    std::pair<IGamePieceUI_SPTR, std::pair<int, bool>> result;
     bool resultEmpty = true;
-    std::map<IGamePiece_SPTR, std::vector<std::pair<int, bool>>>::iterator it = possiblePieces.begin();
+    std::map<IGamePieceUI_SPTR, std::vector<std::pair<int, bool>>>::iterator it = possiblePieces.begin();
 
     while (it != possiblePieces.end())
     {
@@ -135,11 +144,11 @@ bool KI::getPieceToWalkOnField(std::map<IGamePiece_SPTR, std::vector<std::pair<i
 }
 
 
-bool KI::getBestPieceToWalkOutside(std::map<IGamePiece_SPTR, std::vector<std::pair<int, bool>>> &possiblePieces)
+bool KI::getBestPieceToWalkOutside(std::map<IGamePieceUI_SPTR, std::vector<std::pair<int, bool>>> &possiblePieces)
 {
-    std::pair<IGamePiece_SPTR, std::pair<int, bool>> result;
+    std::pair<IGamePieceUI_SPTR, std::pair<int, bool>> result;
     bool resultEmpty = true;
-    std::map<IGamePiece_SPTR, std::vector<std::pair<int, bool>>>::iterator it = possiblePieces.begin();
+    std::map<IGamePieceUI_SPTR, std::vector<std::pair<int, bool>>>::iterator it = possiblePieces.begin();
 
     while (it != possiblePieces.end())
     {

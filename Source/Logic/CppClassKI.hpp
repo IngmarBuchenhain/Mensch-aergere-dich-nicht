@@ -13,27 +13,27 @@
  */
 class KI : public IKI
 {
-    std::pair<IGamePiece_SPTR, std::pair<int, bool>> returnValue;
+    std::pair<IGamePieceUI_SPTR, std::pair<int, bool>> returnValue;
     int playerEndField;
     int numberOfFields;
 
 public:
     KI(int endField, int numberFields);
-
+                                                           
 public:
-    std::pair<IGamePiece_SPTR, std::pair<int, bool>> chooseGamePiece(std::map<IGamePiece_SPTR, std::vector<std::pair<int, bool>>> &possiblePieces) override;
+    std::pair<IGamePieceUI_SPTR, std::pair<int, bool>> chooseGamePiece(std::map<IGamePieceUI_SPTR, std::vector<std::pair<int, bool>>> &possiblePieces) override;
 
 private:
-    bool getBestPieceToWalkIntoTargetArea(std::map<IGamePiece_SPTR, std::vector<std::pair<int, bool>>> &possiblePieces);
+    bool getBestPieceToWalkIntoTargetArea(std::map<IGamePieceUI_SPTR, std::vector<std::pair<int, bool>>> &possiblePieces);
 
 private:
-    bool getBestPieceToWalkInTargetArea(std::map<IGamePiece_SPTR, std::vector<std::pair<int, bool>>> &possiblePieces);
+    bool getBestPieceToWalkInTargetArea(std::map<IGamePieceUI_SPTR, std::vector<std::pair<int, bool>>> &possiblePieces);
 
 private:
-    bool getPieceToWalkOnField(std::map<IGamePiece_SPTR, std::vector<std::pair<int, bool>>> &possiblePieces);
+    bool getPieceToWalkOnField(std::map<IGamePieceUI_SPTR, std::vector<std::pair<int, bool>>> &possiblePieces);
 
 private:
-    bool getBestPieceToWalkOutside(std::map<IGamePiece_SPTR, std::vector<std::pair<int, bool>>> &possiblePieces);
+    bool getBestPieceToWalkOutside(std::map<IGamePieceUI_SPTR, std::vector<std::pair<int, bool>>> &possiblePieces);
     int getDistanceToEnd(int position);
 };
 

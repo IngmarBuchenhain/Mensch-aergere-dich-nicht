@@ -246,6 +246,7 @@ IGamePiece_SPTR MainLogicBase::getConflictGamePiece(int position){
         // If we are save on the start fields and our position to check is a start field there is no conflict
     if (rules->saveOnStartField() && contains(board->getStartfields(), position))
     {
+        
         //printDebug("Return null");
         return nullptr;
     }

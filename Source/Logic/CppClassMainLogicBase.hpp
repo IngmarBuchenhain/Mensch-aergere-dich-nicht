@@ -12,6 +12,8 @@
 #include "CppIUI.hpp"
 #include "CppClassBoard.hpp"
 #include "CppClassGamePiece.hpp"
+#include "CppClassStatistics.hpp"
+#include "CppIKI.hpp"
 
 /**
  * The main class/object for running the game.
@@ -34,9 +36,12 @@ class MainLogicBase
     // UI-object
     IUI_SPTR ui;
 
+    std::unique_ptr<Statistics> stats;
     // Network-object TODO
 
     // KI-object TODO
+    //std::unique_ptr<IKI> ki;
+    std::unique_ptr<IKI> kiPlayer[6];
 
     /** *************************************
      * Constructors of MainLogicBase        *

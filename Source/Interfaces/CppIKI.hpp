@@ -11,7 +11,7 @@
 class IKI
 {
 public:
-    virtual std::pair<IGamePiece_SPTR, std::pair<int, bool>> chooseGamePiece(std::map<IGamePiece_SPTR, std::vector<std::pair<int, bool>>> &possiblePieces) = 0;
+    virtual std::pair<IGamePieceUI_SPTR, std::pair<int, bool>> chooseGamePiece(std::map<IGamePieceUI_SPTR, std::vector<std::pair<int, bool>>> &possiblePieces) = 0;
 };
 
 #endif

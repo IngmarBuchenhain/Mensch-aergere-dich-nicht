@@ -1,6 +1,7 @@
 #include "CppClassMainLogicDefault.hpp"
 #include<iostream>
 #include<string>
+#include "CppClassKI.hpp"
 
 /** *************************************
  * Constructors of MainLogic            *
@@ -20,6 +21,12 @@ MainLogicDefault::MainLogicDefault(IUI_SPTR uiObject)
 
     dice = std::make_unique<Dice>();
     currentPlayer = dice->getStartPlayer(board->getNumberOfPlayers());
+
+    stats = std::make_unique<Statistics>();
+    for(int index = 0; index < board->getNumberOfHomes(); index++){
+        kiPlayer[index] = std::make_unique<KI>(board->getEndFields()[index], board->getNumberOfFields());
+    }
+    //ki = std::make_unique<KI>();
 }
 
 MainLogicDefault::MainLogicDefault(IUI_SPTR uiObject, int numberOfHomes, int numberOfPlayers, int numberOfPieces)
@@ -35,6 +42,11 @@ MainLogicDefault::MainLogicDefault(IUI_SPTR uiObject, int numberOfHomes, int num
 
     dice = std::make_unique<Dice>();
     currentPlayer = dice->getStartPlayer(board->getNumberOfPlayers());
+    stats = std::make_unique<Statistics>();
+        for(int index = 0; index < board->getNumberOfHomes(); index++){
+        kiPlayer[index] = std::make_unique<KI>(board->getEndFields()[index], board->getNumberOfFields());
+    }
+      //  ki = std::make_unique<KI>();
 }
 
 /** *************************************
@@ -60,6 +72,7 @@ void MainLogicDefault::startGame()
 
         // Roll dice. Always!
         int currentDiceRoll = dice->roll();
+        stats->addDiceRoll(currentDiceRoll);
         printDebug(currentDiceRoll);
         // Ask current player to roll dice and roll dice (This is not necessary but only for animation or game feeling)
         // TODO Ask player and directly show roll.
@@ -99,7 +112,15 @@ std::map<IGamePiece_SPTR, std::vector<std::pair<int, bool>>> moveAblePieces = ge
             printDebug("No pieces possible");
         }else{
             printDebug("Pieces possible");
-        std::pair<IGamePieceUI_SPTR, std::pair<int, bool>> selection = ui->chooseOneGamePiece(selectable, currentPlayer);
+std::pair<IGamePieceUI_SPTR, std::pair<int, bool>> selection;
+            // Let user or KI choose:
+            if(kiPlayer[currentPlayer] != nullptr){
+                std::cout << "KI" << std::flush;
+selection = kiPlayer[currentPlayer]->chooseGamePiece(selectable);
+            }else{
+   selection = ui->chooseOneGamePiece(selectable, currentPlayer);
+            }
+
         printDebug("chosen");
         printDebug(selection.first->getID());
         // If we had a 6 mark it
@@ -146,10 +167,11 @@ std::map<IGamePiece_SPTR, std::vector<std::pair<int, bool>>> moveAblePieces = ge
     // Game is finished
     printDebug("Game finished");
     // Present winner on UI
-    ui->showInformation("The winner is:");
-    ui->showInformation(std::to_string(winners[0]));
+    ui->showInformation("The winner is: " + std::to_string(winners[0]));
+    //ui->showInformation(std::to_string(winners[0]));
     printDebug("The winners are: ");
     printDebug(winners);
+    stats->showDiceStats();
 
     // Leave game loop (FUTURE IDEA: Possibility for restart?)
     printDebug("End of game");
