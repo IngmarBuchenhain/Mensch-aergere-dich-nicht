@@ -28,6 +28,12 @@ class illegal_argument : public std::exception{
     }
 };
 
+class not_implemented : public std::exception{
+    virtual const char *what() const throw() override{
+        return "This functionality was not yet implemented!";
+    }
+};
+
 /**
  * Prints the given message to std::cout if in DEBUG-mode.
  * Use for control.

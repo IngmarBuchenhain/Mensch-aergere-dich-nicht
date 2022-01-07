@@ -31,7 +31,7 @@ public:
      * numberOfHomes: 4/6 (depending on numberOfPlayers)
      * numberOfPieces: 3/4
      */
-    MainLogicDefault(IUI_SPTR uiObject, int numberOfHomes, int numberOfPlayers, int numberOfPieces);
+    MainLogicDefault(IUI_SPTR uiObject, int numberOfHomes, int numberOfPlayers, int numberOfPieces, bool fillWithKI, bool spreadOnBoard, std::vector<std::string> playerNames);
 
     /** *********************************************
      * Implemented public methods of MainLogicBase  *

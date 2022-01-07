@@ -1,4 +1,3 @@
-#include <exception>
 #include <iostream>
 
 #include "CppDebugHelper.hpp"
@@ -13,14 +12,15 @@
 int main(int argc, char **argv)
 {
     // Indicator whether exceptions occured. Used to show message to user before exit.
-    bool errorsOccured = false;
+    bool errorsOccured = true;
 
-    int numberOfHomes;
-    int numberOfPlayers;
-    int numberOfGamePieces;
-    int rules;
-    bool fillWithKI;
-    bool spreadOnField;
+    // Arguments for game logic to be extracted from application input arguments
+    int numberOfHomes = 4;
+    int numberOfPlayers = 4;
+    int numberOfGamePieces = 4;
+    int rules = 0;
+    bool fillWithKI = true;
+    bool spreadOnField = false;
 
     std::vector<std::string> playerNames;
 
@@ -28,18 +28,90 @@ int main(int argc, char **argv)
     if (argc == 1)
     {
         // No arguments were given. Use default rules and default player number/board.
+        errorsOccured = false;
+    }
+    else if (argc >= 7)
+    {
+        errorsOccured = false;
+
+        // Try interpret input.
+        try
+        {
+            // 1. is programm itself
+
+            // 2. expected board config (4: 4 Homes; 6: 6 Homes)
+            numberOfHomes = std::stoi(argv[1]);
+
+            // 3. expected number of players (2-6 depending on 2.)
+            numberOfPlayers = std::stoi(argv[2]);
+
+            // 4. expected number of game pieces per player (3/4)
+            numberOfGamePieces = std::stoi(argv[3]);
+
+            // 5. expected RuleSet (0: Default; 1: Hard; 2: Easy)
+            rules = std::stoi(argv[4]);
+
+            // 6. expected option to fill missing players with KI (0: false; 1: true)
+            fillWithKI = std::stoi(argv[5]);
+
+            // 7. expected option to spread players on board (if no KI used)(0: false; 1: true)
+            spreadOnField = std::stoi(argv[6]);
+
+            // Everything afterwards is treated as player name
+            for (int index = 7; index < argc; index++)
+            {
+                playerNames.push_back(argv[index]);
+            }
+        }
+        catch (std::exception &ex)
+        {
+            printError("Failure while reading input arguments of application:", ex);
+            errorsOccured = true;
+        }
+        catch (...)
+        {
+            printError("Failure while reading input arguments of application due to unknown error");
+            errorsOccured = true;
+        }
+    }
+    else
+    {
+        printError("Failure while reading input arguments of application. Number of arguments is wrong! Use no argument to start default game or arguments according to manual.");
+        errorsOccured = true;
+    }
+    if (!errorsOccured)
+    {
         try
         {
             // Create UI-Object
             printDebug("Try to create UI-object");
-            IUI_SPTR testUI(new TestUI);
+            IUI_SPTR ui(new TestUI);
 
             // Create logic object with UI-object as argument
             printDebug("Try to create game-logic-object");
-            MainLogicDefault mainLogic(testUI);
+            std::shared_ptr<MainLogicDefault> mainLogic;
 
+            switch (rules)
+            {
+            case 1:
+                throw new not_implemented;
+                break;
+            case 2:
+                throw new not_implemented;
+                break;
+            default:
+                mainLogic.reset(new MainLogicDefault(ui, numberOfHomes, numberOfPlayers, numberOfGamePieces, fillWithKI, spreadOnField, playerNames));
+                break;
+            }
+
+            // Start game
             printDebug("Try to start game logic");
-            mainLogic.startGame();
+            mainLogic->startGame();
+        }
+        catch (not_implemented &ex)
+        {
+            printError("Failure on start or while running game logic due to:", ex);
+            errorsOccured = true;
         }
         catch (unexpected_game_piece &ex)
         {
@@ -61,82 +133,6 @@ int main(int argc, char **argv)
             printError("Failure on start or while running game logic due to unknown Error!");
             errorsOccured = true;
         }
-    }
-    else if (argc >= 7)
-    {
-        // Try interpret input.
-        try
-        {
-
-            // 1. is programm itself
-            // 2. expected board config (0: 4 Homes; 1: 6 Homes)
-            numberOfHomes = std::stoi(argv[1]);
-            // 3. exptected number of players (2-6 depending on 2.)
-            numberOfPlayers = std::stoi(argv[2]);
-            // 4. exptected number of game pieces per player
-            numberOfGamePieces = std::stoi(argv[3]);
-            // 5. exptected RuleSet (0: Default; 1: Hard; 2: Easy)
-            rules = std::stoi(argv[4]);
-
-            // Everything afterwards is treated as player name
-            for(int index = 7; index < argc; index++){
-                playerNames.push_back(argv[index]);
-            }
-        }
-        catch (...)
-        {
-            printError("Invalid arguments for maedn. Integers required for 2. to 7. argument");
-            errorsOccured = true;
-        }
-  
-
-        // Check number of
-        if (!errorsOccured)
-        {
-            // Start logic-object
-            try
-            {
-                // Create UI-Object
-                printDebug("Try to create UI-Object");
-                IUI_SPTR testUI(new TestUI);
-
-                // Create Network-Object
-
-                printDebug("Try to create Network-Object");
-
-                // Create logic object with In-Out-object and Network-object as parameters
-                printDebug("Try to create game logic");
-
-                //MainLogicDefault mainLogic(testUI);
-                MainLogicDefault mainLogic(testUI, numberOfHomes, numberOfPlayers, numberOfGamePieces);
-                printDebug("Try to start game logic");
-                mainLogic.startGame();
-            }
-            catch (unexpected_game_piece &ex)
-            {
-                printError("Failure on start or while running game logic due to:", ex);
-                errorsOccured = true;
-            }
-            catch (illegal_position &ex)
-            {
-                printError("Failure on start or while running game logic due to:", ex);
-                errorsOccured = true;
-            }
-            catch (std::exception &ex)
-            {
-                printError("Failure on start or while running game logic due to:", ex);
-                errorsOccured = true;
-            }
-            catch (...)
-            {
-                printError("Failure on start or while running game logic due to unknown Error!");
-                errorsOccured = true;
-            }
-        }
-    }
-    else{
-        printError("No valid arguments were given to the application! Use no argument to start default game or arguments according to manual.\nTry again!");
-        errorsOccured = true;
     }
 
     if (errorsOccured)

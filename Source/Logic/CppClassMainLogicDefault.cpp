@@ -37,7 +37,7 @@ MainLogicDefault::MainLogicDefault(IUI_SPTR uiObject)
     }
 }
 
-MainLogicDefault::MainLogicDefault(IUI_SPTR uiObject, int numberOfHomes, int numberOfPlayers, int numberOfPieces)
+MainLogicDefault::MainLogicDefault(IUI_SPTR uiObject, int numberOfHomes, int numberOfPlayers, int numberOfPieces, bool fillWithKI, bool spreadOnBoard, std::vector<std::string> playerNames)
 {
     if (uiObject == nullptr)
     {
