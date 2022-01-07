@@ -3,8 +3,6 @@
 
 #include "CppClassKI.hpp"
 
-#include<iostream>
-
 /** *************************************
  * Constructors of MainLogicDefault     *
  * *************************************/
@@ -139,9 +137,6 @@ MainLogicDefault::MainLogicDefault(IUI_SPTR uiObject, int numberOfHomes, int num
 
 void MainLogicDefault::startGame()
 {
-    for(int i = 0; i < nameOfPlayers.size(); i++){
-        std::cout << nameOfPlayers[i] << std::endl;
-    }
     printDebug("Started game");
     ui->initBoard(board);
     // Counter if someone is allowed to roll multiple times (if no piece can walk)
@@ -227,11 +222,11 @@ void MainLogicDefault::startGame()
                 if (currentDiceRoll == 6 && !selection.second.second)
                 {
                     printDebug("Mark last piece");
-                    lastGamePiece = std::dynamic_pointer_cast<IGamePiece>(selection.first);
-                    if (lastGamePiece == nullptr)
-                    {
-                        printDebug("Bad");
+                    if(!rules->goWithAnotherPieceOnSecondRollOfDice()){
+ lastGamePiece = std::dynamic_pointer_cast<IGamePiece>(selection.first);
                     }
+                   
+
                     nextPlayer = false;
                 }
                 std::pair<IGamePiece_SPTR, std::pair<int, bool>> convertedSelection;
@@ -249,6 +244,20 @@ void MainLogicDefault::startGame()
                 {
                     printDebug("Field");
                     movePieceOnField(convertedSelection.first, convertedSelection.second.first);
+                    if(rules->jumpOnEdges()){
+                        // Check if we are on jump field. If so, we have to check the position we jumped from to.
+                        int positionWeJumpedFrom = getJumpPosition(convertedSelection.second.first);
+                        IGamePiece_SPTR conflictPiece = nullptr;
+                        do
+                        {
+                                          if((conflictPiece = getConflictGamePiece(positionWeJumpedFrom)) != nullptr){
+                                              conflictPiece->setPosition(0);
+                                             
+                        }
+                        } while (conflictPiece != nullptr);
+                        
+
+                    }
                 }
             }
         }

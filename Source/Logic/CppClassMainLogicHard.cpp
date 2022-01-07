@@ -3,10 +3,8 @@
 
 #include "CppClassKI.hpp"
 
-#include<iostream>
-
 /** *************************************
- * Constructors of MainLogicDefault     *
+ * Constructors of MainLogicHard        *
  * *************************************/
 
 MainLogicHard::MainLogicHard(IUI_SPTR uiObject) : MainLogicBase(uiObject)
@@ -134,14 +132,12 @@ MainLogicHard::MainLogicHard(IUI_SPTR uiObject, int numberOfHomes, int numberOfP
 // }
 
 /** *************************************
- * Public methods of MainLogicDefault   *
+ * Public methods of MainLogicHard      *
  * *************************************/
 
 void MainLogicHard::startGame()
 {
-    for(int i = 0; i < nameOfPlayers.size(); i++){
-        std::cout << nameOfPlayers[i] << std::endl;
-    }
+
     printDebug("Started game");
     ui->initBoard(board);
     // Counter if someone is allowed to roll multiple times (if no piece can walk)
@@ -280,7 +276,7 @@ void MainLogicHard::startGame()
 }
 
 /** *************************************
- * Private methods of MainLogicDefault  *
+ * Private methods of MainLogicHard     *
  * *************************************/
 
 std::map<IGamePiece_SPTR, std::vector<std::pair<int, bool>>> MainLogicHard::getGamePiecesWithNewPositions(int diceRoll, IGamePiece_SPTR lastPiece)

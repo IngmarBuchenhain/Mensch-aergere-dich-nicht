@@ -10,27 +10,27 @@ std::pair<IGamePieceUI_SPTR, std::pair<int, bool>> KI::chooseGamePiece(std::map<
     // Simple "KI"
     // 1. Go into target area if possible
     // 1.1 If multiple possible, take nearest
-    std::cout << "1" << std::flush;
+    //std::cout << "1" << std::flush;
     if (getBestPieceToWalkIntoTargetArea(possiblePieces))
     {
-        std::cout << "1.1" << std::flush;
+       // std::cout << "1.1" << std::flush;
         return returnValue;
     }
-    std::cout << "2" << std::flush;
+    //std::cout << "2" << std::flush;
     // 2. If not, walk with piece already in target area if possible
     // 2.1 If multiple possible, take furthest.
     if (getBestPieceToWalkInTargetArea(possiblePieces))
     {
-        std::cout << "2.1" << std::flush;
+      //  std::cout << "2.1" << std::flush;
         return returnValue;
     }
-    std::cout << "3" << std::flush;
+   // std::cout << "3" << std::flush;
     // 3. If not, go from house to field if possible
     if(getPieceToWalkOnField(possiblePieces)){
-        std::cout << "3.1" << std::flush;
+       // std::cout << "3.1" << std::flush;
         return returnValue;
     }
-    std::cout << "4" << std::flush;
+   // std::cout << "4" << std::flush;
     // 4. If not, walk with piece nearest to target area. If multiple possibilities always throw.
     getBestPieceToWalkOutside(possiblePieces);
         return returnValue;
@@ -48,7 +48,7 @@ int KI::getDistanceToEnd(int position){
 
 bool KI::getBestPieceToWalkIntoTargetArea(std::map<IGamePieceUI_SPTR, std::vector<std::pair<int, bool>>> &possiblePieces)
 {
-    std::cout << "1 In" << std::flush;
+   // std::cout << "1 In" << std::flush;
     std::pair<IGamePieceUI_SPTR, std::pair<int, bool>> result;
     bool resultEmpty = true;
     std::map<IGamePieceUI_SPTR, std::vector<std::pair<int, bool>>>::iterator it = possiblePieces.begin();

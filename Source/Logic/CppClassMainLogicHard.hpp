@@ -6,27 +6,27 @@
 /**
  * The main class/object for running the game.
  * This class contains/knows all needed modules, i.e. UI-object, Network-object and the data.
- * This is the specialized class providing the default rules.
+ * This is the specialized class providing the hard rules.
  * To start the game use the 'startGame'-method.
  */
 class MainLogicHard : public MainLogicBase
 {
     /** *************************************
-     * Members of MainLogicDefault          *
+     * Members of MainLogicHard             *
      * *************************************/
 
     /** *****************************************
-     * Constructors of MainLogicDefault         *
+     * Constructors of MainLogicHard            *
      * *****************************************/
 
 public:
     /**
-     * A default rules game with 4 players, 4 homes and 4 pieces per player.
+     * A hard rules game with 4 players, 4 homes and 4 pieces per player.
      */
     MainLogicHard(IUI_SPTR uiObject);
 
     /**
-     * Individual game with default rules.
+     * Individual game with hard rules.
      * numberOfPlayers: 2-6 
      * numberOfHomes: 4/6 (depending on numberOfPlayers)
      * numberOfPieces: 3/4
