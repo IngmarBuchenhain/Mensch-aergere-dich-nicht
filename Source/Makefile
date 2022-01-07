@@ -35,8 +35,8 @@ cargLO = $(lv) -I $(ifs) -I $(sc) -I $(mo) -I $(lo)
 exeName = maedn
 
 # Linking
-$(outpath)$(exeName): CppMenschAergereDichNicht.o CppDebugHelper.o CppClassMainLogicBase.o CppClassMainLogicDefault.o CppClassDice.o CppClassBoard.o CppClassGamePiece.o CppClassStatistics.o CppClassJumpPair.o CppClassRuleSet.o CppClassKI.o
-	g++ $(lv) -o $(outpath)$(exeName) CppMenschAergereDichNicht.o CppDebugHelper.o CppClassMainLogicBase.o CppClassMainLogicDefault.o CppClassDice.o CppClassBoard.o CppClassGamePiece.o CppClassStatistics.o CppClassJumpPair.o CppClassRuleSet.o CppClassKI.o
+$(outpath)$(exeName): CppMenschAergereDichNicht.o CppDebugHelper.o CppClassMainLogicBase.o CppClassMainLogicDefault.o CppClassMainLogicEasy.o CppClassMainLogicHard.o CppClassDice.o CppClassBoard.o CppClassGamePiece.o CppClassStatistics.o CppClassJumpPair.o CppClassRuleSet.o CppClassKI.o
+	g++ $(lv) -o $(outpath)$(exeName) CppMenschAergereDichNicht.o CppDebugHelper.o CppClassMainLogicBase.o CppClassMainLogicDefault.o CppClassMainLogicEasy.o CppClassMainLogicHard.o CppClassDice.o CppClassBoard.o CppClassGamePiece.o CppClassStatistics.o CppClassJumpPair.o CppClassRuleSet.o CppClassKI.o
 
 # Source
 CppMenschAergereDichNicht.o: CppMenschAergereDichNicht.cpp 
@@ -50,6 +50,10 @@ CppClassMainLogicBase.o: $(lo)/CppClassMainLogicBase.cpp
 	g++ $(carg) -o CppClassMainLogicBase.o -c $(lo)/CppClassMainLogicBase.cpp
 CppClassMainLogicDefault.o: $(lo)/CppClassMainLogicDefault.cpp
 	g++ $(carg) -o CppClassMainLogicDefault.o -c $(lo)/CppClassMainLogicDefault.cpp
+CppClassMainLogicHard.o: $(lo)/CppClassMainLogicHard.cpp
+	g++ $(carg) -o CppClassMainLogicHard.o -c $(lo)/CppClassMainLogicHard.cpp
+CppClassMainLogicEasy.o: $(lo)/CppClassMainLogicEasy.cpp
+	g++ $(carg) -o CppClassMainLogicEasy.o -c $(lo)/CppClassMainLogicEasy.cpp
 CppClassDice.o: $(lo)/CppClassDice.cpp
 	g++ $(carg) -o CppClassDice.o -c $(lo)/CppClassDice.cpp
 CppClassKI.o: $(lo)/CppClassKI.cpp
@@ -79,7 +83,7 @@ testAll: CppMenschAergereDichNicht.cpp CppDebugHelper.cpp $(lo)/CppClassDice.cpp
 	g++ $(carg) -o testAll CppMenschAergereDichNicht.cpp CppDebugHelper.cpp $(lo)/CppClassDice.cpp $(mo)/CppClassBoard.o $(mo)/CppClassGamePiece.o $(mo)/CppClassJumpPair.o $(mo)/CppClassRuleSet.o $(lo)/CppClassMainLogic.o
 # make
 run: $(outpath)$(exeName)
-	./$(outpath)$(exeName)
+	./$(outpath)$(exeName) 4 3 4 0 1 0 Torsten Niklas Ingmar
 mostlyclean:
 	rm -f *.o a.out $(mo)/*.o $(lo)/*.o $(ui)/*.o $(ifs)/*.o $(net)/*.o $(mo)/*.out $(lo)/*.out $(ui)/*.out $(ifs)/*.out $(net)/*.out
 clean:

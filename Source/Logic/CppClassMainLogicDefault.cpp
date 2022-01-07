@@ -9,119 +9,129 @@
  * Constructors of MainLogicDefault     *
  * *************************************/
 
-MainLogicDefault::MainLogicDefault(IUI_SPTR uiObject)
+MainLogicDefault::MainLogicDefault(IUI_SPTR uiObject) : MainLogicBase(uiObject)
 {
-    if (uiObject == nullptr)
-    {
-        throw argument_nullptr_exception();
-    }
-    ui = uiObject;
 
-    // Default: So 4 homes, 4 players, 4 pieces per player: Default constructor
-    board.reset(new Board());
-
-    // Default: So all rules to false: Default constructor
-    rules = std::make_unique<RuleSet>();
-
-    // Init dice
-    dice = std::make_unique<Dice>();
-
-    // Roll the start player
-    currentPlayer = dice->getStartPlayer(board->getNumberOfPlayers());
-
-    // Init stats object
-    stats = std::make_unique<Statistics>();
-
-    // Init KI.
-    int countHuman = 1;
-    for (int index = 0; index < board->getNumberOfHomes(); index++)
-    {
-        kiPlayer[index] = nullptr;
-        std::string name = "StealthPlayer ";
-        name.append(std::to_string(countHuman));
-
-        nameOfPlayers.push_back(name);
-        countHuman += 1;
-        //kiPlayer[index] = std::make_unique<KI>(board->getEndFields()[index], board->getNumberOfFields()); // for Debug
-    }
 }
 
-MainLogicDefault::MainLogicDefault(IUI_SPTR uiObject, int numberOfHomes, int numberOfPlayers, int numberOfPieces, bool fillWithKI, bool spreadOnBoard, std::vector<std::string> playerNames)
-{
-    if (uiObject == nullptr)
-    {
-        throw argument_nullptr_exception();
-    }
-    ui = uiObject;
+MainLogicDefault::MainLogicDefault(IUI_SPTR uiObject, int numberOfHomes, int numberOfPlayers, int numberOfPieces, bool fillWithKI, bool spreadOnBoard, std::vector<std::string> playerNames) : MainLogicBase(uiObject, numberOfHomes, numberOfPlayers, numberOfPieces, fillWithKI, spreadOnBoard, playerNames){
 
-    if (numberOfPlayers < 1 || numberOfPlayers > 6 || (numberOfHomes != 4 && numberOfHomes != 6) || numberOfHomes < numberOfPlayers || (numberOfPieces != 3 && numberOfPieces != 4))
-    {
-        throw illegal_argument();
-    }
+}
 
-    // Default: So 4 homes, 4 players, 4 pieces per player
 
-    // Check if there are less players than homes. If so, check if, filled with KI is true. If not, check if spreadOnBoard is true
-    int numberOfAllPlayers = numberOfPlayers;
-    for (int index = 0; index < numberOfPlayers; index++)
-    {
+// MainLogicDefault::MainLogicDefault(IUI_SPTR uiObject)
+// {
+//     if (uiObject == nullptr)
+//     {
+//         throw argument_nullptr_exception();
+//     }
+//     ui = uiObject;
 
-        kiPlayer[index] = nullptr;
-    }
-    if (numberOfPlayers < numberOfHomes)
-    {
-        if (fillWithKI)
-        {
-            // Note which are KI and which not
+//     // Default: So 4 homes, 4 players, 4 pieces per player: Default constructor
+//     board.reset(new Board());
 
-            // Set numberOfPlayers to numberOfHomes
-            numberOfAllPlayers = numberOfHomes;
+//     // Default: So all rules to false: Default constructor
+//     rules = std::make_unique<RuleSet>();
 
-            // Mark which ones are KI and mark names right
-        }
-    }
+//     // Init dice
+//     dice = std::make_unique<Dice>();
 
-    board.reset(new Board(numberOfHomes == 4 ? false : true, numberOfAllPlayers, numberOfPieces, spreadOnBoard));
-    // Individual rules
+//     // Roll the start player
+//     currentPlayer = dice->getStartPlayer(board->getNumberOfPlayers());
 
-    rules = std::make_unique<RuleSet>(); // Default
+//     // Init stats object
+//     stats = std::make_unique<Statistics>();
 
-    dice = std::make_unique<Dice>();
-    currentPlayer = dice->getStartPlayer(board->getNumberOfPlayers());
-    stats = std::make_unique<Statistics>();
-    if (fillWithKI)
-    {
-        for (int index = numberOfPlayers; index < numberOfHomes; index++)
-        {
-            kiPlayer[index] = std::make_unique<KI>(board->getEndFields()[index], board->getNumberOfFields());
-        }
-    }
-    if (playerNames.size() < numberOfAllPlayers)
-    {
-        int countKI = 1;
-        int countHuman = 1;
-        for (int index = playerNames.size(); index < numberOfAllPlayers; index++)
-        {
-            if (kiPlayer[index] != nullptr)
-            {
-                std::string name = "ThenotsointelligentbutluckyKI ";
-                name.append(std::to_string(countKI));
-                playerNames.push_back(name);
-                countKI += 1;
-            }
-            else
-            {
+//     // Init KI.
+//     int countHuman = 1;
+//     for (int index = 0; index < board->getNumberOfHomes(); index++)
+//     {
+//         kiPlayer[index] = nullptr;
+//         std::string name = "StealthPlayer ";
+//         name.append(std::to_string(countHuman));
+
+//         nameOfPlayers.push_back(name);
+//         countHuman += 1;
+//         //kiPlayer[index] = std::make_unique<KI>(board->getEndFields()[index], board->getNumberOfFields()); // for Debug
+//     }
+// }
+
+// MainLogicDefault::MainLogicDefault(IUI_SPTR uiObject, int numberOfHomes, int numberOfPlayers, int numberOfPieces, bool fillWithKI, bool spreadOnBoard, std::vector<std::string> playerNames)
+// {
+//     if (uiObject == nullptr)
+//     {
+//         throw argument_nullptr_exception();
+//     }
+//     ui = uiObject;
+
+//     if (numberOfPlayers < 1 || numberOfPlayers > 6 || (numberOfHomes != 4 && numberOfHomes != 6) || numberOfHomes < numberOfPlayers || (numberOfPieces != 3 && numberOfPieces != 4))
+//     {
+//         throw illegal_argument();
+//     }
+
+//     // Default: So 4 homes, 4 players, 4 pieces per player
+
+//     // Check if there are less players than homes. If so, check if, filled with KI is true. If not, check if spreadOnBoard is true
+//     int numberOfAllPlayers = numberOfPlayers;
+//     for (int index = 0; index < numberOfPlayers; index++)
+//     {
+
+//         kiPlayer[index] = nullptr;
+//     }
+//     if (numberOfPlayers < numberOfHomes)
+//     {
+//         if (fillWithKI)
+//         {
+//             // Note which are KI and which not
+
+//             // Set numberOfPlayers to numberOfHomes
+//             numberOfAllPlayers = numberOfHomes;
+
+//             // Mark which ones are KI and mark names right
+//         }
+//     }
+
+//     board.reset(new Board(numberOfHomes == 4 ? false : true, numberOfAllPlayers, numberOfPieces, spreadOnBoard));
+//     // Individual rules
+
+//     rules = std::make_unique<RuleSet>(); // Default
+
+//     dice = std::make_unique<Dice>();
+//     currentPlayer = dice->getStartPlayer(board->getNumberOfPlayers());
+//     stats = std::make_unique<Statistics>();
+//     if (fillWithKI)
+//     {
+//         for (int index = numberOfPlayers; index < numberOfHomes; index++)
+//         {
+//             kiPlayer[index] = std::make_unique<KI>(board->getEndFields()[index], board->getNumberOfFields());
+//         }
+//     }
+//     if (playerNames.size() < numberOfAllPlayers)
+//     {
+//         int countKI = 1;
+//         int countHuman = 1;
+//         for (int index = playerNames.size(); index < numberOfAllPlayers; index++)
+//         {
+//             if (kiPlayer[index] != nullptr)
+//             {
+//                 std::string name = "ThenotsointelligentbutluckyKI ";
+//                 name.append(std::to_string(countKI));
+//                 playerNames.push_back(name);
+//                 countKI += 1;
+//             }
+//             else
+//             {
          
-                std::string name = "StealthPlayer ";
-                name.append(std::to_string(countHuman));
+//                 std::string name = "StealthPlayer ";
+//                 name.append(std::to_string(countHuman));
   
-                playerNames.push_back(name);
-                countHuman += 1;
-            }
-        }
-    }
-    nameOfPlayers = playerNames;
-}
+//                 playerNames.push_back(name);
+//                 countHuman += 1;
+//             }
+//         }
+//     }
+//     nameOfPlayers = playerNames;
+// }
 
 /** *************************************
  * Public methods of MainLogicDefault   *

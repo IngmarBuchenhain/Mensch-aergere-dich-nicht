@@ -3,6 +3,8 @@
 #include "CppDebugHelper.hpp"
 
 #include "CppClassMainLogicDefault.hpp"
+#include "CppClassMainLogicHard.hpp"
+#include "CppClassMainLogicEasy.hpp"
 #include "CppClassTestUI.hpp"
 
 /**
@@ -98,15 +100,15 @@ int main(int argc, char **argv)
 
             // Create logic object with UI-object as argument
             printDebug("Try to create game-logic-object");
-            std::shared_ptr<MainLogicDefault> mainLogic;
+            std::shared_ptr<MainLogicBase> mainLogic;
 
             switch (rules)
             {
             case 1:
-                throw new not_implemented;
+                mainLogic.reset(new MainLogicHard(ui, numberOfHomes, numberOfPlayers, numberOfGamePieces, fillWithKI, spreadOnField, playerNames));
                 break;
             case 2:
-                throw new not_implemented;
+                mainLogic.reset(new MainLogicEasy(ui, numberOfHomes, numberOfPlayers, numberOfGamePieces, fillWithKI, spreadOnField, playerNames));
                 break;
             default:
                 mainLogic.reset(new MainLogicDefault(ui, numberOfHomes, numberOfPlayers, numberOfGamePieces, fillWithKI, spreadOnField, playerNames));
