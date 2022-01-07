@@ -58,9 +58,18 @@ int main(int argc, char **argv)
             spreadOnField = std::stoi(argv[6]);
 
             // Everything afterwards is treated as player name
+            int count = 0;
             for (int index = 7; index < argc; index++)
             {
-                playerNames.push_back(argv[index]);
+                count += 1;
+                if (count <= numberOfPlayers)
+                {
+                    playerNames.push_back(argv[index]);
+                }
+                else
+                {
+                    break;
+                }
             }
         }
         catch (std::exception &ex)

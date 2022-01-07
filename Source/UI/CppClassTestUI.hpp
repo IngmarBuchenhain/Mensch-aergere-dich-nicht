@@ -44,6 +44,13 @@ public:
          std::cout << std::endl << "Great! You rolled a -" << diceNumber << "-" << std::endl << std::flush;
      }
 
+          void rollDice(std::string currentPlayer, int diceNumber){
+         std::cout << std::endl << currentPlayer << ": It's your turn! If you want to roll the dice, press 'Enter'";
+       //  std::cin.ignore(10);
+         std::cin.ignore();
+         std::cout << std::endl << "You rolled a -" << diceNumber << "-" << std::endl << std::flush;
+     }
+
 
 public:
     /**
@@ -70,6 +77,23 @@ public:
        //printDebug("Assigned walk");
          return result;
      }
+    std::pair<IGamePieceUI_SPTR, std::pair<int, bool>> chooseOneGamePiece(std::map<IGamePieceUI_SPTR, std::vector<std::pair<int, bool>>> &possiblePieces, std::string currentPlayer) override{
+               //printDebug("In converter");
+               std::cout << currentPlayer << ": Choose which piece to move!" << std::endl;
+       std::pair<IGamePieceUI_SPTR, std::pair<int, bool>> result;
+       //printDebug("Not chosen");
+        std::map<IGamePieceUI_SPTR, std::vector<std::pair<int, bool>>>::iterator it = possiblePieces.begin();
+        while(it != possiblePieces.end()){
+           // printDebug(it->first->getID());
+            it++;
+        }
+
+       result.first = possiblePieces.begin()->first;
+       //printDebug("Assigned piece");
+       result.second = possiblePieces.begin()->second[0];
+       //printDebug("Assigned walk");
+         return result;
+    }
 
 
 public:

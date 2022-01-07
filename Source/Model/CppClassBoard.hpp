@@ -37,7 +37,7 @@ class Board : public IBoard
  * *************************************/
 public:
 Board();
-Board(bool bigField, int numberOfPlayers, int numberOfPieces);
+Board(bool bigField, int numberOfPlayers, int numberOfPieces, bool spreadOnBoard);
 
 /** *************************************
  * Public methods of Board              *

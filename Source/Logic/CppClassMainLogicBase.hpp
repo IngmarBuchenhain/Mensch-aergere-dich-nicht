@@ -32,6 +32,7 @@ protected:
     Dice_UPTR dice;
     int currentPlayer;
     std::vector<int> winners; // May be one or if played until all finished multiple.
+    std::vector<std::string> nameOfPlayers;
 
     /**
      * UI-object

@@ -43,6 +43,7 @@ public:
      */
 
     virtual void rollDice(int currentPlayer, int diceNumber) = 0;
+    virtual void rollDice(std::string currentPlayer, int diceNumber) = 0;
 
 public:
     /**
@@ -56,6 +57,7 @@ public:
      * Each piece may have multiple possibilities to walk. The int is the new position, the bool indicates whether the new position is in the target area.
      */
     virtual std::pair<IGamePieceUI_SPTR, std::pair<int, bool>> chooseOneGamePiece(std::map<IGamePieceUI_SPTR, std::vector<std::pair<int, bool>>> &possiblePieces, int currentPlayer) = 0;
+    virtual std::pair<IGamePieceUI_SPTR, std::pair<int, bool>> chooseOneGamePiece(std::map<IGamePieceUI_SPTR, std::vector<std::pair<int, bool>>> &possiblePieces, std::string currentPlayer) = 0;
 
 public:
     /**
