@@ -37,11 +37,11 @@ public:
      * Implemented public methods of MainLogicBase  *
      * *********************************************/
 
-public:
+//public:
     /**
      * Starts the game and represents the application loop running infinitely until the game finished.
      */
-    void startGame() override;
+    //void startGame() override;
 
     /** *********************************************
      * Implemented private methods of MainLogicBase *
@@ -73,6 +73,9 @@ private:
     /** *********************************************
      * Private methods of MainLogicDefault          *
      * *********************************************/
+
+    private:
+    bool targetTeamFinished(int currentPlayer);
 };
 
 #endif

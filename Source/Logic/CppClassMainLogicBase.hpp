@@ -71,14 +71,14 @@ protected:
     MainLogicBase(IUI_SPTR uiObject, int numberOfHomes, int numberOfPlayers, int numberOfPieces, bool fillWithKI, bool spreadOnBoard, std::vector<std::string> playerNames);
 
     /** *********************************************
-     * Virtual public methods of MainLogicBase      *
+     * Public methods of MainLogicBase              *
      * *********************************************/
 
 public:
     /**
      * Starts the game and represents the application loop running infinitely until the game finished.
      */
-    virtual void startGame() = 0;
+    void startGame();
 
     /** *********************************************
      * Virtual protected methods of MainLogicBase   *

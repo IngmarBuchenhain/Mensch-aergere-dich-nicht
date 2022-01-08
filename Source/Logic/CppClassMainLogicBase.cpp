@@ -18,7 +18,7 @@ MainLogicBase::MainLogicBase(IUI_SPTR uiObject)
     board.reset(new Board());
 
     // Default: So all rules to false: Default constructor
-    rules = std::make_unique<RuleSet>();
+    //rules = std::make_unique<RuleSet>();
 
     // Init dice
     dice = std::make_unique<Dice>();
@@ -81,7 +81,7 @@ MainLogicBase::MainLogicBase(IUI_SPTR uiObject, int numberOfHomes, int numberOfP
     board.reset(new Board(numberOfHomes == 4 ? false : true, numberOfAllPlayers, numberOfPieces, spreadOnBoard));
     // Individual rules
 
-    rules = std::make_unique<RuleSet>(); // Default
+    
 
     dice = std::make_unique<Dice>();
     currentPlayer = dice->getStartPlayer(board->getNumberOfPlayers());
@@ -118,6 +118,163 @@ MainLogicBase::MainLogicBase(IUI_SPTR uiObject, int numberOfHomes, int numberOfP
         }
     }
     nameOfPlayers = playerNames;
+}
+/** ***************************************
+ * Public methods of MainLogicBase        *
+ * ***************************************/
+
+
+void MainLogicBase::startGame()
+{
+    printDebug("Started game");
+    ui->initBoard(board);
+    // Counter if someone is allowed to roll multiple times (if no piece can walk)
+    int rollCounter = 1;
+
+    // GamePiece which was moved in last move
+    IGamePiece_SPTR lastGamePiece = nullptr;
+
+    // Game loop. (FUTURE IDEA: Possibility to cancel game)
+    while (gameIsNotFinished())
+    {
+        printDebug("Loop running..");
+        printDebug("Current player: ");
+        printDebug(currentPlayer);
+
+        // Roll dice. Always!
+        int currentDiceRoll = dice->roll();
+        stats->addDiceRoll(currentDiceRoll);
+        printDebug(currentDiceRoll);
+        // Ask current player to roll dice and roll dice (This is not necessary but only for animation or game feeling)
+        // TODO Ask player and directly show roll.
+        // if KI present choice, other ask
+        if(kiPlayer[currentPlayer] == nullptr){
+ ui->rollDice(nameOfPlayers[currentPlayer], currentDiceRoll);
+        } else{
+            ui->showInformation(nameOfPlayers[currentPlayer] + " rolled a -" + std::to_string(currentDiceRoll) + "-");
+        }
+       
+
+        // Indicator whether after this move the next player should be determined or if the current player again
+        bool nextPlayer = true;
+
+        // Determine next action:
+        if (currentPlayerIsAllowedToRollAgain(currentDiceRoll))
+        {
+            printDebug("No 6; 3 Times");
+            // If the current player can not move because all pieces are 'In-House' or in target area (depending on rules how);
+            // continue to next roll if not rolled 3 times yet.
+            if (rollCounter < 3)
+            {
+                rollCounter += 1;
+                nextPlayer = false;
+            }
+            else
+            {
+                // If no roll remaining go to next player
+                nextPlayer = true;
+            }
+        }
+        else
+        {
+            // Determine all possible walking moves
+            //printDebug("Get pieces selection");
+
+            std::map<IGamePiece_SPTR, std::vector<std::pair<int, bool>>> moveAblePieces = getGamePiecesWithNewPositions(currentDiceRoll, lastGamePiece);
+            //printDebug("Selection found");
+            // Get Selection from UI
+            std::map<IGamePieceUI_SPTR, std::vector<std::pair<int, bool>>> selectable = convertMapForUI(moveAblePieces);
+            //printDebug("Converted");
+            if (selectable.size() == 0)
+            {
+                printDebug("No pieces possible");
+            }
+            else
+            {
+                printDebug("Pieces possible");
+                std::pair<IGamePieceUI_SPTR, std::pair<int, bool>> selection;
+                // Let user or KI choose:
+                if (kiPlayer[currentPlayer] != nullptr)
+                {
+                    printDebug("KI");
+                    selection = kiPlayer[currentPlayer]->chooseGamePiece(selectable);
+                    ui->showInformation(nameOfPlayers[currentPlayer] + " chose a game piece");
+                }
+                else
+                {
+                    selection = ui->chooseOneGamePiece(selectable, nameOfPlayers[currentPlayer]);
+                }
+
+                printDebug("chosen");
+                printDebug(selection.first->getID());
+                // If we had a 6 mark it
+                if (currentDiceRoll == 6 && !selection.second.second)
+                {
+                    printDebug("Mark last piece");
+                    if(!rules->goWithAnotherPieceOnSecondRollOfDice()){
+ lastGamePiece = std::dynamic_pointer_cast<IGamePiece>(selection.first);
+                    }
+                   
+
+                    nextPlayer = false;
+                }
+                std::pair<IGamePiece_SPTR, std::pair<int, bool>> convertedSelection;
+                convertedSelection.first = std::dynamic_pointer_cast<IGamePiece>(selection.first);
+                convertedSelection.second = selection.second;
+
+                // Move
+                printDebug("Now moving piece");
+                if (convertedSelection.second.second)
+                {
+                    printDebug("Target Area");
+                    movePieceInTargetArea(convertedSelection.first, convertedSelection.second.first);
+                }
+                else
+                {
+                    printDebug("Field");
+                    movePieceOnField(convertedSelection.first, convertedSelection.second.first);
+                    if(rules->jumpOnEdges()){
+                        // Check if we are on jump field. If so, we have to check the position we jumped from to.
+                        int positionWeJumpedFrom = getJumpPosition(convertedSelection.second.first);
+                        IGamePiece_SPTR conflictPiece = nullptr;
+                        do
+                        {
+                                          if((conflictPiece = getConflictGamePiece(positionWeJumpedFrom)) != nullptr){
+                                              conflictPiece->setPosition(0);
+                                             
+                        }
+                        } while (conflictPiece != nullptr);
+                        
+
+                    }
+                }
+            }
+        }
+        // Update UI
+        std::vector<std::vector<IGamePieceUI_SPTR>> pieces = board->getGamePieces();
+        //std::cout << std::endl << pieces.size() << std::endl << std::flush;
+        ui->updateBoard(pieces);
+        // Determine next current player
+        if (nextPlayer)
+        {
+            //printDebug("Determine next player");
+            rollCounter = 1;
+            lastGamePiece = nullptr;
+            currentPlayer = determineNextPlayer();
+        }
+    }
+
+    // Game is finished
+    printDebug("Game finished");
+    // Present winner on UI
+    ui->showInformation("The winner is: " + std::to_string(winners[0]));
+    //ui->showInformation(std::to_string(winners[0]));
+    printDebug("The winners are: ");
+    printDebug(winners);
+    stats->showDiceStats();
+
+    // Leave game loop (FUTURE IDEA: Possibility for restart?)
+    printDebug("End of game");
 }
 
 /** ***************************************
@@ -349,7 +506,7 @@ IGamePiece_SPTR MainLogicBase::getConflictGamePiece(int position)
 }
 
 bool MainLogicBase::positionInTargetAreaIsFree(int field, int player){
-    std::vector<IGamePiece_SPTR> team = board->getTeam(player);
+    std::vector<IGamePiece_SPTR> team = board->getTargetAreaTeam(player);
     for(int index = 0; index < team.size(); index++){
         if(team[index]->getPosition() == field){
             return false;
