@@ -21,6 +21,8 @@ public:
 // 2-6
     virtual int getNumberOfPlayers() = 0;
 
+
+
 public:
     virtual int getNumberOfGamePiecesPerPlayer() = 0;
 

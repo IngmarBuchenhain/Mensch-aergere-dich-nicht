@@ -12,6 +12,7 @@ class Statistics{
     Statistics();
     void addDiceRoll(int diceRoll);
     void showDiceStats();
+    int getNumberRolls(int number);
 };
 
 #endif

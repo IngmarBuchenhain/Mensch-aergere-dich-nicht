@@ -6,6 +6,9 @@
 #include "CppClassMainLogicHard.hpp"
 #include "CppClassMainLogicEasy.hpp"
 #include "CppClassTestUI.hpp"
+#include "CppExportImport.hpp"
+#include<string>
+#include "CppStructsForConfigAndState.hpp"
 
 /**
  * Main entry point to the application.
@@ -15,6 +18,8 @@ int main(int argc, char **argv)
 {
     // Indicator whether exceptions occured. Used to show message to user before exit.
     bool errorsOccured = true;
+    // Indicator whether a game was loaded.
+    bool loadedGame = false;
 
     // Arguments for game logic to be extracted from application input arguments
     int numberOfHomes = 4;
@@ -26,11 +31,42 @@ int main(int argc, char **argv)
 
     std::vector<std::string> playerNames;
 
+
+std::shared_ptr<GameState> state;
+state.reset(new GameState());
     // Try read input arguments and determine what to do next
     if (argc == 1)
     {
         // No arguments were given. Use default rules and default player number/board.
         errorsOccured = false;
+    } else if(argc == 2){
+        // We expect a config file was given. Either this is a game imported or only the config for a new game.
+        // Try read file and make best of it.
+        errorsOccured = false;
+        
+        try
+        {
+            std::string fileName = argv[1];
+            
+            struct GameConfig config;
+            printDebug("LoadFile");
+if(maednhelper::loadFile(fileName, config, state)){
+loadedGame = true;
+}
+printDebug("After Loading");
+numberOfHomes = config.homes;
+numberOfPlayers = config.players;
+numberOfGamePieces = config.pieces;
+rules = config.rules;
+fillWithKI = config.fillKI;
+spreadOnField = config.spread;
+playerNames = config.names;
+        }
+        catch(const std::exception& e)
+        {
+            std::cerr << e.what() << '\n';
+        }
+        
     }
     else if (argc >= 7)
     {
@@ -111,10 +147,14 @@ int main(int argc, char **argv)
                 mainLogic.reset(new MainLogicEasy(ui, numberOfHomes, numberOfPlayers, numberOfGamePieces, fillWithKI, spreadOnField, playerNames));
                 break;
             default:
+                printDebug("Default rules");
                 mainLogic.reset(new MainLogicDefault(ui, numberOfHomes, numberOfPlayers, numberOfGamePieces, fillWithKI, spreadOnField, playerNames));
                 break;
             }
-
+            if(loadedGame){
+                printDebug("Load game");
+                mainLogic->importGameState(state->pieceStates, state->currentPlayer, state->idOfLastPiece, state->stats);
+            }
             // Start game
             printDebug("Try to start game logic");
             mainLogic->startGame();

@@ -35,15 +35,18 @@ cargLO = $(lv) -I $(ifs) -I $(sc) -I $(mo) -I $(lo)
 exeName = maedn
 
 # Linking
-$(outpath)$(exeName): CppMenschAergereDichNicht.o CppDebugHelper.o CppClassMainLogicBase.o CppClassMainLogicDefault.o CppClassMainLogicEasy.o CppClassMainLogicHard.o CppClassDice.o CppClassBoard.o CppClassGamePiece.o CppClassStatistics.o CppClassJumpPair.o CppClassRuleSet.o CppClassKI.o
-	g++ $(lv) -o $(outpath)$(exeName) CppMenschAergereDichNicht.o CppDebugHelper.o CppClassMainLogicBase.o CppClassMainLogicDefault.o CppClassMainLogicEasy.o CppClassMainLogicHard.o CppClassDice.o CppClassBoard.o CppClassGamePiece.o CppClassStatistics.o CppClassJumpPair.o CppClassRuleSet.o CppClassKI.o
-
+$(outpath)$(exeName): CppMenschAergereDichNicht.o CppDebugHelper.o CppExportImport.o CppClassMainLogicBase.o CppClassMainLogicDefault.o CppClassMainLogicEasy.o CppClassMainLogicHard.o CppClassDice.o CppClassBoard.o CppClassGamePiece.o CppClassStatistics.o CppClassJumpPair.o CppClassRuleSet.o CppClassKI.o
+	g++ $(lv) -o $(outpath)$(exeName) CppMenschAergereDichNicht.o CppDebugHelper.o CppExportImport.o CppClassMainLogicBase.o CppClassMainLogicDefault.o CppClassMainLogicEasy.o CppClassMainLogicHard.o CppClassDice.o CppClassBoard.o CppClassGamePiece.o CppClassStatistics.o CppClassJumpPair.o CppClassRuleSet.o CppClassKI.o
+	rm -f *.o
 # Source
 CppMenschAergereDichNicht.o: CppMenschAergereDichNicht.cpp 
 	g++ $(carg) -o CppMenschAergereDichNicht.o -c CppMenschAergereDichNicht.cpp
 
 CppDebugHelper.o: CppDebugHelper.cpp
 	g++ $(lv) -o CppDebugHelper.o -c CppDebugHelper.cpp
+
+CppExportImport.o: CppExportImport.cpp
+	g++ $(carg) -o CppExportImport.o -c CppExportImport.cpp
 
 # Logic
 CppClassMainLogicBase.o: $(lo)/CppClassMainLogicBase.cpp
@@ -70,6 +73,8 @@ CppClassRuleSet.o: $(mo)/CppClassRuleSet.cpp
 	g++ $(cargLO) -o CppClassRuleSet.o -c $(mo)/CppClassRuleSet.cpp
 CppClassStatistics.o: $(mo)/CppClassStatistics.cpp
 	g++ $(cargLO) -o CppClassStatistics.o -c $(mo)/CppClassStatistics.cpp
+#CppStructsForConfigAndState.o: $(mo)/CppStructsForConfigAndState.hpp
+#	g++ $(cargLO) -o CppStructsForConfigAndState.o -c $(mo)/CppStructsForConfigAndState.hpp
 
 
 # Networking

@@ -2,6 +2,9 @@
 #include "CppDebugHelper.hpp"
 #include "CppClassKI.hpp"
 
+#include "CppExportImport.hpp"
+#include "CppStructsForConfigAndState.hpp"
+
 /** ***************************************
  * Constructors of MainLogicBase          *
  * ***************************************/
@@ -55,6 +58,14 @@ MainLogicBase::MainLogicBase(IUI_SPTR uiObject, int numberOfHomes, int numberOfP
     {
         throw illegal_argument();
     }
+    printDebug("Config not loaded in base?");
+    config.reset(new GameConfig());
+    config->homes = numberOfHomes;
+    config->players = numberOfPlayers;
+    config->pieces = numberOfPieces;
+    config->fillKI = fillWithKI;
+    config->spread = spreadOnBoard;
+    config->names = playerNames;
 
     // Default: So 4 homes, 4 players, 4 pieces per player
 
@@ -132,11 +143,15 @@ void MainLogicBase::startGame()
     int rollCounter = 1;
 
     // GamePiece which was moved in last move
-    IGamePiece_SPTR lastGamePiece = nullptr;
+    //lastGamePiece = nullptr;
 
     // Game loop. (FUTURE IDEA: Possibility to cancel game)
     while (gameIsNotFinished())
     {
+        if(ui->exportIsWanted()){
+            exportGameState();
+            return;
+        }
         printDebug("Loop running..");
         printDebug("Current player: ");
         printDebug(currentPlayer);
@@ -275,6 +290,61 @@ void MainLogicBase::startGame()
 
     // Leave game loop (FUTURE IDEA: Possibility for restart?)
     printDebug("End of game");
+}
+
+IGamePiece_SPTR MainLogicBase::getGamePieceToID(int id){
+    std::vector<std::vector<IGamePieceUI_SPTR>> teams = board->getGamePieces();
+    for(int outIndex = 0; outIndex < teams.size(); outIndex++){
+        for(int inIndex = 0; inIndex < teams[outIndex].size(); inIndex++){
+            if(teams[outIndex][inIndex]->getID() == id){
+                return std::dynamic_pointer_cast<IGamePiece>(teams[outIndex][inIndex]);
+            }
+        }
+    }
+}
+void MainLogicBase::exportGameState(){
+    printDebug("In export");
+    std::vector<GamePieceState> pieces;
+     std::vector<std::vector<IGamePieceUI_SPTR>> teams = board->getGamePieces();
+   for(int outIndex = 0; outIndex < teams.size(); outIndex++){
+        for(int inIndex = 0; inIndex < teams[outIndex].size(); inIndex++){
+            IGamePieceUI_SPTR piece = teams[outIndex][inIndex];
+           struct GamePieceState state;
+            state.finished = piece->isFinished();
+            state.id = piece->getID();
+            state.inTargetArea = piece->isInTargetArea();
+            state.position = piece->getPosition();
+            pieces.push_back(state);
+        }
+    }
+    printDebug("In export before saving");
+    // printDebug("11");
+    // config->names;
+    // printDebug("22");
+    // printDebug("33");
+    // printDebug("44");
+    // printDebug("55");
+    maednhelper::saveFile(config, pieces, currentPlayer, lastGamePiece ? lastGamePiece->getID(): 0, stats);
+}
+void MainLogicBase::importGameState(std::vector<std::shared_ptr<GamePieceState>> &piecesState, int player, int lastPiece, std::shared_ptr<Statistics> statistics){
+    if(piecesState.size() != board->getNumberOfPlayers() * board->getNumberOfGamePiecesPerPlayer()){
+        //throw 
+    }
+    currentPlayer = player;
+    lastGamePiece = lastPiece == 0 ? nullptr : getGamePieceToID(lastPiece);
+    stats = statistics;
+    for(int index = 0; index < piecesState.size(); index++){
+       std::shared_ptr<GamePieceState> state = piecesState[index];
+       IGamePiece_SPTR gamePiece = getGamePieceToID(state->id);
+       if(state->inTargetArea){
+           gamePiece->setToTargetArea(state->position);
+       } else {
+           gamePiece->setPosition(state->position);
+       }
+       if(state->finished){
+           gamePiece->setFinished();
+       }
+    }   
 }
 
 /** ***************************************

@@ -11,7 +11,8 @@
 
 MainLogicHard::MainLogicHard(IUI_SPTR uiObject) : MainLogicBase(uiObject)
 {
-
+    rules = std::make_unique<RuleSet>(true, true, true, false, true, false, true, false, true, true, false, true); // Default
+config->rules = 1;
 
 
 }
@@ -19,6 +20,7 @@ MainLogicHard::MainLogicHard(IUI_SPTR uiObject) : MainLogicBase(uiObject)
 MainLogicHard::MainLogicHard(IUI_SPTR uiObject, int numberOfHomes, int numberOfPlayers, int numberOfPieces, bool fillWithKI, bool spreadOnBoard, std::vector<std::string> playerNames) : MainLogicBase(uiObject, numberOfHomes, numberOfPlayers, numberOfPieces, fillWithKI, spreadOnBoard, playerNames){
 rules = std::make_unique<RuleSet>(true, true, true, false, true, false, true, false, true, true, false, true); // Default
 std::cout << "Hard";
+config->rules = 1;
 }
 
 

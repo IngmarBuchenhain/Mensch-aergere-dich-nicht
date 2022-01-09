@@ -10,10 +10,14 @@
 MainLogicDefault::MainLogicDefault(IUI_SPTR uiObject) : MainLogicBase(uiObject)
 {
 rules = std::make_unique<RuleSet>(); // Default
+printDebug("Config not loade?");
+config->rules = 0;
 }
 
 MainLogicDefault::MainLogicDefault(IUI_SPTR uiObject, int numberOfHomes, int numberOfPlayers, int numberOfPieces, bool fillWithKI, bool spreadOnBoard, std::vector<std::string> playerNames) : MainLogicBase(uiObject, numberOfHomes, numberOfPlayers, numberOfPieces, fillWithKI, spreadOnBoard, playerNames){
 rules = std::make_unique<RuleSet>(); // Default
+printDebug("Config not loade?");
+config->rules = 0;
 }
 
 

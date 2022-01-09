@@ -58,7 +58,7 @@ public:
      */
     virtual std::pair<IGamePieceUI_SPTR, std::pair<int, bool>> chooseOneGamePiece(std::map<IGamePieceUI_SPTR, std::vector<std::pair<int, bool>>> &possiblePieces, int currentPlayer) = 0;
     virtual std::pair<IGamePieceUI_SPTR, std::pair<int, bool>> chooseOneGamePiece(std::map<IGamePieceUI_SPTR, std::vector<std::pair<int, bool>>> &possiblePieces, std::string currentPlayer) = 0;
-
+    virtual bool exportIsWanted() = 0;
 public:
     /**
      * Updates the drawn board game with changed game pieces.

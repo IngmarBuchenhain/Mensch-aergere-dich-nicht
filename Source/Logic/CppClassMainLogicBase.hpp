@@ -12,6 +12,7 @@
 #include "CppClassBoard.hpp"
 #include "CppClassGamePiece.hpp"
 #include "CppClassStatistics.hpp"
+#include "CppStructsForConfigAndState.hpp"
 
 /**
  * The main class/object for running the game logic.
@@ -31,6 +32,7 @@ protected:
     RuleSet_UPTR rules; // I only need unique pointer as I only use it in here.
     Dice_UPTR dice;
     int currentPlayer;
+    IGamePiece_SPTR lastGamePiece = nullptr;
     std::vector<int> winners; // May be one or if played until all finished multiple.
     std::vector<std::string> nameOfPlayers;
 
@@ -44,7 +46,8 @@ protected:
      * Stat-object
      * Holds some dice statistics.
      */
-    std::unique_ptr<Statistics> stats;
+    std::shared_ptr<Statistics> stats;
+    std::shared_ptr<GameConfig> config;
 
     /**
      * KI-objects
@@ -80,11 +83,20 @@ public:
      */
     void startGame();
 
+
+    /**
+     * Use before startGame() if you want to load a game state. Number of pieces must fit to number of pieces in the game.
+     */
+    void importGameState(std::vector<std::shared_ptr<GamePieceState>> &piecesState, int player, int lastPiece, std::shared_ptr<Statistics> statistics);
+protected:
+void exportGameState();
     /** *********************************************
      * Virtual protected methods of MainLogicBase   *
      * *********************************************/
 
 protected:
+
+
     /**
      * Check if (depending on rules) one player or all players are finished and so the game is finished or not.
      */
@@ -112,6 +124,7 @@ protected:
      * *************************************/
 
 protected:
+IGamePiece_SPTR getGamePieceToID(int id);
     /**
      * Returns the next player based on the current player.
      * Checks if the choosen player has already finished and if so, takes next player.

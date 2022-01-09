@@ -12,11 +12,13 @@
 MainLogicEasy::MainLogicEasy(IUI_SPTR uiObject) : MainLogicBase(uiObject)
 {
 rules = std::make_unique<RuleSet>(false, false, false, true, false, true, false, true, false, false, true, false); // Default
+config->rules = 2;
 }
 
 MainLogicEasy::MainLogicEasy(IUI_SPTR uiObject, int numberOfHomes, int numberOfPlayers, int numberOfPieces, bool fillWithKI, bool spreadOnBoard, std::vector<std::string> playerNames) : MainLogicBase(uiObject, numberOfHomes, numberOfPlayers, numberOfPieces, fillWithKI, spreadOnBoard, playerNames){
 rules = std::make_unique<RuleSet>(false, false, false, true, false, true, false, true, false, false, true, false); // Default
 std::cout << "Easy";
+config->rules = 2;
 }
 
 

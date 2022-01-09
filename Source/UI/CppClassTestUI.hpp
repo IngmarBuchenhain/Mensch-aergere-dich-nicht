@@ -4,6 +4,8 @@
 #include "CppIUI.hpp"
 
 class TestUI : public IUI {
+    bool exportWanted = false;
+    int countTest = 0;
     IBoardUI_SPTR boardCache;
     int state = 0;
     public:
@@ -22,7 +24,9 @@ public:
      void showInformation(std::string message){
          std::cout << std::endl << "Message: " << message << std::endl << std::flush;
      }
-
+    bool exportIsWanted() override{
+        return exportWanted;
+    }
 
 // public:
 //     /**
@@ -74,6 +78,7 @@ public:
        result.first = possiblePieces.begin()->first;
        //printDebug("Assigned piece");
        result.second = possiblePieces.begin()->second[0];
+       exportWanted = true;
        //printDebug("Assigned walk");
          return result;
      }
@@ -92,6 +97,10 @@ public:
        //printDebug("Assigned piece");
        result.second = possiblePieces.begin()->second[0];
        //printDebug("Assigned walk");
+       if(countTest > 10){
+           exportWanted = true;
+       }
+       countTest++;
          return result;
     }
 

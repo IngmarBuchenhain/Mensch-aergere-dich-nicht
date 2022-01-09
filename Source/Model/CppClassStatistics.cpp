@@ -7,7 +7,9 @@ Statistics::Statistics(){
         diceStats[diceNumber] = 0;   
     }
 }
-
+int Statistics::getNumberRolls(int number){
+    return diceStats[number];
+}
 void Statistics::addDiceRoll(int diceRoll){
     numberOfTotalRolls++;
     diceStats[diceRoll]++;
