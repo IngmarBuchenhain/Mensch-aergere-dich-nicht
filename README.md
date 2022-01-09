@@ -102,6 +102,26 @@ Must-Throw own pieces (only if no other possibility): Yes
 Throw also backwards: Yes
 Jump over pieces in "home"-row: No
 Throwable on "Start"-Field: Yes
+## Umgesetzte Anforderungen
+
+### Must Have
+
+- [x] Spielbrett auf der Konsole ausgeben
+- [x] Grundlegende Spiellogik implementieren
+- [x] Spielbrett anhand der Spiellogik aktualisieren
+
+### Should Have
+
+- [x] Eine schönere GUI in der Konsole mit Menü
+
+### Nice to Have
+
+- [x] Multiplayer übers Netzwerk implementieren
+
+## Contributors
+- [Niklas Arnold](https://github.com/IngmarBuchenhain)
+- [Ingmar Bauckhage](https://github.com/jan510)
+
 ## License
 ! Link not working right now because privat !
 [GPLv3 License](https://github.com/IngmarBuchenhain/Mensch-aergere-dich-nicht/blob/a9f37a3aa70579cdb452c9196e7cb0fd8359d22d/LICENSE)
