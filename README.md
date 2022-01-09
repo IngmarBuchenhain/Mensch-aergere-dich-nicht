@@ -19,9 +19,29 @@ There are different options:
 This game offers 3 different rule sets you can choose from. Use the number in brackets in the input arguments or the configuration file.
 Choose wisely!
 ### General rules
-Apply for all rule sets.
+Apply to all rule sets:
 - If no piece is on the field you are allowed to roll the dice 3 times until you get a 6.
 ### Boring Default Rules (0)
+    EVERYTHING FALSE
+     bool mustThrowOtherPiecesIntern;
+    bool mustThrowOwnPiecesIntern;
+    bool throwAlsoBackwardsIntern;
+
+    bool jumpOverPiecesInTargetAreaIntern;
+    bool walkByTargetAreaIfNotPossibleToWalkInIntern;
+
+    bool saveOnStartFieldIntern;
+    bool mustAlwaysFreeStartFieldIntern; // evtl weglassen, da im goWithAnother.. einbegriffen werden kann.
+    bool allowedToUseOutsidePieceOnSixWhenPiecesLeftHomeIntern;
+
+    bool onlyRollThreeTimesIfNoPieceOutAndTargetAreaOnEndIntern;
+
+    bool jumpOnEdgesIntern;
+
+    bool goWithAnotherPieceOnSecondRollOfDiceIntern;
+
+    bool playUntilAllPlayersFinishedIntern;
+
 Kein Schlagzwang
 Eigene Figuren werden nicht geschlagen
 Startfeld muss freigemacht werden, solange noch männchen im haus oder wenn wieder imhaus
@@ -35,8 +55,48 @@ Rückwärts schlagen
 Springen an Ecken
 Selbst rausschmeißen
 schlagzwang
-### For Wimps (1)
+### For Wimps (Or Children) (1)
+ bool mustThrowOtherPiecesIntern;   False
+    bool mustThrowOwnPiecesIntern;False
+    bool throwAlsoBackwardsIntern;False
+
+    bool jumpOverPiecesInTargetAreaIntern;True
+    bool walkByTargetAreaIfNotPossibleToWalkInIntern;False
+
+    bool saveOnStartFieldIntern;True
+    bool mustAlwaysFreeStartFieldIntern; False// evtl weglassen, da im goWithAnother.. einbegriffen werden kann.
+    bool allowedToUseOutsidePieceOnSixWhenPiecesLeftHomeIntern;True
+
+    bool onlyRollThreeTimesIfNoPieceOutAndTargetAreaOnEndIntern;False
+
+    bool jumpOnEdgesIntern;False
+
+    bool goWithAnotherPieceOnSecondRollOfDiceIntern;True
+
+    bool playUntilAllPlayersFinishedIntern;False
+    false, false, false, true, false, true, false, true, false, false, true, false
 ### Only For The Real Players (2)
+
+ bool mustThrowOtherPiecesIntern; True
+    bool mustThrowOwnPiecesIntern; True
+    bool throwAlsoBackwardsIntern; True
+
+    bool jumpOverPiecesInTargetAreaIntern;False
+    bool walkByTargetAreaIfNotPossibleToWalkInIntern; True
+
+    bool saveOnStartFieldIntern; False
+    bool mustAlwaysFreeStartFieldIntern; true// evtl weglassen, da im goWithAnother.. einbegriffen werden kann.
+    bool allowedToUseOutsidePieceOnSixWhenPiecesLeftHomeIntern;false
+
+    bool onlyRollThreeTimesIfNoPieceOutAndTargetAreaOnEndIntern;true
+
+    bool jumpOnEdgesIntern;true
+
+    bool goWithAnotherPieceOnSecondRollOfDiceIntern;false
+
+    bool playUntilAllPlayersFinishedIntern;true
+true, true, true, false, true, false, true, false, true, true ,false, true
+
 Must-Throw other pieces: Yes
 Must-Throw own pieces (only if no other possibility): Yes
 Throw also backwards: Yes
