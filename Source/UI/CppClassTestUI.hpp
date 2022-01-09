@@ -97,9 +97,9 @@ public:
        //printDebug("Assigned piece");
        result.second = possiblePieces.begin()->second[0];
        //printDebug("Assigned walk");
-       if(countTest > 10){
-           exportWanted = true;
-       }
+    //    if(countTest > 10){
+    //        exportWanted = true;
+    //    }
        countTest++;
          return result;
     }
