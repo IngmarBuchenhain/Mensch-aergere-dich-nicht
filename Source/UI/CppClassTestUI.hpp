@@ -5,6 +5,7 @@
 
 class TestUI : public IUI {
     bool exportWanted = false;
+    bool exitWanted = false;
     int countTest = 0;
     IBoardUI_SPTR boardCache;
     int state = 0;
@@ -106,6 +107,27 @@ public:
 
 
 public:
+void showStats(std::shared_ptr<Statistics> stats) override{
+    stats->showDiceStats();
+}
+
+   bool exitIsWanted() override{
+       return exitWanted;
+    }
+
+
+
+void showWinners(std::vector<std::string> winners) override{
+    if(winners.size() == 1){
+        std::cout << std::endl << "The winner is: " << winners[0] << std::endl;
+
+    } else{
+        std::cout << std::endl << "The winners are: " << std::endl;
+    }
+    for(int i = 0; i < winners.size(); i++){
+        std::cout << i+1 << ".: " << winners[i] << std::endl;
+    }
+}
     /**
      * Updates the drawn board game with changed game pieces.
      * Must call 'initBoard'-method first!

@@ -3,6 +3,7 @@
 
 #include "CppIGamePieceUI.hpp"
 #include "CppIBoardUI.hpp"
+#include "CppClassStatistics.hpp"
 
 /**
  * Main UI-Interface
@@ -29,7 +30,7 @@ public:
      * Presents some information to user.
      */
     virtual void showInformation(std::string message) = 0;
-
+    virtual void showWinners(std::vector<std::string> winners) = 0;
     // public:
     //     /**
     //      * Presents the given number to the user. NOT NECESSARY?
@@ -59,6 +60,7 @@ public:
     virtual std::pair<IGamePieceUI_SPTR, std::pair<int, bool>> chooseOneGamePiece(std::map<IGamePieceUI_SPTR, std::vector<std::pair<int, bool>>> &possiblePieces, int currentPlayer) = 0;
     virtual std::pair<IGamePieceUI_SPTR, std::pair<int, bool>> chooseOneGamePiece(std::map<IGamePieceUI_SPTR, std::vector<std::pair<int, bool>>> &possiblePieces, std::string currentPlayer) = 0;
     virtual bool exportIsWanted() = 0;
+    virtual bool exitIsWanted() = 0;
 public:
     /**
      * Updates the drawn board game with changed game pieces.
@@ -68,6 +70,8 @@ public:
 
     // virtual bool updateBoard(std::vector<IGamePieceUI_SPTR> &gamePieces) = 0;
     virtual void updateBoard(std::vector<std::vector<IGamePieceUI_SPTR>> gamePieces) = 0;
+    
+    virtual void showStats(std::shared_ptr<Statistics> stats) = 0;
 };
 
 typedef std::shared_ptr<IUI> IUI_SPTR;
