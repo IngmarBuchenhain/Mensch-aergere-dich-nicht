@@ -1,13 +1,12 @@
-#include <iostream>
-
 #include "CppDebugHelper.hpp"
+#include "CppExportImport.hpp"
 
 #include "CppClassMainLogicDefault.hpp"
 #include "CppClassMainLogicHard.hpp"
 #include "CppClassMainLogicEasy.hpp"
+
 #include "CppClassTestUI.hpp"
-#include "CppExportImport.hpp"
-#include<string>
+
 #include "CppStructsForConfigAndState.hpp"
 
 /**
@@ -21,88 +20,87 @@ int main(int argc, char **argv)
     // Indicator whether a game was loaded.
     bool loadedGame = false;
 
-    // Arguments for game logic to be extracted from application input arguments
-    int numberOfHomes = 4;
-    int numberOfPlayers = 4;
-    int numberOfGamePieces = 4;
-    int rules = 0;
-    bool fillWithKI = true;
-    bool spreadOnField = false;
+    // Arguments for game logic to be extracted from application input arguments with default configuration
+    // Default configuration to be altered if wanted before start
+    std::shared_ptr<GameConfig> config = std::make_shared<GameConfig>();
+    config->homes = 4;
+    config->players = 4;
+    config->pieces = 4;
+    config->rules = 0;
+    config->fillKI = true;
+    config->spread = false;
 
-    std::vector<std::string> playerNames;
+    // State in case game is loaded from file
+    std::shared_ptr<GameState> state = std::make_shared<GameState>();
 
-
-std::shared_ptr<GameState> state;
-state.reset(new GameState());
     // Try read input arguments and determine what to do next
     if (argc == 1)
     {
         // No arguments were given. Use default rules and default player number/board.
         errorsOccured = false;
-    } else if(argc == 2){
+    }
+    else if (argc == 2)
+    {
         // We expect a config file was given. Either this is a game imported or only the config for a new game.
-        // Try read file and make best of it.
         errorsOccured = false;
-        
+
         try
         {
             std::string fileName = argv[1];
-            
-            struct GameConfig config;
-            printDebug("LoadFile");
-if(maednhelper::loadFile(fileName, config, state)){
-loadedGame = true;
-}
-printDebug("After Loading");
-numberOfHomes = config.homes;
-numberOfPlayers = config.players;
-numberOfGamePieces = config.pieces;
-rules = config.rules;
-fillWithKI = config.fillKI;
-spreadOnField = config.spread;
-playerNames = config.names;
+
+            printDebug("Load file");
+            // Load config and if there state for game. If it also contains state note this.
+            if (maednhelper::loadFile(fileName, config, state))
+            {
+                loadedGame = true;
+            }
         }
-        catch(const std::exception& e)
+        catch (std::exception &ex)
         {
-            std::cerr << e.what() << '\n';
+            printError("Failure while reading configuration file due to:", ex);
+            errorsOccured = true;
         }
-        
+        catch (...)
+        {
+            printError("Failure while reading configuration file due to unknown error");
+            errorsOccured = true;
+        }
     }
     else if (argc >= 7)
     {
         errorsOccured = false;
 
-        // Try interpret input.
+        // Try interpret input. "Wrong" values can be put into the config. The Logic class deals with wrong input
         try
         {
             // 1. is programm itself
 
             // 2. expected board config (4: 4 Homes; 6: 6 Homes)
-            numberOfHomes = std::stoi(argv[1]);
+            config->homes = std::stoi(argv[1]);
 
             // 3. expected number of players (2-6 depending on 2.)
-            numberOfPlayers = std::stoi(argv[2]);
+            config->players = std::stoi(argv[2]);
 
             // 4. expected number of game pieces per player (3/4)
-            numberOfGamePieces = std::stoi(argv[3]);
+            config->pieces = std::stoi(argv[3]);
 
             // 5. expected RuleSet (0: Default; 1: Hard; 2: Easy)
-            rules = std::stoi(argv[4]);
+            config->rules = std::stoi(argv[4]);
 
             // 6. expected option to fill missing players with KI (0: false; 1: true)
-            fillWithKI = std::stoi(argv[5]);
+            config->fillKI = std::stoi(argv[5]);
 
             // 7. expected option to spread players on board (if no KI used)(0: false; 1: true)
-            spreadOnField = std::stoi(argv[6]);
+            config->spread = std::stoi(argv[6]);
 
             // Everything afterwards is treated as player name
             int count = 0;
             for (int index = 7; index < argc; index++)
             {
                 count += 1;
-                if (count <= numberOfPlayers)
+                if (count <= config->players)
                 {
-                    playerNames.push_back(argv[index]);
+                    config->names.push_back(argv[index]);
                 }
                 else
                 {
@@ -134,45 +132,31 @@ playerNames = config.names;
             printDebug("Try to create UI-object");
             IUI_SPTR ui(new TestUI);
 
-            // Create logic object with UI-object as argument
+            // Create logic object with UI-object and config as argument
             printDebug("Try to create game-logic-object");
             std::shared_ptr<MainLogicBase> mainLogic;
 
-            switch (rules)
+            switch (config->rules)
             {
             case 1:
-                mainLogic.reset(new MainLogicHard(ui, numberOfHomes, numberOfPlayers, numberOfGamePieces, fillWithKI, spreadOnField, playerNames));
+                mainLogic.reset(new MainLogicHard(ui, config));
                 break;
             case 2:
-                mainLogic.reset(new MainLogicEasy(ui, numberOfHomes, numberOfPlayers, numberOfGamePieces, fillWithKI, spreadOnField, playerNames));
+                mainLogic.reset(new MainLogicEasy(ui, config));
                 break;
             default:
                 printDebug("Default rules");
-                mainLogic.reset(new MainLogicDefault(ui, numberOfHomes, numberOfPlayers, numberOfGamePieces, fillWithKI, spreadOnField, playerNames));
+                mainLogic.reset(new MainLogicDefault(ui, config));
                 break;
             }
-            if(loadedGame){
-                printDebug("Load game");
+            if (loadedGame)
+            { // If we loaded the game from file we have to set the positions and states of the game pieces
+                printDebug("Import game state");
                 mainLogic->importGameState(state->pieceStates, state->currentPlayer, state->idOfLastPiece, state->stats);
             }
             // Start game
             printDebug("Try to start game logic");
             mainLogic->startGame();
-        }
-        catch (not_implemented &ex)
-        {
-            printError("Failure on start or while running game logic due to:", ex);
-            errorsOccured = true;
-        }
-        catch (unexpected_game_piece &ex)
-        {
-            printError("Failure on start or while running game logic due to:", ex);
-            errorsOccured = true;
-        }
-        catch (illegal_position &ex)
-        {
-            printError("Failure on start or while running game logic due to:", ex);
-            errorsOccured = true;
         }
         catch (std::exception &ex)
         {

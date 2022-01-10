@@ -9,7 +9,8 @@
  * Constructors of MainLogicBase          *
  * ***************************************/
 
-MainLogicBase::MainLogicBase(IUI_SPTR uiObject)
+
+MainLogicBase::MainLogicBase(IUI_SPTR uiObject, std::shared_ptr<GameConfig> config)
 {
     if (uiObject == nullptr)
     {
@@ -17,79 +18,37 @@ MainLogicBase::MainLogicBase(IUI_SPTR uiObject)
     }
     ui = uiObject;
 
-    // Default: So 4 homes, 4 players, 4 pieces per player: Default constructor
-    board.reset(new Board());
-
-    // Default: So all rules to false: Default constructor
-    //rules = std::make_unique<RuleSet>();
-
-    // Init dice
-    dice = std::make_unique<Dice>();
-
-    // Roll the start player
-    currentPlayer = dice->getStartPlayer(board->getNumberOfPlayers());
-
-    // Init stats object
-    stats = std::make_unique<Statistics>();
-
-    // Init KI.
-    int countHuman = 1;
-    for (int index = 0; index < board->getNumberOfHomes(); index++)
-    {
-        kiPlayer[index] = nullptr;
-        std::string name = "StealthPlayer ";
-        name.append(std::to_string(countHuman));
-
-        nameOfPlayers.push_back(name);
-        countHuman += 1;
-        //kiPlayer[index] = std::make_unique<KI>(board->getEndFields()[index], board->getNumberOfFields()); // for Debug
-    }
-}
-
-MainLogicBase::MainLogicBase(IUI_SPTR uiObject, int numberOfHomes, int numberOfPlayers, int numberOfPieces, bool fillWithKI, bool spreadOnBoard, std::vector<std::string> playerNames)
-{
-    if (uiObject == nullptr)
-    {
-        throw argument_nullptr_exception();
-    }
-    ui = uiObject;
-
-    if (numberOfPlayers < 1 || numberOfPlayers > 6 || (numberOfHomes != 4 && numberOfHomes != 6) || numberOfHomes < numberOfPlayers || (numberOfPieces != 3 && numberOfPieces != 4))
+    if (config->players < 1 || config->players > 6 || (config->homes != 4 && config->homes != 6) || config->homes < config->players || (config->pieces != 3 && config->pieces != 4))
     {
         throw illegal_argument();
     }
     printDebug("Config not loaded in base?");
-    config.reset(new GameConfig());
-    config->homes = numberOfHomes;
-    config->players = numberOfPlayers;
-    config->pieces = numberOfPieces;
-    config->fillKI = fillWithKI;
-    config->spread = spreadOnBoard;
-    config->names = playerNames;
+    this->config = config;
+    
 
     // Default: So 4 homes, 4 players, 4 pieces per player
 
     // Check if there are less players than homes. If so, check if, filled with KI is true. If not, check if spreadOnBoard is true
-    int numberOfAllPlayers = numberOfPlayers;
-    for (int index = 0; index < numberOfPlayers; index++)
+    int numberOfAllPlayers = config->players;
+    for (int index = 0; index < config->players; index++)
     {
-
         kiPlayer[index] = nullptr;
+    
     }
-    if (numberOfPlayers < numberOfHomes)
+    if (config->players < config->homes)
     {
-        if (fillWithKI)
+        if (config->fillKI)
         {
             // Note which are KI and which not
 
             // Set numberOfPlayers to numberOfHomes
-            numberOfAllPlayers = numberOfHomes;
+            numberOfAllPlayers = config->homes;
 
             // Mark which ones are KI and mark names right
         }
     }
 
-    board.reset(new Board(numberOfHomes == 4 ? false : true, numberOfAllPlayers, numberOfPieces, spreadOnBoard));
+    board.reset(new Board(config->homes == 4 ? false : true, numberOfAllPlayers, config->pieces, config->spread));
     // Individual rules
 
     
@@ -97,24 +56,24 @@ MainLogicBase::MainLogicBase(IUI_SPTR uiObject, int numberOfHomes, int numberOfP
     dice = std::make_unique<Dice>();
     currentPlayer = dice->getStartPlayer(board->getNumberOfPlayers());
     stats = std::make_unique<Statistics>();
-    if (fillWithKI)
+    if (config->fillKI)
     {
-        for (int index = numberOfPlayers; index < numberOfHomes; index++)
+        for (int index = config->players; index < config->homes; index++)
         {
-            kiPlayer[index] = std::make_unique<KI>(board->getEndFields()[index], board->getNumberOfFields());
+            kiPlayer[index] = std::make_shared<KI>(board->getEndFields()[index], board->getNumberOfFields());
         }
     }
-    if (playerNames.size() < numberOfAllPlayers)
+    if (config->names.size() < numberOfAllPlayers)
     {
         int countKI = 1;
         int countHuman = 1;
-        for (int index = playerNames.size(); index < numberOfAllPlayers; index++)
+        for (int index = config->names.size(); index < numberOfAllPlayers; index++)
         {
             if (kiPlayer[index] != nullptr)
             {
                 std::string name = "ThenotsointelligentbutluckyKI ";
                 name.append(std::to_string(countKI));
-                playerNames.push_back(name);
+                config->names.push_back(name);
                 countKI += 1;
             }
             else
@@ -123,12 +82,12 @@ MainLogicBase::MainLogicBase(IUI_SPTR uiObject, int numberOfHomes, int numberOfP
                 std::string name = "StealthPlayer ";
                 name.append(std::to_string(countHuman));
   
-                playerNames.push_back(name);
+                config->names.push_back(name);
                 countHuman += 1;
             }
         }
     }
-    nameOfPlayers = playerNames;
+    nameOfPlayers = config->names;
 }
 /** ***************************************
  * Public methods of MainLogicBase        *
@@ -149,6 +108,7 @@ void MainLogicBase::startGame()
     while (gameIsNotFinished())
     {
         if(ui->exportIsWanted()){
+            printDebug("export is wanted");
             exportGameState();
             return;
         }
@@ -301,22 +261,28 @@ IGamePiece_SPTR MainLogicBase::getGamePieceToID(int id){
             }
         }
     }
+    return nullptr;
 }
 void MainLogicBase::exportGameState(){
     printDebug("In export");
+    std::shared_ptr<GameState> state = std::make_shared<GameState>();
     std::vector<GamePieceState> pieces;
      std::vector<std::vector<IGamePieceUI_SPTR>> teams = board->getGamePieces();
    for(int outIndex = 0; outIndex < teams.size(); outIndex++){
         for(int inIndex = 0; inIndex < teams[outIndex].size(); inIndex++){
             IGamePieceUI_SPTR piece = teams[outIndex][inIndex];
-           struct GamePieceState state;
-            state.finished = piece->isFinished();
-            state.id = piece->getID();
-            state.inTargetArea = piece->isInTargetArea();
-            state.position = piece->getPosition();
-            pieces.push_back(state);
+           std::shared_ptr<GamePieceState> pieceState = std::make_shared<GamePieceState>();
+            pieceState->finished = piece->isFinished();
+            pieceState->id = piece->getID();
+            pieceState->inTargetArea = piece->isInTargetArea();
+            pieceState->position = piece->getPosition();
+            state->pieceStates.push_back(pieceState);
         }
     }
+    state->currentPlayer = currentPlayer;
+    state->idOfLastPiece = lastGamePiece ? lastGamePiece->getID(): 0;
+ 
+    state->stats = stats;
     printDebug("In export before saving");
     // printDebug("11");
     // config->names;
@@ -324,7 +290,7 @@ void MainLogicBase::exportGameState(){
     // printDebug("33");
     // printDebug("44");
     // printDebug("55");
-    maednhelper::saveFile(config, pieces, currentPlayer, lastGamePiece ? lastGamePiece->getID(): 0, stats);
+    maednhelper::saveFile(config, state);
 }
 void MainLogicBase::importGameState(std::vector<std::shared_ptr<GamePieceState>> &piecesState, int player, int lastPiece, std::shared_ptr<Statistics> statistics){
     if(piecesState.size() != board->getNumberOfPlayers() * board->getNumberOfGamePiecesPerPlayer()){
@@ -468,7 +434,7 @@ int MainLogicBase::containsEndField(int start, int steps, int player)
 
     for (int currentField = start; currentField < start + steps; currentField++)
     {
-        printDebug("Current field which is checked: " + currentField);
+        
         if (currentField == board->getEndFields()[player])
         {
             // Get new position

@@ -20,10 +20,7 @@ class MainLogicEasy : public MainLogicBase
      * *****************************************/
 
 public:
-    /**
-     * A easy rules game with 4 players, 4 homes and 4 pieces per player.
-     */
-    MainLogicEasy(IUI_SPTR uiObject);
+    
 
     /**
      * Individual game with easy rules.
@@ -31,17 +28,14 @@ public:
      * numberOfHomes: 4/6 (depending on numberOfPlayers)
      * numberOfPieces: 3/4
      */
-    MainLogicEasy(IUI_SPTR uiObject, int numberOfHomes, int numberOfPlayers, int numberOfPieces, bool fillWithKI, bool spreadOnBoard, std::vector<std::string> playerNames);
+    MainLogicEasy(IUI_SPTR uiObject, std::shared_ptr<GameConfig> config);
 
     /** *********************************************
      * Implemented public methods of MainLogicBase  *
      * *********************************************/
 
-//public:
-    /**
-     * Starts the game and represents the application loop running infinitely until the game finished.
-     */
-    //void startGame() override;
+
+
 
     /** *********************************************
      * Implemented private methods of MainLogicBase *

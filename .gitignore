@@ -34,9 +34,8 @@
 # VSC files
 .vscode/c_cpp_properties.json
 
-
-# User files
+# User executable files
 maedn
 
-# Apple FileSystem
+# Apple filesystem
 .DS_Store
