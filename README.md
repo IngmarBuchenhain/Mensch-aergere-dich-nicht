@@ -119,9 +119,8 @@ Throwable on "Start"-Field: Yes
 - [x] Multiplayer übers Netzwerk implementieren
 
 ## Contributors
-- [Niklas Arnold](https://github.com/IngmarBuchenhain)
-- [Ingmar Bauckhage](https://github.com/jan510)
+- [Niklas Arnold](https://github.com/niklasar)
+- [Ingmar Bauckhage](https://github.com/IngmarBuchenhain)
 
 ## License
-! Link not working right now because privat !
 [GPLv3 License](https://github.com/IngmarBuchenhain/Mensch-aergere-dich-nicht/blob/a9f37a3aa70579cdb452c9196e7cb0fd8359d22d/LICENSE)
