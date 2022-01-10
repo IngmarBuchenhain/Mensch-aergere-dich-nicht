@@ -10,7 +10,7 @@ class TestUI : public IUI {
     IBoardUI_SPTR boardCache;
     int state = 0;
     public:
-     void initBoard(IBoardUI_SPTR board){
+     void initBoard(IBoardUI_SPTR board) override{
          boardCache = board;
          showState();
          std::vector<std::vector<IGamePieceUI_SPTR>> pieces = boardCache->getGamePieces();
@@ -22,7 +22,7 @@ public:
     /**
      * Presents some information to user.
      */
-     void showInformation(std::string message){
+     void showInformation(std::string message) override{
          std::cout << std::endl << "Message: " << message << std::endl << std::flush;
      }
     bool exportIsWanted() override{
@@ -42,14 +42,14 @@ public:
      * Does not real produces a number, but simply provides interaction with user and maybe animation..
      */
 
-     void rollDice(int currentPlayer, int diceNumber){
+     void rollDice(int currentPlayer, int diceNumber) override{
          std::cout << std::endl << "Player " << currentPlayer << ": It's your turn! If you want to roll the dice, press 'Enter'";
        //  std::cin.ignore(10);
          //std::cin.ignore();
          std::cout << std::endl << "Great! You rolled a -" << diceNumber << "-" << std::endl << std::flush;
      }
 
-          void rollDice(std::string currentPlayer, int diceNumber){
+          void rollDice(std::string currentPlayer, int diceNumber) override{
          std::cout << std::endl << currentPlayer << ": It's your turn! If you want to roll the dice, press 'Enter'";
        //  std::cin.ignore(10);
          std::cin.ignore();
@@ -62,7 +62,7 @@ public:
      * Present the current player all game pieces he can walk with, and let him choose one.
      */
 
-   IGamePieceUI_SPTR chooseGamePiece(std::vector<IGamePieceUI_SPTR> &gamePieces, int currentPlayer){
+   IGamePieceUI_SPTR chooseGamePiece(std::vector<IGamePieceUI_SPTR> &gamePieces, int currentPlayer) override{
        return gamePieces[0];
    }
 public:
@@ -133,9 +133,8 @@ void showWinners(std::vector<std::string> winners) override{
      * Must call 'initBoard'-method first!
      * Throws exception if no board was initialized!
      */
-
    // virtual bool updateBoard(std::vector<IGamePieceUI_SPTR> &gamePieces) = 0;
-     void updateBoard(std::vector<std::vector<IGamePieceUI_SPTR>> gamePieces){
+     void updateBoard(std::vector<std::vector<IGamePieceUI_SPTR>> gamePieces)override{
         std::cout << std::endl << "State " << state << ":";
         for(int i = 0; i < gamePieces.size(); i++){
             std::cout << std::endl << " Player " << i << ": ";

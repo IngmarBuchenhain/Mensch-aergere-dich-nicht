@@ -20,8 +20,7 @@ MainLogicBase::MainLogicBase(IUI_SPTR uiObject)
     // Default: So 4 homes, 4 players, 4 pieces per player: Default constructor
     board.reset(new Board());
 
-    // Default: So all rules to false: Default constructor
-    //rules = std::make_unique<RuleSet>();
+
 
     // Init dice
     dice = std::make_unique<Dice>();
@@ -101,7 +100,7 @@ MainLogicBase::MainLogicBase(IUI_SPTR uiObject, int numberOfHomes, int numberOfP
     {
         for (int index = numberOfPlayers; index < numberOfHomes; index++)
         {
-            kiPlayer[index] = std::make_unique<KI>(board->getEndFields()[index], board->getNumberOfFields());
+            kiPlayer[index] = std::make_shared<KI>(board->getEndFields()[index], board->getNumberOfFields());
         }
     }
     if (playerNames.size() < numberOfAllPlayers)
@@ -301,6 +300,7 @@ IGamePiece_SPTR MainLogicBase::getGamePieceToID(int id){
             }
         }
     }
+    return nullptr;
 }
 void MainLogicBase::exportGameState(){
     printDebug("In export");
@@ -468,7 +468,7 @@ int MainLogicBase::containsEndField(int start, int steps, int player)
 
     for (int currentField = start; currentField < start + steps; currentField++)
     {
-        printDebug("Current field which is checked: " + currentField);
+        
         if (currentField == board->getEndFields()[player])
         {
             // Get new position

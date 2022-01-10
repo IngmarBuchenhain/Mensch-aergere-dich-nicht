@@ -364,7 +364,7 @@ std::map<IGamePiece_SPTR, std::vector<std::pair<int, bool>>> MainLogicHard::getG
                     if(throwForward != nullptr){
                         notOnlyThrowsAllowed = false;
                                                 int jumpPosition;
-                            if(jumpPosition = getJumpPosition(forwardPosition) != -1){
+                            if((jumpPosition = getJumpPosition(forwardPosition)) != -1){
                                 forwardPosition = jumpPosition;
                             }
                          std::pair<int, bool> position;
@@ -376,7 +376,7 @@ std::map<IGamePiece_SPTR, std::vector<std::pair<int, bool>>> MainLogicHard::getG
                     if(throwBackward != nullptr){
                         notOnlyThrowsAllowed = false;
                                                 int jumpPosition;
-                            if(jumpPosition = getJumpPosition(backwardPosition) != -1){
+                            if((jumpPosition = getJumpPosition(backwardPosition)) != -1){
                                 backwardPosition = jumpPosition;
                             }
                          std::pair<int, bool> position;
@@ -419,7 +419,7 @@ std::map<IGamePiece_SPTR, std::vector<std::pair<int, bool>>> MainLogicHard::getG
                                 newPosition = board->getNumberOfFields();
                             }
                              int jumpPosition;
-                            if(jumpPosition = getJumpPosition(newPosition) != -1){
+                            if((jumpPosition = getJumpPosition(newPosition)) != -1){
                                 newPosition = jumpPosition;
                             }
                                                         std::pair<int, bool> position;
@@ -441,7 +441,7 @@ std::map<IGamePiece_SPTR, std::vector<std::pair<int, bool>>> MainLogicHard::getG
 
                         printDebug(newPosition);
                         int jumpPosition;
-                            if(jumpPosition = getJumpPosition(newPosition) != -1){
+                            if((jumpPosition = getJumpPosition(newPosition)) != -1){
                                 newPosition = jumpPosition;
                             }
                             std::pair<int, bool> position;

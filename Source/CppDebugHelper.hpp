@@ -34,6 +34,12 @@ class not_implemented : public std::exception{
     }
 };
 
+class io_exception : public std::exception{
+    virtual const char *what() const throw() override{
+        return "Could not read or write file!";
+    }
+};
+
 /**
  * Prints the given message to std::cout if in DEBUG-mode.
  * Use for control.

@@ -54,7 +54,7 @@ protected:
      * Used to determine whether a player is human or KI and if so, get the KI-object. 
      * Index is the KI of the Index-player. If it is nullptr it is a human player.
      */
-    std::unique_ptr<IKI> kiPlayer[6];
+    std::shared_ptr<IKI> kiPlayer[6];
 
     /** *************************************
      * Constructors of MainLogicBase        *

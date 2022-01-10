@@ -6,7 +6,7 @@
 #include "CppClassStatistics.hpp"
 namespace maednhelper{
 
-bool saveFile(std::shared_ptr<GameConfig> config, std::vector<GamePieceState> pieces, int currentPlayer, int lastPieceID, std::shared_ptr<Statistics> stats);
+void saveFile(std::shared_ptr<GameConfig> config, std::vector<GamePieceState> pieces, int currentPlayer, int lastPieceID, std::shared_ptr<Statistics> stats);
 
 bool loadFile(std::string fileName, GameConfig &config, std::shared_ptr<GameState> state);
 }

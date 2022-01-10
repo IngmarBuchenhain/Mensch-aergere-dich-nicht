@@ -11,7 +11,7 @@
 namespace maednhelper
 {
 
-    bool maednhelper::loadFile(std::string fileName, GameConfig &config, std::shared_ptr<GameState> state)
+    bool loadFile(std::string fileName, GameConfig &config, std::shared_ptr<GameState> state)
     {
         std::string line;
         std::ifstream maednfile(fileName);
@@ -121,7 +121,8 @@ count++;
         }
         else
         {
-//throw
+            throw new io_exception;
+//throwre
         }
         
     }
@@ -129,7 +130,7 @@ count++;
    
     
 
-    bool maednhelper::saveFile(std::shared_ptr<GameConfig> config, std::vector<GamePieceState> pieces, int currentPlayer, int lastPieceID, std::shared_ptr<Statistics> stats)
+    void saveFile(std::shared_ptr<GameConfig> config, std::vector<GamePieceState> pieces, int currentPlayer, int lastPieceID, std::shared_ptr<Statistics> stats)
     {
         std::string fileName = "maedngame";
         std::string tempFileName = fileName;
