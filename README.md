@@ -116,7 +116,8 @@ Throwable on "Start"-Field: Yes
 
 ### Nice to Have
 
-- [x] Multiplayer übers Netzwerk implementieren
+- [x] Simple KI
+- [] Multiplayer over network
 
 ## Contributors
 - [Niklas Arnold](https://github.com/niklasar)
