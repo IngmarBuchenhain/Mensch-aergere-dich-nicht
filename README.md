@@ -117,7 +117,7 @@ Throwable on "Start"-Field: Yes
 ### Nice to Have
 
 - [x] Simple KI
-- [] Multiplayer over network
+- [ ] Multiplayer over network
 
 ## Contributors
 - [Niklas Arnold](https://github.com/niklasar)
