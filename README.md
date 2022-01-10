@@ -44,10 +44,19 @@ The settings of the game are selected by CL-argument or by configuration file. O
 3. You can load a saved game with one CL-argument too: If you have exported a game state before, just take this file as CL-argument. It will hold game configuration and state.
 4. If you are in the game you can exit the game and save the state if you wish. The saved file ('maedngame' or if already there with a number following will hold configuration and state of the game)
 - See also in 'Demo'-directory for explanation of config/state-file
+## Play
+Well, everyone should know Mensch-ärgere-dich-nicht. If not, buy the real game or draw it on a paper and have fun getting annoyed by your fellow players. :D
+In General:
+- Goal of the game: Getting all of your game pieces from the home area into the target area. You walk on the field in direction of the clock.
+1. You have to roll the dice (1-6)
+2. You walk on the field (if you can not walk on the field you might roll again (depending on rules))
+3. Next player (except you had a 6)
+- For full explanation google for 'Mensch-ärgere-dich-nicht instructions'
+
 ## Rule Sets
-This game offers 3 different rule sets you can choose from (Default, Easy and Hard). Use the number in brackets in the input arguments or the configuration file.
+This game offers 3 different rule sets you can choose from (Default, Easy and Hard). Use the number in brackets in the input arguments or the configuration file. Obviously it is possible that these rule sets differ from those you now as everyone play this game his own way. But while developing this game it became clear that its mostly luck, independent of the rules or strategy, who's winning, so just have fun with slight adjustments ;-)
 Choose wisely!
-Following an explanation to the rules
+Following an explanation to the different rule sets (each time all rules with True/False):
 ### Default: Boring Default Rules (0)
 - You must throw other pieces if you can (even if you have to walk by your target!): **False**
 - You must throw your own pieces (only in special situations like if you are on the start field and have a 6 or if you are coming to the jumping field after going out of the home): **False**
@@ -63,52 +72,32 @@ Following an explanation to the rules
 - Game is finished when all players (including KI) have finished (Else finished when first player finished): **False**
 
 ### Easy: For Wimps (Or Children) (2)
- bool mustThrowOtherPiecesIntern;   False
-    bool mustThrowOwnPiecesIntern;False
-    bool throwAlsoBackwardsIntern;False
+- You must throw other pieces if you can (even if you have to walk by your target!): **False**
+- You must throw your own pieces (only in special situations like if you are on the start field and have a 6 or if you are coming to the jumping field after going out of the home): **False**
+- Throw also backwards: **False**
+- Jump over your pieces in the target area: **True**
+- Walk by the target area if you can not go in and have no other piece to walk: **False**
+- You are save on startfields (Means there are multiple pieces possible on one field): **True**
+- You always have to free the start field (Even if no pieces are left home): **False**
+- You are allowed to go with another piece on the second roll when having a 6 (Overrides the rule before): **True**
+- You only are allowed to roll three times if you have no pieces out AND all pieces in the target area are finished: **False**
+- You must jump on the edges: **False**
+- You are allowed to use an outside piece with a six (even if pieces are left home): **True**
+- Game is finished when all players (including KI) have finished (Else finished when first player finished): **False**
 
-    bool jumpOverPiecesInTargetAreaIntern;True
-    bool walkByTargetAreaIfNotPossibleToWalkInIntern;False
-
-    bool saveOnStartFieldIntern;True
-    bool mustAlwaysFreeStartFieldIntern; False// evtl weglassen, da im goWithAnother.. einbegriffen werden kann.
-    bool allowedToUseOutsidePieceOnSixWhenPiecesLeftHomeIntern;True
-
-    bool onlyRollThreeTimesIfNoPieceOutAndTargetAreaOnEndIntern;False
-
-    bool jumpOnEdgesIntern;False
-
-    bool goWithAnotherPieceOnSecondRollOfDiceIntern;True
-
-    bool playUntilAllPlayersFinishedIntern;False
-    false, false, false, true, false, true, false, true, false, false, true, false
 ### Hard: Only For The Real Players (1)
-
- bool mustThrowOtherPiecesIntern; True
-    bool mustThrowOwnPiecesIntern; True
-    bool throwAlsoBackwardsIntern; True
-
-    bool jumpOverPiecesInTargetAreaIntern;False
-    bool walkByTargetAreaIfNotPossibleToWalkInIntern; True
-
-    bool saveOnStartFieldIntern; False
-    bool mustAlwaysFreeStartFieldIntern; true// evtl weglassen, da im goWithAnother.. einbegriffen werden kann.
-    bool allowedToUseOutsidePieceOnSixWhenPiecesLeftHomeIntern;false
-
-    bool onlyRollThreeTimesIfNoPieceOutAndTargetAreaOnEndIntern;true
-
-    bool jumpOnEdgesIntern;true
-
-    bool goWithAnotherPieceOnSecondRollOfDiceIntern;false
-
-    bool playUntilAllPlayersFinishedIntern;true
-true, true, true, false, true, false, true, false, true, true ,false, true
-
-Must-Throw other pieces: Yes
-Must-Throw own pieces (only if no other possibility): Yes
-Throw also backwards: Yes
-Jump over pieces in "home"-row: No
-Throwable on "Start"-Field: Yes
+- You must throw other pieces if you can (even if you have to walk by your target!): **True**
+- You must throw your own pieces (only in special situations like if you are on the start field and have a 6 or if you are coming to the jumping field after going out of the home): **True**
+- Throw also backwards: **True**
+- Jump over your pieces in the target area: **False**
+- Walk by the target area if you can not go in and have no other piece to walk: **True**
+- You are save on startfields (Means there are multiple pieces possible on one field): **False**
+- You always have to free the start field (Even if no pieces are left home): **True**
+- You are allowed to go with another piece on the second roll when having a 6 (Overrides the rule before): **False**
+- You only are allowed to roll three times if you have no pieces out AND all pieces in the target area are finished: **True**
+- You must jump on the edges: **True**
+- You are allowed to use an outside piece with a six (even if pieces are left home): **False**
+- Game is finished when all players (including KI) have finished (Else finished when first player finished): **True**
 
 ## Contributors
 - [Niklas Arnold](https://github.com/niklasar)
