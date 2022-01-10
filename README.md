@@ -1,26 +1,33 @@
 # Mensch-aergere-dich-nicht
 This is a simple board game known by most people which can be played by CLI.
+## Thoughts on development
+### Wish list
 
-## Wish list
-
-### Must Have
+#### Must Have
 
 - [x] General game logic
 - [x] Default rules
 - [x] 1 - 4 players (Because of the simple KI you can also play alone with your computer now)
 - [x] Some 'graphical' representation of the game in the CLI
 
-### Should Have
+#### Should Have
 
 - [x] 1 - 6 players/Bigger board (Because of the simple KI you can also play alone with your computer now)
 - [x] Export/Import game
 - [x] Different rules (Default, Easy, Hard)
 - [x] Hints to which game piece can be choosen (Only those are presented to user now)
 
-### Nice to Have
+#### Nice to Have
 
 - [x] Simple KI
 - [ ] Network multiplayer (Delayed for future release)
+### Architecture and stuff
+Developtment was implemented to provide independent working on the project, therefore:
+1. Have a model/models representating the game
+2. Split development into UI and Logic
+3. Make interfaces on how these modules should work together (Logic uses an UI-interface, so can be easily switched; UI knows the Model via interface to present it to the user when asked by the logic)
+4. Implement different rule sets by specialized logic classes.
+5. Model consist of Board with GamePieces. In addition there are helper classes for rules or statistics
 ## How to play
 ### Dependencies
 - GCC with g++ if use of provided MAKEFILE is wanted

@@ -11,7 +11,7 @@ The entry point of the application provides different ways:
 
 From the entry point of the application 2 objects are created:
 - UI-object (IUI)
-- Logic-object (MainLogicBase)
+- Logic-object (MainLogicBase) Depending on the rules a specialized class of MainLogicBase is used to implement the different rules.
 
 Logic-object will receive UI-object in constructor along with configuration.
 
