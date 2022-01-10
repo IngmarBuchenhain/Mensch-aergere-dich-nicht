@@ -23,18 +23,27 @@ This is a simple board game known by most people which can be played by CLI.
 - [ ] Network multiplayer (Delayed for future release)
 ## How to play
 ### Dependencies
-- GCC if use of provided MAKEFILE is wanted
+- GCC with g++ if use of provided MAKEFILE is wanted
 ### Build the game
-1. Load repository
-2. Run 'make' in 'Source'-directory. You can provide a path to which the executable should be build via 'make outpath=path/you/like
+1. Load repository (main branch or one of the releases)
+2. Run 'make' in 'Source'-directory. You can provide a path to which the executable ('maedn') should be build via 'make outpath=path/you/like'
+3. With 'make run' you can run a quick pre-configured game
 ### Run the game
-The settings of the game are selected by CL-parameters or by configuration file. Once the game started you can not change settings but has to restart (You should never change rules of a game midway...).
-There are different options:
-- Network or Local // Planned for future
-- Number of players
-- Number of game pieces
-- Ruleset
-- Names of players
+The settings of the game are selected by CL-argument or by configuration file. Once the game started you can not change settings but has to restart (You should never change rules of a game midway anyways...).
+1. Configure game and run: This is done by command line arguments to the game executable. Following options
+    - None: Pre-configured default game (not like 'make run'!): 4 Homes, 4 Players, 4 Pieces, Default rules
+    - 6 or more (not counting the app itself): Starts an individual game. The six arguments are integers as followed in order. Everything after that are strings with players names.
+        1. 4/6 - Number of Homes (Small or big board)
+        2. 1-6 - Number of (human) players. Note: More players than homes won't work ;-)
+        3. 3/4 - Number of game pieces per player
+        4. 0-2 - RuleSet (0: Default; 1: Hard; 2: Easy)
+        5. 0/1 - Fill remaining homes with KI-players (0: No; 1: Yes)
+        6. 0/1 - Spread players on board (0: No; 1: Yes)(Only if not filled with KI and sensible to spread)
+    - One: This must be a file in same directory (or a path). This must hold the same arguments like the 6 arguments, each in one line. Each name in a new line. With this you can have multiple configuration files to quickly start games. (See also sample file in 'Demo'-directory 'maedngame' for configuration only and 'maedngame1' for a save-file)
+2. You can run via 'make run' a pre-configured game (4 Homes, 3 Players (Torsten, Niklas, Ingmar), 4 Pieces each, Default rules, Fill remaining homes with KI)
+3. You can load a saved game with one CL-argument too: If you have exported a game state before, just take this file as CL-argument. It will hold game configuration and state.
+4. If you are in the game you can exit the game and save the state if you wish. The saved file ('maedngame' or if already there with a number following will hold configuration and state of the game)
+- See also in 'Demo'-directory for explanation of config/state-file
 ## Rule Sets
 This game offers 3 different rule sets you can choose from. Use the number in brackets in the input arguments or the configuration file.
 Choose wisely!
