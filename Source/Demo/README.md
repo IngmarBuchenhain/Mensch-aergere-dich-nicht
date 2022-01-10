@@ -6,7 +6,7 @@ The following enumeration represent the lines of the save-game-file and the expl
 4. RuleSet (0-2)
 5. Option to fill with KI if wanted (0/1)
 6. Option to spread players on board if wanted and necessary (0/1)
-7. to 12 - Name of players. If less players than 6 make an empty line. You can also make names for the KI-players here if wanted. Just fill up to 6 names here. The human players get the first, the KI the remaining. You can also keep all lines here empty, than the game will assign names.
+7. to 12 - Name of players. If less players than 6 make an empty line. You can also keep all lines here empty, than the game will assign names.
 8.
 9.
 10.

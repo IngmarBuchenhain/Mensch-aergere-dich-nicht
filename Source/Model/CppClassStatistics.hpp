@@ -1,17 +1,32 @@
 #ifndef MAEDN_CLASS_STATISTICS_HPP
 #define MAEDN_CLASS_STATISTICS_HPP
 
-#include<vector>
+#include <vector>
 
-class Statistics{
+/**
+ * Simple class to provide some statistics to the game
+ */
+class Statistics
+{
     int numberOfTotalRolls;
-    //std::vector<int> diceStats;
-    int diceStats[7];
 
-    public:
+    int diceStats[7]; // 7 so we can access each number directly
+
+public:
     Statistics();
+    /**
+     * Add to statistics the number which was rolled 
+     */
     void addDiceRoll(int diceRoll);
+
+    /**
+     * Present the stats. NOTE: May be moved to the UI
+     */
     void showDiceStats();
+
+    /**
+     * Get the count how many times a number was rolled
+     */
     int getNumberRolls(int number);
 };
 

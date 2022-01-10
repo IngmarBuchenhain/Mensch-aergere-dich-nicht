@@ -1,5 +1,4 @@
 #include <iostream>
-#include <exception>
 #include <vector>
 
 #include "CppDebugHelper.hpp"
@@ -30,17 +29,23 @@ void printDebug(std::string message)
     }
 }
 
-void printDebug(int message){
-    if(DEBUG){
+void printDebug(int message)
+{
+    if (DEBUG)
+    {
         std::cout << std::endl
-                 << "DEBUG: " << message << std::flush;
+                  << "DEBUG: " << message << std::flush;
     }
 }
 
-void printDebug(std::vector<int> message){
-    if(DEBUG){
-        std::cout << std::endl << "DEBUG: ";
-        for(int index = 0; index < message.size(); index++){
+void printDebug(std::vector<int> message)
+{
+    if (DEBUG)
+    {
+        std::cout << std::endl
+                  << "DEBUG: ";
+        for (int index = 0; index < message.size(); index++)
+        {
             std::cout << message[index] << " - ";
         }
         std::cout << std::flush;

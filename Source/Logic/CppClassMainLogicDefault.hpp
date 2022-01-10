@@ -20,10 +20,7 @@ class MainLogicDefault : public MainLogicBase
      * *****************************************/
 
 public:
-    /**
-     * A default rules game with 4 players, 4 homes and 4 pieces per player.
-     */
-    MainLogicDefault(IUI_SPTR uiObject);
+
 
     /**
      * Individual game with default rules.
@@ -31,17 +28,13 @@ public:
      * numberOfHomes: 4/6 (depending on numberOfPlayers)
      * numberOfPieces: 3/4
      */
-    MainLogicDefault(IUI_SPTR uiObject, int numberOfHomes, int numberOfPlayers, int numberOfPieces, bool fillWithKI, bool spreadOnBoard, std::vector<std::string> playerNames);
+    MainLogicDefault(IUI_SPTR uiObject, std::shared_ptr<GameConfig> config);
 
     /** *********************************************
      * Implemented public methods of MainLogicBase  *
      * *********************************************/
 
-//public:
-    /**
-     * Starts the game and represents the application loop running infinitely until the game finished.
-     */
-    //void startGame() override;
+
 
     /** *********************************************
      * Implemented private methods of MainLogicBase *

@@ -60,18 +60,13 @@ protected:
      * Constructors of MainLogicBase        *
      * *************************************/
 
-     /**
-     * A default rules game with 4 players, 4 homes and 4 pieces per player.
-     */
-    MainLogicBase(IUI_SPTR uiObject);
-
     /**
      * Individual game with default rules.
      * numberOfPlayers: 2-6 
      * numberOfHomes: 4/6 (depending on numberOfPlayers)
      * numberOfPieces: 3/4
      */
-    MainLogicBase(IUI_SPTR uiObject, int numberOfHomes, int numberOfPlayers, int numberOfPieces, bool fillWithKI, bool spreadOnBoard, std::vector<std::string> playerNames);
+    MainLogicBase(IUI_SPTR uiObject, std::shared_ptr<GameConfig> config);
 
     /** *********************************************
      * Public methods of MainLogicBase              *

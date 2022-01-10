@@ -64,7 +64,7 @@ In General:
 This game offers 3 different rule sets you can choose from (Default, Easy and Hard). Use the number in brackets in the input arguments or the configuration file. Obviously it is possible that these rule sets differ from those you now as everyone play this game his own way. But while developing this game it became clear that its mostly luck, independent of the rules or strategy, who's winning, so just have fun with slight adjustments ;-)
 Choose wisely!
 Following an explanation to the different rule sets (each time all rules with True/False):
-### Default: Boring Default Rules (0)
+### Default: Boring Default Rules (0 or else than 1/2)
 - You must throw other pieces if you can (even if you have to walk by your target!): **False**
 - You must throw your own pieces (only in special situations like if you are on the start field and have a 6 or if you are coming to the jumping field after going out of the home): **False**
 - Throw also backwards: **False**
@@ -76,20 +76,6 @@ Following an explanation to the different rule sets (each time all rules with Tr
 - You only are allowed to roll three times if you have no pieces out AND all pieces in the target area are finished: **False**
 - You must jump on the edges: **False**
 - You are allowed to use an outside piece with a six (even if pieces are left home): **False**
-- Game is finished when all players (including KI) have finished (Else finished when first player finished): **False**
-
-### Easy: For Wimps (Or Children) (2)
-- You must throw other pieces if you can (even if you have to walk by your target!): **False**
-- You must throw your own pieces (only in special situations like if you are on the start field and have a 6 or if you are coming to the jumping field after going out of the home): **False**
-- Throw also backwards: **False**
-- Jump over your pieces in the target area: **True**
-- Walk by the target area if you can not go in and have no other piece to walk: **False**
-- You are save on startfields (Means there are multiple pieces possible on one field): **True**
-- You always have to free the start field (Even if no pieces are left home): **False**
-- You are allowed to go with another piece on the second roll when having a 6 (Overrides the rule before): **True**
-- You only are allowed to roll three times if you have no pieces out AND all pieces in the target area are finished: **False**
-- You must jump on the edges: **False**
-- You are allowed to use an outside piece with a six (even if pieces are left home): **True**
 - Game is finished when all players (including KI) have finished (Else finished when first player finished): **False**
 
 ### Hard: Only For The Real Players (1)
@@ -105,6 +91,20 @@ Following an explanation to the different rule sets (each time all rules with Tr
 - You must jump on the edges: **True**
 - You are allowed to use an outside piece with a six (even if pieces are left home): **False**
 - Game is finished when all players (including KI) have finished (Else finished when first player finished): **True**
+
+### Easy: For Wimps (Or Children) (2)
+- You must throw other pieces if you can (even if you have to walk by your target!): **False**
+- You must throw your own pieces (only in special situations like if you are on the start field and have a 6 or if you are coming to the jumping field after going out of the home): **False**
+- Throw also backwards: **False**
+- Jump over your pieces in the target area: **True**
+- Walk by the target area if you can not go in and have no other piece to walk: **False**
+- You are save on startfields (Means there are multiple pieces possible on one field): **True**
+- You always have to free the start field (Even if no pieces are left home): **False**
+- You are allowed to go with another piece on the second roll when having a 6 (Overrides the rule before): **True**
+- You only are allowed to roll three times if you have no pieces out AND all pieces in the target area are finished: **False**
+- You must jump on the edges: **False**
+- You are allowed to use an outside piece with a six (even if pieces are left home): **True**
+- Game is finished when all players (including KI) have finished (Else finished when first player finished): **False**
 
 ## Contributors
 - [Niklas Arnold](https://github.com/niklasar)

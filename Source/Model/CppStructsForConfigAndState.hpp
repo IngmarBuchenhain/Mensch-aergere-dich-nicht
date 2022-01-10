@@ -5,6 +5,9 @@
 
 #include "CppClassStatistics.hpp"
 
+/**
+ * Simple struct to hold state of a game piece without any complexity
+ */
 struct GamePieceState
 {
     int id;
@@ -13,6 +16,9 @@ struct GamePieceState
     int position;
 };
 
+/**
+ * Simple struct to hold configuration of a game
+ */
 struct GameConfig
 {
     int homes;
@@ -24,6 +30,9 @@ struct GameConfig
     std::vector<std::string> names;
 };
 
+/**
+ * Simple struct to hold state of a game
+ */
 struct GameState
 {
     int currentPlayer;

@@ -1,41 +1,56 @@
-#ifndef DEBUG_HELPER_HPP
-#define DEBUG_HELPER_HPP
+#ifndef MAEDN_DEBUG_HELPER_HPP
+#define MAEDN_DEBUG_HELPER_HPP
+
+// Used for exceptions and help methods for debugging
 
 #include <string>
 #include <exception>
 
-class unexpected_game_piece : public std::exception{
-    virtual const char *what() const throw() override{
+// Exceptions
+class unexpected_game_piece : public std::exception
+{
+    virtual const char *what() const throw() override
+    {
         return "A game piece which was not applicable was used";
     }
 };
 
-class illegal_position : public std::exception{
-    virtual const char *what() const throw() override{
+class illegal_position : public std::exception
+{
+    virtual const char *what() const throw() override
+    {
         return "The position is not on the board";
     }
 };
 
-class argument_nullptr_exception : public std::exception{
-    virtual const char *what() const throw() override{
+class argument_nullptr_exception : public std::exception
+{
+    virtual const char *what() const throw() override
+    {
         return "The given argument is nullptr!";
     }
 };
 
-class illegal_argument : public std::exception{
-    virtual const char *what() const throw() override{
+class illegal_argument : public std::exception
+{
+    virtual const char *what() const throw() override
+    {
         return "The given argument is not valid!";
     }
 };
 
-class not_implemented : public std::exception{
-    virtual const char *what() const throw() override{
+class not_implemented : public std::exception
+{
+    virtual const char *what() const throw() override
+    {
         return "This functionality was not yet implemented!";
     }
 };
 
-class io_exception : public std::exception{
-    virtual const char *what() const throw() override{
+class io_exception : public std::exception
+{
+    virtual const char *what() const throw() override
+    {
         return "Could not read or write file!";
     }
 };

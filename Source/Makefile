@@ -61,7 +61,7 @@ CppClassStatistics.o: $(mo)/CppClassStatistics.cpp
 # UI
 
 # make
-run: $(outpath)$(exeName)
+run: $(outpath)$(exeName) mostlyclean
 	./$(outpath)$(exeName) 4 3 4 1 1 0 Torsten Niklas Ingmar
 mostlyclean:
 	rm -f *.o a.out $(mo)/*.o $(lo)/*.o $(ui)/*.o $(ifs)/*.o $(mo)/*.out $(lo)/*.out $(ui)/*.out $(ifs)/*.out
