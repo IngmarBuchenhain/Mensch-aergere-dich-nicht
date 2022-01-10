@@ -135,7 +135,7 @@ count++;
         std::string tempFileName = fileName;
         int fileCount = 1;
         printDebug("Start savFile method");
-        while (std::__fs::filesystem::exists(tempFileName))
+        while (std::filesystem::exists(tempFileName))
         {
             tempFileName = fileName;
             tempFileName.append(std::to_string(fileCount));
