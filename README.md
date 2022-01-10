@@ -45,46 +45,24 @@ The settings of the game are selected by CL-argument or by configuration file. O
 4. If you are in the game you can exit the game and save the state if you wish. The saved file ('maedngame' or if already there with a number following will hold configuration and state of the game)
 - See also in 'Demo'-directory for explanation of config/state-file
 ## Rule Sets
-This game offers 3 different rule sets you can choose from. Use the number in brackets in the input arguments or the configuration file.
+This game offers 3 different rule sets you can choose from (Default, Easy and Hard). Use the number in brackets in the input arguments or the configuration file.
 Choose wisely!
-### General rules
-Apply to all rule sets:
-- If no piece is on the field you are allowed to roll the dice 3 times until you get a 6.
+Following an explanation to the rules
 ### Default: Boring Default Rules (0)
-    EVERYTHING FALSE
-     bool mustThrowOtherPiecesIntern;
-    bool mustThrowOwnPiecesIntern;
-    bool throwAlsoBackwardsIntern;
+- You must throw other pieces if you can (even if you have to walk by your target!): **False**
+- You must throw your own pieces (only in special situations like if you are on the start field and have a 6 or if you are coming to the jumping field after going out of the home): **False**
+- Throw also backwards: **False**
+- Jump over your pieces in the target area: **False**
+- Walk by the target area if you can not go in and have no other piece to walk: **False**
+- You are save on startfields (Means there are multiple pieces possible on one field): **False**
+- You always have to free the start field (Even if no pieces are left home): **False**
+- You are allowed to go with another piece on the second roll when having a 6 (Overrides the rule before): **False**
+- You only are allowed to roll three times if you have no pieces out AND all pieces in the target area are finished: **False**
+- You must jump on the edges: **False**
+- You are allowed to use an outside piece with a six (even if pieces are left home): **False**
+- Game is finished when all players (including KI) have finished (Else finished when first player finished): **False**
 
-    bool jumpOverPiecesInTargetAreaIntern;
-    bool walkByTargetAreaIfNotPossibleToWalkInIntern;
-
-    bool saveOnStartFieldIntern;
-    bool mustAlwaysFreeStartFieldIntern; // evtl weglassen, da im goWithAnother.. einbegriffen werden kann.
-    bool allowedToUseOutsidePieceOnSixWhenPiecesLeftHomeIntern;
-
-    bool onlyRollThreeTimesIfNoPieceOutAndTargetAreaOnEndIntern;
-
-    bool jumpOnEdgesIntern;
-
-    bool goWithAnotherPieceOnSecondRollOfDiceIntern;
-
-    bool playUntilAllPlayersFinishedIntern;
-
-Kein Schlagzwang
-Eigene Figuren werden nicht geschlagen
-Startfeld muss freigemacht werden, solange noch männchen im haus oder wenn wieder imhaus
-Bei 6: Es muss neue Figur ins Spiel gebracht werden. Wenn mit eigener besetzt, dann erst diese mit 6 weiterziehen und dann nochmal würfeln. Wenn nochmal würfeln mus mit gleicher figur gezogen werden.
-Warten vor loch
-im zilel darf übersprungen werden
-3 mal würfeln wenn nix geht
-
-Zusätze:
-Rückwärts schlagen
-Springen an Ecken
-Selbst rausschmeißen
-schlagzwang
-### Easy: For Wimps (Or Children) (1)
+### Easy: For Wimps (Or Children) (2)
  bool mustThrowOtherPiecesIntern;   False
     bool mustThrowOwnPiecesIntern;False
     bool throwAlsoBackwardsIntern;False
@@ -104,7 +82,7 @@ schlagzwang
 
     bool playUntilAllPlayersFinishedIntern;False
     false, false, false, true, false, true, false, true, false, false, true, false
-### Hard: Only For The Real Players (2)
+### Hard: Only For The Real Players (1)
 
  bool mustThrowOtherPiecesIntern; True
     bool mustThrowOwnPiecesIntern; True
