@@ -1,12 +1,32 @@
 # Mensch-aergere-dich-nicht
 This is a simple board game known by most people which can be played by CLI.
+
+## Wish list
+
+### Must Have
+
+- [x] General game logic
+- [x] Default rules
+- [x] 1 - 4 players (Because of the simple KI you can also play alone with your computer now)
+- [x] Some 'graphical' representation of the game in the CLI
+
+### Should Have
+
+- [x] 1 - 6 players/Bigger board (Because of the simple KI you can also play alone with your computer now)
+- [x] Export/Import game
+- [x] Different rules (Default, Easy, Hard)
+- [x] Hints to which game piece can be choosen (Only those are presented to user now)
+
+### Nice to Have
+
+- [x] Simple KI
+- [ ] Network multiplayer (Delayed for future release)
 ## How to play
 ### Dependencies
-- boost library (version 1.78.0 was used for development)
 - GCC if use of provided MAKEFILE is wanted
 ### Build the game
 1. Load repository
-2. Run 'make' in 'Source'-directory with boost paths as arguments as follows: make boost=path/to/your/boost boostlib=path/to/your/boost/libs
+2. Run 'make' in 'Source'-directory. You can provide a path to which the executable should be build via 'make outpath=path/you/like
 ### Run the game
 The settings of the game are selected by CL-parameters or by configuration file. Once the game started you can not change settings but has to restart (You should never change rules of a game midway...).
 There are different options:
@@ -21,7 +41,7 @@ Choose wisely!
 ### General rules
 Apply to all rule sets:
 - If no piece is on the field you are allowed to roll the dice 3 times until you get a 6.
-### Boring Default Rules (0)
+### Default: Boring Default Rules (0)
     EVERYTHING FALSE
      bool mustThrowOtherPiecesIntern;
     bool mustThrowOwnPiecesIntern;
@@ -55,7 +75,7 @@ Rückwärts schlagen
 Springen an Ecken
 Selbst rausschmeißen
 schlagzwang
-### For Wimps (Or Children) (1)
+### Easy: For Wimps (Or Children) (1)
  bool mustThrowOtherPiecesIntern;   False
     bool mustThrowOwnPiecesIntern;False
     bool throwAlsoBackwardsIntern;False
@@ -75,7 +95,7 @@ schlagzwang
 
     bool playUntilAllPlayersFinishedIntern;False
     false, false, false, true, false, true, false, true, false, false, true, false
-### Only For The Real Players (2)
+### Hard: Only For The Real Players (2)
 
  bool mustThrowOtherPiecesIntern; True
     bool mustThrowOwnPiecesIntern; True
@@ -102,22 +122,6 @@ Must-Throw own pieces (only if no other possibility): Yes
 Throw also backwards: Yes
 Jump over pieces in "home"-row: No
 Throwable on "Start"-Field: Yes
-## Umgesetzte Anforderungen
-
-### Must Have
-
-- [x] Spielbrett auf der Konsole ausgeben
-- [x] Grundlegende Spiellogik implementieren
-- [x] Spielbrett anhand der Spiellogik aktualisieren
-
-### Should Have
-
-- [x] Eine schönere GUI in der Konsole mit Menü
-
-### Nice to Have
-
-- [x] Simple KI
-- [ ] Multiplayer over network
 
 ## Contributors
 - [Niklas Arnold](https://github.com/niklasar)
