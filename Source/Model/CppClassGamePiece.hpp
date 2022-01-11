@@ -2,11 +2,10 @@
 #define MAEDN_CLASS_GAME_PIECE_HPP
 
 #include "CppIGamePiece.hpp"
-//#include "CppIGamePieceUI.hpp"
 
 /**
  * Representaton of a game piece. Knows its position as an abstract number and know whether it is in the target area and able to move or finished.
- */ 
+ */
 class GamePiece : public IGamePiece
 {
     // 0 or greater. Unique to each GamePiece. Never alter this!
@@ -63,7 +62,7 @@ public:
 
 public:
     /**
-     * Default constructor
+     * Default constructor. Adds an unique ID to the game piece. 
      */
     GamePiece();
 };

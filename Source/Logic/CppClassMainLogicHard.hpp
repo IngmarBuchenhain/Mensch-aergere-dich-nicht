@@ -20,21 +20,14 @@ class MainLogicHard : public MainLogicBase
      * *****************************************/
 
 public:
-
-
     /**
      * Individual game with hard rules.
-     * numberOfPlayers: 2-6 
-     * numberOfHomes: 4/6 (depending on numberOfPlayers)
-     * numberOfPieces: 3/4
      */
     MainLogicHard(IUI_SPTR uiObject, std::shared_ptr<GameConfig> config);
 
     /** *********************************************
      * Implemented public methods of MainLogicBase  *
      * *********************************************/
-
-
 
     /** *********************************************
      * Implemented private methods of MainLogicBase *
@@ -67,7 +60,7 @@ private:
      * Private methods of MainLogicDefault          *
      * *********************************************/
 
-    private:
+private:
     bool targetTeamFinished(int currentPlayer);
 };
 

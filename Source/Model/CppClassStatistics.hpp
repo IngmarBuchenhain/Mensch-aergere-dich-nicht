@@ -4,7 +4,7 @@
 #include <vector>
 
 /**
- * Simple class to provide some statistics to the game
+ * Simple class to provide some statistics to the game. Methods may throw.
  */
 class Statistics
 {
@@ -13,19 +13,26 @@ class Statistics
     int diceStats[7]; // 7 so we can access each number directly
 
 public:
-    Statistics();
     /**
-     * Add to statistics the number which was rolled 
+     * Init and reset to 0.
+     */
+    Statistics();
+
+public:
+    /**
+     * Add to statistics the number which was rolled. 1 to 6 are allowed.
      */
     void addDiceRoll(int diceRoll);
 
+public:
     /**
-     * Present the stats. NOTE: May be moved to the UI
+     * Get number of total rolls. 
      */
-    void showDiceStats();
+    int getNumberOfTotalRolls();
 
+public:
     /**
-     * Get the count how many times a number was rolled
+     * Get the count how many times a number was rolled. 1 to 6 are allowed.
      */
     int getNumberRolls(int number);
 };

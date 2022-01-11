@@ -25,9 +25,10 @@ This is a simple board game known by most people which can be played by CLI.
 Developtment was implemented to provide independent working on the project, therefore:
 1. Have a model/models representating the game
 2. Split development into UI and Logic
-3. Make interfaces on how these modules should work together (Logic uses an UI-interface, so can be easily switched; UI knows the Model via interface to present it to the user when asked by the logic)
+3. Make interfaces on how these modules should work together (Logic uses an UI-interface, so can be easily switched; UI knows the Model via interface to present it to the user when asked by the logic). Different interfaces of model for UI and Logic (UI don't have to know as much as Logic)
 4. Implement different rule sets by specialized logic classes.
 5. Model consist of Board with GamePieces. In addition there are helper classes for rules or statistics
+6. KI also is included in Logic per interface, so easy replacement is possible
 ## How to play
 ### Dependencies
 - GCC with g++ if use of provided MAKEFILE is wanted

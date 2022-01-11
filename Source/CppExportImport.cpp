@@ -1,15 +1,17 @@
+#include "CppExportImport.hpp"
+
 #include <fstream>
 #include <filesystem>
 
 #include "CppDebugHelper.hpp"
 
-#include "CppExportImport.hpp"
-#include "CppStructsForConfigAndState.hpp"
-
 namespace maednhelper
 {
     bool loadFile(std::string fileName, std::shared_ptr<GameConfig> config, std::shared_ptr<GameState> state)
     {
+        if(config == nullptr){
+            config.reset(new GameConfig());
+        }
         std::string line;
         std::ifstream maednfile(fileName);
         if (maednfile.is_open())
@@ -127,6 +129,9 @@ namespace maednhelper
 
     void saveFile(std::shared_ptr<GameConfig> config, std::shared_ptr<GameState> state)
     {
+        if(config == nullptr || state == nullptr){
+            throw new argument_nullptr_exception;
+        }
         std::vector<std::shared_ptr<GamePieceState>> pieces = state->pieceStates;
         int currentPlayer = state->currentPlayer;
         int lastPieceID = state->idOfLastPiece;
@@ -136,6 +141,7 @@ namespace maednhelper
         std::string tempFileName = fileName;
         int fileCount = 1;
 
+        // Don't overwrite existing files
         while (std::filesystem::exists(tempFileName))
         {
             tempFileName = fileName;
@@ -143,10 +149,10 @@ namespace maednhelper
             fileCount++;
         }
         fileName = tempFileName;
-        printDebug("1");
+
         std::ofstream maednfile;
         maednfile.open(fileName);
-        printDebug("2");
+
         maednfile << config->homes << std::endl;
         maednfile << config->players << std::endl;
         maednfile << config->pieces << std::endl;
@@ -164,7 +170,7 @@ namespace maednhelper
                 maednfile << std::endl;
             }
         }
-        printDebug("3");
+
         maednfile << 1 << std::endl;
         maednfile << stats->getNumberRolls(1) << std::endl;
         maednfile << stats->getNumberRolls(2) << std::endl;

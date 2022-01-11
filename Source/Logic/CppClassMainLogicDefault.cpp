@@ -1,24 +1,17 @@
 #include "CppClassMainLogicDefault.hpp"
-#include "CppDebugHelper.hpp"
-
-#include "CppClassKI.hpp"
 
 /** *************************************
  * Constructors of MainLogicDefault     *
  * *************************************/
 
-
-
-MainLogicDefault::MainLogicDefault(IUI_SPTR uiObject, std::shared_ptr<GameConfig> config) : MainLogicBase(uiObject, config){
-rules = std::make_unique<RuleSet>(); // Default
-
+MainLogicDefault::MainLogicDefault(IUI_SPTR uiObject, std::shared_ptr<GameConfig> config) : MainLogicBase(uiObject, config)
+{
+    rules = std::make_unique<RuleSet>(); // Default
 }
-
 
 /** *************************************
  * Public methods of MainLogicDefault   *
  * *************************************/
-
 
 /** *************************************
  * Private methods of MainLogicDefault  *
@@ -31,11 +24,8 @@ std::map<IGamePiece_SPTR, std::vector<std::pair<int, bool>>> MainLogicDefault::g
     bool alreadyFinished = false;
     for (int pieceIndex = 0; pieceIndex < team.size(); pieceIndex++)
     {
-        // printDebug("Current piece ID to check possibilites");
-
         IGamePiece_SPTR currentPiece = team[pieceIndex];
-        // printDebug(currentPiece->getID());
-        // printDebug(currentPiece->getPosition());
+
         if (alreadyFinished)
         {
             break;
@@ -54,13 +44,13 @@ std::map<IGamePiece_SPTR, std::vector<std::pair<int, bool>>> MainLogicDefault::g
             // Get startfield
             int start = board->getStartfields()[currentPlayer];
             std::vector<IGamePiece_SPTR> team = board->getTeam(currentPlayer);
-            if(checkIfFree(team, start)){
- std::pair<int, bool> position;
-            position.first = start;
-            position.second = false;
-            possibilities.push_back(position);
+            if (checkIfFree(team, start))
+            {
+                std::pair<int, bool> position;
+                position.first = start;
+                position.second = false;
+                possibilities.push_back(position);
             }
-           
         }
         else
         {
@@ -103,28 +93,27 @@ std::map<IGamePiece_SPTR, std::vector<std::pair<int, bool>>> MainLogicDefault::g
                     }
                     else
                     {
-                        // Get new position
-                        printDebug("Normal walk");
-                        int newPosition = (currentPiece->getPosition() + diceRoll) % board->getNumberOfFields();
-                        if (newPosition == 0)
+                        if (!waitBeforeEndField(currentPiece->getPosition(), diceRoll, currentPlayer))
                         {
-                            newPosition = board->getNumberOfFields();
-                        }
+                            // Get new position
+                            printDebug("Normal walk");
+                            int newPosition = (currentPiece->getPosition() + diceRoll) % board->getNumberOfFields();
+                            if (newPosition == 0)
+                            {
+                                newPosition = board->getNumberOfFields();
+                            }
 
-                        printDebug(newPosition);
-                        if (noOwnPieceThere(newPosition))
-                        {
-                            std::pair<int, bool> position;
-                            position.first = newPosition;
-                            position.second = false;
-                            possibilities.push_back(position);
+                            printDebug(newPosition);
+                            if (noOwnPieceThere(newPosition))
+                            {
+                                std::pair<int, bool> position;
+                                position.first = newPosition;
+                                position.second = false;
+                                possibilities.push_back(position);
+                            }
                         }
                     }
                 }
-
-                // If no home area members remained we can walk with this piece. Check possibilities
-                // If currentPosition + dicesteps- 1 contains endfield, this can walk into target.
-                // Check other possibilities. Forward and backward.
             }
         }
         if (possibilities.size() > 0)
@@ -133,7 +122,6 @@ std::map<IGamePiece_SPTR, std::vector<std::pair<int, bool>>> MainLogicDefault::g
             walkAblePieces.insert(std::make_pair(currentPiece, possibilities));
         }
     }
-
     return walkAblePieces;
 }
 

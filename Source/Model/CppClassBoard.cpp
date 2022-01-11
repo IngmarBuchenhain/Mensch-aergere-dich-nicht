@@ -1,59 +1,24 @@
-#include <vector>
-
 #include "CppClassBoard.hpp"
+
+#include "CppDebugHelper.hpp"
 
 /** *************************************
  * Constructors of Board                *
  * *************************************/
 
-Board::Board()
-{
-    numberOfWalkingFields = 40;
-    numberOfHomes = 4;
-
-    IJumpPair_SPTR firstPair(new JumpPair(5, 25));
-    jumpFields.push_back(firstPair);
-    // jumpFields.push_back(std::make_shared<IJumpPair>(15,35));
-
-    startFields.push_back(1);
-    startFields.push_back(11);
-    startFields.push_back(21);
-    startFields.push_back(31);
-
-    endFields.push_back(39);
-    endFields.push_back(9);
-    endFields.push_back(19);
-    endFields.push_back(29);
-
-    // Create game pieces
-
-    for (int playerNumber = 0; playerNumber < 4; playerNumber++)
-    {
-        std::vector<IGamePiece_SPTR> team;
-        for (int pieceNumber = 0; pieceNumber < 4; pieceNumber++)
-        {
-            IGamePiece_SPTR piece(new GamePiece);
-            team.push_back(piece);
-        }
-        teamsAndGamePieces.push_back(team);
-    }
-}
-
 Board::Board(bool bigField, int numberOfPlayers, int numberOfPieces, bool spreadOnBoard)
 {
-    if (numberOfPlayers > 4 || numberOfPieces > 4 || numberOfPieces < 3 || numberOfPlayers < 2)
+    if (numberOfPlayers > 6 || (numberOfPlayers > 4 && !bigField) || numberOfPieces > 4 || numberOfPieces < 3 || numberOfPlayers < 1)
     {
-        // Exception
+        throw new illegal_argument;
     }
+
     if (bigField)
     {
         numberOfWalkingFields = 48;
         numberOfHomes = 6;
 
-        //         jumpFields.push_back(std::make_shared<IJumpPair>(4,28));
-        //   jumpFields.push_back(std::make_shared<IJumpPair>(12,36));
-        //       jumpFields.push_back(std::make_shared<IJumpPair>(20,44));
-
+        // Maybe assign end and startfields so, that players are spread on Board
         if (numberOfPlayers < 6 && spreadOnBoard)
         {
             if (numberOfPlayers == 2)
@@ -97,11 +62,8 @@ Board::Board(bool bigField, int numberOfPlayers, int numberOfPieces, bool spread
         numberOfWalkingFields = 40;
         numberOfHomes = 4;
 
-        // jumpFields.push_back(std::make_shared<IJumpPair>(5,25));
-        //   jumpFields.push_back(std::make_shared<IJumpPair>(15,35));
         if (numberOfPlayers == 2 && spreadOnBoard)
         {
-
             startFields.push_back(1);
             startFields.push_back(21);
 
@@ -142,7 +104,10 @@ Board::Board(bool bigField, int numberOfPlayers, int numberOfPieces, bool spread
 
 std::vector<IGamePiece_SPTR> Board::getTeam(int player)
 {
-
+    if (!checkValidArguments(player))
+    {
+        throw new illegal_argument;
+    }
     return teamsAndGamePieces[player];
 }
 
@@ -183,6 +148,7 @@ std::vector<IJumpPair_SPTR> Board::getJumpFields()
 
 std::vector<std::vector<IGamePieceUI_SPTR>> Board::getGamePieces()
 {
+    // Make copy
     std::vector<std::vector<IGamePieceUI_SPTR>> result;
 
     for (int index = 0; index < teamsAndGamePieces.size(); index++)
@@ -200,6 +166,10 @@ std::vector<std::vector<IGamePieceUI_SPTR>> Board::getGamePieces()
 
 std::vector<IGamePiece_SPTR> Board::getTargetAreaTeam(int player)
 {
+    if (!checkValidArguments(player))
+    {
+        throw new illegal_argument;
+    }
     std::vector<IGamePiece_SPTR> team = teamsAndGamePieces[player];
     std::vector<IGamePiece_SPTR> targetTeam;
 
@@ -216,6 +186,10 @@ std::vector<IGamePiece_SPTR> Board::getTargetAreaTeam(int player)
 
 std::vector<IGamePiece_SPTR> Board::getHomeAreaTeam(int player)
 {
+    if (!checkValidArguments(player))
+    {
+        throw new illegal_argument;
+    }
     std::vector<IGamePiece_SPTR> team = teamsAndGamePieces[player];
     std::vector<IGamePiece_SPTR> homeTeam;
 
@@ -232,6 +206,10 @@ std::vector<IGamePiece_SPTR> Board::getHomeAreaTeam(int player)
 
 std::vector<IGamePiece_SPTR> Board::getOutsideTeam(int player)
 {
+    if (!checkValidArguments(player))
+    {
+        throw new illegal_argument;
+    }
     std::vector<IGamePiece_SPTR> team = teamsAndGamePieces[player];
     std::vector<IGamePiece_SPTR> outsideTeam;
     for (int index = 0; index < team.size(); index++)
@@ -247,3 +225,12 @@ std::vector<IGamePiece_SPTR> Board::getOutsideTeam(int player)
 /** *************************************
  * Private methods of Board             *
  * *************************************/
+
+bool Board::checkValidArguments(int player)
+{
+    if (player >= teamsAndGamePieces.size() || player < 0)
+    {
+        return false;
+    }
+    return true;
+}

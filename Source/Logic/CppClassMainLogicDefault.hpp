@@ -20,21 +20,14 @@ class MainLogicDefault : public MainLogicBase
      * *****************************************/
 
 public:
-
-
     /**
      * Individual game with default rules.
-     * numberOfPlayers: 2-6 
-     * numberOfHomes: 4/6 (depending on numberOfPlayers)
-     * numberOfPieces: 3/4
      */
     MainLogicDefault(IUI_SPTR uiObject, std::shared_ptr<GameConfig> config);
 
     /** *********************************************
      * Implemented public methods of MainLogicBase  *
      * *********************************************/
-
-
 
     /** *********************************************
      * Implemented private methods of MainLogicBase *

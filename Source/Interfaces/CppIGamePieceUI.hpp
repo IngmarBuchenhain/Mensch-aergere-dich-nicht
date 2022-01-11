@@ -1,30 +1,23 @@
 #ifndef MAEDN_I_GAME_PIECE_UI_HPP
 #define MAEDN_I_GAME_PIECE_UI_HPP
 
-#include<memory>
-
-/** 
- * GamePiece ID counter. Shared global variable for giving each GamePiece a unique ID. Not Threadsafe!
- * Only increase in constructor of GamePiece.
- */
-//extern int *GLOBAL_I_GAME_PIECE_ID_COUNTER;
+#include <memory>
 
 /**
  * Representaton of a game piece for the UI. 
  * Knows its position as an abstract number and know whether it is in the target area and able to move or finished.
- * NOT Threadsafe!
- */ 
+ */
 class IGamePieceUI
 {
+public:
+    /**
+     * An ID unique to each figure for identification by the UI (and Logic).
+     */
+    virtual int getID() = 0;
 
 public:
     /**
-     * An ID unique to each figure for identification by the UI.
-     */
-    virtual int getID() = 0;
-public:
-    /**
-     * 0: Not on the field yet. Otherwise number between 1 and 'number of fields' or between 1 and 'number of game pieces per player'.
+     * 0: Not on the field yet. Otherwise number between 1 and 'number of fields' or between 1 and 'number of game pieces per player' if in target area.
      */
     virtual int getPosition() = 0;
 
@@ -42,6 +35,5 @@ public:
 };
 
 typedef std::shared_ptr<IGamePieceUI> IGamePieceUI_SPTR;
-//typedef std::unique_ptr<IGamePieceUI> IGamePieceUI_UPTR;
 
 #endif

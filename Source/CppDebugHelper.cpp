@@ -1,7 +1,7 @@
+#include "CppDebugHelper.hpp"
+
 #include <iostream>
 #include <vector>
-
-#include "CppDebugHelper.hpp"
 
 /**
  * Easily switch for whole application using this DebugHelper printing of debug messages.

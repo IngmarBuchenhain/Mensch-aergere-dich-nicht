@@ -1,5 +1,5 @@
-#ifndef MAEDN_CLASS_EXPORT_IMPORT_HPP
-#define MAEDN_CLASS_EXPORT_IMPORT_HPP
+#ifndef MAEDN_EXPORT_IMPORT_HPP
+#define MAEDN_EXPORT_IMPORT_HPP
 
 // Helper to load and write file for game state
 

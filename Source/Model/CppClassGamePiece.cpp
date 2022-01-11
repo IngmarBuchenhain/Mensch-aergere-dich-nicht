@@ -1,7 +1,7 @@
 #include "CppClassGamePiece.hpp"
-//#include<iostream>
 
-//int *GLOBAL_I_GAME_PIECE_ID_COUNTER = 0;
+#include "CppDebugHelper.hpp"
+
 /** 
  * GamePiece ID counter. Shared global variable for giving each GamePiece a unique ID. Not Threadsafe!
  * Only increase in constructor of GamePiece.
@@ -10,7 +10,8 @@ static int GLOBAL_I_GAME_PIECE_ID_COUNTER = 0;
 
 // Implementation of GamePiece:
 // Representaton of a game piece. Knows its position as an abstract number and know whether it is in the target area and able to move or finished.
-int GamePiece::getID(){
+int GamePiece::getID()
+{
     return id;
 }
 
@@ -31,12 +32,14 @@ bool GamePiece::isInTargetArea()
 
 void GamePiece::setPosition(int fieldNumber)
 {
-    if(!inTargetArea){
+    if (!inTargetArea)
+    {
         position = fieldNumber;
-    } else {
-        // Throw Exception
     }
-    
+    else
+    {
+        throw new illegal_gamepiece_operation;
+    }
 }
 
 void GamePiece::setToTargetArea(int targetAreaFieldNumber)
@@ -50,9 +53,8 @@ void GamePiece::setFinished()
     finished = true;
 }
 
-GamePiece::GamePiece(){
-    //std::cout << "Assign" << std::endl;
+GamePiece::GamePiece()
+{
     id = GLOBAL_I_GAME_PIECE_ID_COUNTER;
-   // std::cout << id << std::flush;
     GLOBAL_I_GAME_PIECE_ID_COUNTER++;
 }
