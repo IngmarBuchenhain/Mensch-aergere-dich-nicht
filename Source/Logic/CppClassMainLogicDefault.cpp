@@ -151,6 +151,25 @@ bool MainLogicDefault::currentPlayerIsAllowedToRollAgain(int currentDiceRoll)
     {
         if (board->getOutsideTeam(currentPlayer).size() == 0 && board->getHomeAreaTeam(currentPlayer).size() > 0)
         {
+            // Check if someone in target area can walk
+            if (targetAreaMemberOfCurrentPlayerCanWalk(currentDiceRoll))
+            {
+                return false;
+            }
+            return true;
+        }
+    }
+    return false;
+}
+
+bool MainLogicDefault::targetAreaMemberOfCurrentPlayerCanWalk(int diceRoll)
+{
+    std::vector<IGamePiece_SPTR> targetTeam = board->getTargetAreaTeam(currentPlayer);
+    for (int index = 0; index < targetTeam.size(); index++)
+    {
+        int targetPosition = targetTeam[index]->getPosition() + diceRoll;
+        if (targetPosition <= board->getNumberOfGamePiecesPerPlayer() && wayIsFree(targetTeam[index]->getPosition(), targetPosition, currentPlayer))
+        {
             return true;
         }
     }

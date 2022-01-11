@@ -1,5 +1,5 @@
 #include "CppClassMainLogicHard.hpp"
-
+#include <iostream>
 /** *************************************
  * Constructors of MainLogicHard        *
  * *************************************/
@@ -20,9 +20,21 @@ std::map<IGamePiece_SPTR, std::vector<std::pair<int, bool>>> MainLogicHard::getG
     std::vector<IGamePiece_SPTR> team = board->getTeam(currentPlayer);
     bool alreadyFinished = false;
     bool notOnlyThrowsAllowed = true;
+
+    bool mustfreeStartField = false;
+    if (pieceOnStartField())
+    {
+        mustfreeStartField = true;
+    }
+
     for (int pieceIndex = 0; pieceIndex < team.size(); pieceIndex++)
     {
         IGamePiece_SPTR currentPiece = team[pieceIndex];
+
+        if (mustfreeStartField && (currentPiece->getPosition() != board->getStartfields()[currentPlayer] || currentPiece->isInTargetArea()))
+        {
+            continue;
+        }
 
         if (alreadyFinished)
         {
@@ -54,6 +66,10 @@ std::map<IGamePiece_SPTR, std::vector<std::pair<int, bool>>> MainLogicHard::getG
         }
         else
         {
+            if (currentPiece->getPosition() == 0)
+            {
+                continue;
+            }
             // No 6 or not an
             // Get possibilities
             bool getPossibilities = true;
@@ -82,9 +98,29 @@ std::map<IGamePiece_SPTR, std::vector<std::pair<int, bool>>> MainLogicHard::getG
                     // Check these positions for other players
                     IGamePiece_SPTR throwForward = getConflictGamePiece(forwardPosition);
                     IGamePiece_SPTR throwBackward = getConflictGamePiece(backwardPosition);
+                    int positionToJumpTo = -1;
+                    if ((positionToJumpTo = getJumpPosition(forwardPosition)) > 0 && throwForward == nullptr)
+                    {
+                        throwForward = getConflictGamePiece(positionToJumpTo);
+                        positionToJumpTo = -1;
+                    }
+                    if ((positionToJumpTo = getJumpPosition(backwardPosition)) > 0 && throwBackward == nullptr)
+                    {
+                        throwBackward = getConflictGamePiece(positionToJumpTo);
+                    }
                     if (throwForward != nullptr)
                     {
                         notOnlyThrowsAllowed = false;
+                        // Check if this piece is an own piece. Than others are allowed too if possible.
+                        std::vector<IGamePiece_SPTR> ownTeam = board->getTeam(currentPlayer);
+                        for (IGamePiece_SPTR &ownPiece : ownTeam)
+                        {
+                            if (ownPiece->getID() == throwForward->getID())
+                            {
+                                notOnlyThrowsAllowed = true;
+                            }
+                        }
+
                         int jumpPosition;
                         if ((jumpPosition = getJumpPosition(forwardPosition)) != -1)
                         {
@@ -98,6 +134,16 @@ std::map<IGamePiece_SPTR, std::vector<std::pair<int, bool>>> MainLogicHard::getG
                     if (throwBackward != nullptr)
                     {
                         notOnlyThrowsAllowed = false;
+                        // Check if this piece is an own piece. Than others are allowed too if possible.
+                        std::vector<IGamePiece_SPTR> ownTeam = board->getTeam(currentPlayer);
+                        for (IGamePiece_SPTR &ownPiece : ownTeam)
+                        {
+                            if (ownPiece->getID() == throwBackward->getID())
+                            {
+                                notOnlyThrowsAllowed = true;
+                            }
+                        }
+
                         int jumpPosition;
                         if ((jumpPosition = getJumpPosition(backwardPosition)) != -1)
                         {
@@ -196,6 +242,19 @@ std::map<IGamePiece_SPTR, std::vector<std::pair<int, bool>>> MainLogicHard::getG
     {
         return walkAblePiecesThrowing;
     }
+}
+
+bool MainLogicHard::pieceOnStartField()
+{
+    std::vector<IGamePiece_SPTR> team = board->getTeam(currentPlayer);
+    for (IGamePiece_SPTR piece : team)
+    {
+        if (!piece->isInTargetArea() && piece->getPosition() == board->getStartfields()[currentPlayer])
+        {
+            return true;
+        }
+    }
+    return false;
 }
 
 bool MainLogicHard::wayIsFree(int start, int position, int player)

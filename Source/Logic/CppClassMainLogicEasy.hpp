@@ -59,6 +59,9 @@ private:
     /** *********************************************
      * Private methods of MainLogicDefault          *
      * *********************************************/
+
+private:
+      bool targetAreaMemberOfCurrentPlayerCanWalk(int diceRoll);
 };
 
 #endif

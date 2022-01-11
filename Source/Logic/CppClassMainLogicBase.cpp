@@ -214,6 +214,7 @@ void MainLogicBase::startGame()
                             if ((conflictPiece = getConflictGamePiece(positionWeJumpedFrom)) != nullptr)
                             {
                                 conflictPiece->setPosition(0);
+                                
                             }
                         } while (conflictPiece != nullptr);
                     }
