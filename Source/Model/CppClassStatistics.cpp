@@ -11,13 +11,20 @@ Statistics::Statistics()
 
 int Statistics::getNumberRolls(int number)
 {
-    return diceStats[number];
+    if (number < 7 && number > 0)
+    {
+        return diceStats[number];
+    }
+    return -1;
 }
 
 void Statistics::addDiceRoll(int diceRoll)
 {
-    numberOfTotalRolls++;
-    diceStats[diceRoll]++;
+    if (diceRoll > 0 && diceRoll < 7)
+    {
+        numberOfTotalRolls++;
+        diceStats[diceRoll]++;
+    }
 }
 
 int Statistics::getNumberOfTotalRolls()

@@ -9,6 +9,9 @@ namespace maednhelper
 {
     bool loadFile(std::string fileName, std::shared_ptr<GameConfig> config, std::shared_ptr<GameState> state)
     {
+        if(config == nullptr){
+            config.reset(new GameConfig());
+        }
         std::string line;
         std::ifstream maednfile(fileName);
         if (maednfile.is_open())
@@ -126,6 +129,9 @@ namespace maednhelper
 
     void saveFile(std::shared_ptr<GameConfig> config, std::shared_ptr<GameState> state)
     {
+        if(config == nullptr || state == nullptr){
+            throw new argument_nullptr_exception;
+        }
         std::vector<std::shared_ptr<GamePieceState>> pieces = state->pieceStates;
         int currentPlayer = state->currentPlayer;
         int lastPieceID = state->idOfLastPiece;

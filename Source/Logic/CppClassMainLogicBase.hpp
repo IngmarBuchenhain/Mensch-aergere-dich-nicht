@@ -32,6 +32,10 @@ protected:
     RuleSet_UPTR rules = nullptr; // I only need unique pointer as I only use it in here.
     Dice_UPTR dice = nullptr;
     int currentPlayer;
+
+    /**
+     * The piece the current player has to use. For example if you must go with the same piece after a 6.
+     */
     IGamePiece_SPTR lastGamePiece = nullptr;
     std::vector<int> winners; // May be one or if played until all finished multiple.
     std::vector<std::string> nameOfPlayers;
@@ -40,31 +44,32 @@ protected:
      * UI-object
      * For communication with user
      */
-    IUI_SPTR ui; // I need the shared pointer as it is given in constructor from outside.
+    IUI_SPTR ui = nullptr; // I need the shared pointer as it is given in constructor from outside.
 
     /** 
      * Stat-object
      * Holds some dice statistics.
      */
-    std::shared_ptr<Statistics> stats;
-    std::shared_ptr<GameConfig> config;
+    std::shared_ptr<Statistics> stats = nullptr;
+
+    /**
+     * Game configuration. Used for export
+     */
+    std::shared_ptr<GameConfig> config = nullptr;
 
     /**
      * KI-objects
      * Used to determine whether a player is human or KI and if so, get the KI-object. 
      * Index is the KI of the Index-player. If it is nullptr it is a human player.
      */
-    std::shared_ptr<IKI> kiPlayer[6];
+    std::shared_ptr<IKI> players[6];
 
     /** *************************************
      * Constructors of MainLogicBase        *
      * *************************************/
 
     /**
-     * Individual game with default rules.
-     * numberOfPlayers: 2-6 
-     * numberOfHomes: 4/6 (depending on numberOfPlayers)
-     * numberOfPieces: 3/4
+     * Individual game
      */
     MainLogicBase(IUI_SPTR uiObject, std::shared_ptr<GameConfig> config);
 
@@ -78,20 +83,16 @@ public:
      */
     void startGame();
 
-
     /**
      * Use before startGame() if you want to load a game state. Number of pieces must fit to number of pieces in the game.
      */
     void importGameState(std::vector<std::shared_ptr<GamePieceState>> &piecesState, int player, int lastPiece, std::shared_ptr<Statistics> statistics);
-protected:
-void exportGameState();
+
     /** *********************************************
      * Virtual protected methods of MainLogicBase   *
      * *********************************************/
 
 protected:
-
-
     /**
      * Check if (depending on rules) one player or all players are finished and so the game is finished or not.
      */
@@ -119,7 +120,7 @@ protected:
      * *************************************/
 
 protected:
-IGamePiece_SPTR getGamePieceToID(int id);
+    IGamePiece_SPTR getGamePieceToID(int id);
     /**
      * Returns the next player based on the current player.
      * Checks if the choosen player has already finished and if so, takes next player.
@@ -202,6 +203,16 @@ IGamePiece_SPTR getGamePieceToID(int id);
      * Check before whether the move to this position is valid!
      */
     void movePieceInTargetArea(IGamePiece_SPTR piece, int position);
+
+    /** *********************************************
+     * Private methods of MainLogicBase             *
+     * *********************************************/
+
+private:
+    /**
+     * Export the current state of the game. May throw.
+     */
+    void exportGameState();
 };
 
 #endif

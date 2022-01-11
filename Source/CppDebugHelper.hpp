@@ -55,6 +55,14 @@ class io_exception : public std::exception
     }
 };
 
+class illegal_gamepiece_operation : public std::exception
+{
+    virtual const char *what() const throw() override
+    {
+        return "You are not allowed to use this method because GamePiece is in target area! Use setToTargetArea(..) instead.";
+    }
+};
+
 /**
  * Prints the given message to std::cout if in DEBUG-mode.
  * Use for control.

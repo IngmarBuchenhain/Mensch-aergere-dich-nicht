@@ -1,5 +1,7 @@
 #include "CppClassGamePiece.hpp"
 
+#include "CppDebugHelper.hpp"
+
 /** 
  * GamePiece ID counter. Shared global variable for giving each GamePiece a unique ID. Not Threadsafe!
  * Only increase in constructor of GamePiece.
@@ -36,7 +38,7 @@ void GamePiece::setPosition(int fieldNumber)
     }
     else
     {
-        // Throw Exception
+        throw new illegal_gamepiece_operation;
     }
 }
 

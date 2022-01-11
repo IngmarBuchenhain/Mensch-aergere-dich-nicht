@@ -32,7 +32,7 @@ MainLogicBase::MainLogicBase(IUI_SPTR uiObject, std::shared_ptr<GameConfig> conf
     int numberOfAllPlayers = config->players;
     for (int index = 0; index < config->players; index++)
     {
-        kiPlayer[index] = nullptr;
+        players[index] = nullptr;
     
     }
     if (config->players < config->homes)
@@ -60,7 +60,7 @@ MainLogicBase::MainLogicBase(IUI_SPTR uiObject, std::shared_ptr<GameConfig> conf
     {
         for (int index = config->players; index < config->homes; index++)
         {
-            kiPlayer[index] = std::make_shared<KI>(board->getEndFields()[index], board->getNumberOfFields());
+            players[index] = std::make_shared<KI>(board->getEndFields()[index], board->getNumberOfFields());
         }
     }
     if (config->names.size() < numberOfAllPlayers)
@@ -69,7 +69,7 @@ MainLogicBase::MainLogicBase(IUI_SPTR uiObject, std::shared_ptr<GameConfig> conf
         int countHuman = 1;
         for (int index = config->names.size(); index < numberOfAllPlayers; index++)
         {
-            if (kiPlayer[index] != nullptr)
+            if (players[index] != nullptr)
             {
                 std::string name = "ThenotsointelligentbutluckyKI ";
                 name.append(std::to_string(countKI));
@@ -119,11 +119,12 @@ void MainLogicBase::startGame()
         // Roll dice. Always!
         int currentDiceRoll = dice->roll();
         stats->addDiceRoll(currentDiceRoll);
+
         printDebug(currentDiceRoll);
         // Ask current player to roll dice and roll dice (This is not necessary but only for animation or game feeling)
         // TODO Ask player and directly show roll.
         // if KI present choice, other ask
-        if(kiPlayer[currentPlayer] == nullptr){
+        if(players[currentPlayer] == nullptr){
  ui->rollDice(nameOfPlayers[currentPlayer], currentDiceRoll);
         } else{
             ui->showInformation(nameOfPlayers[currentPlayer] + " rolled a -" + std::to_string(currentDiceRoll) + "-");
@@ -169,10 +170,10 @@ void MainLogicBase::startGame()
                 printDebug("Pieces possible");
                 std::pair<IGamePieceUI_SPTR, std::pair<int, bool>> selection;
                 // Let user or KI choose:
-                if (kiPlayer[currentPlayer] != nullptr)
+                if (players[currentPlayer] != nullptr)
                 {
                     printDebug("KI");
-                    selection = kiPlayer[currentPlayer]->chooseGamePiece(selectable);
+                    selection = players[currentPlayer]->chooseGamePiece(selectable);
                     ui->showInformation(nameOfPlayers[currentPlayer] + " chose a game piece");
                 }
                 else
