@@ -13,6 +13,7 @@
 #include "CppClassGamePiece.hpp"
 #include "CppClassStatistics.hpp"
 #include "CppStructsForConfigAndState.hpp"
+#include "CppDebugHelper.hpp"
 
 /**
  * The main class/object for running the game logic.
@@ -120,18 +121,6 @@ protected:
      * *************************************/
 
 protected:
-    IGamePiece_SPTR getGamePieceToID(int id);
-    /**
-     * Returns the next player based on the current player.
-     * Checks if the choosen player has already finished and if so, takes next player.
-     */
-    int determineNextPlayer();
-
-    /**
-     * Check if a specified player is finished or not.
-     */
-    bool playerIsNotFinished(int player);
-
     /**
      * Add a player to the winner board, if not already on it.
      */
@@ -144,20 +133,9 @@ protected:
     int getJumpPosition(int field);
 
     /**
-     * Check if on a specific position already a piece is standing.
+     * Check if on a specific position already a piece of the given is standing.
      */
-    bool checkIfFree(std::vector<IGamePiece_SPTR> pieces, int position);
-
-    /**
-     * Check pieces in target area.
-     * If they are finished, mark them.
-     */
-    void markFinishedPiecesOfTeam(std::vector<IGamePiece_SPTR> &targetAreaPieces);
-
-    /**
-     * Check if a given vector contains a given number.
-     */
-    bool contains(std::vector<int> vector, int containedNumber);
+    bool checkIfFree(std::vector<IGamePiece_SPTR> &pieces, int position);
 
     /**
      * Check if the endField of a given player is between the 'start' field and a number of given steps and returns the target field if so. Otherwise returns -1.
@@ -189,6 +167,11 @@ protected:
      */
     IGamePiece_SPTR getConflictGamePiece(int position);
 
+    /** *********************************************
+     * Private methods of MainLogicBase             *
+     * *********************************************/
+
+private:
     /**
      * Move a game piece of the CURRENT PLAYER on the field to a new position and check if there is a conflict, if so resolve it, based on rules.
      * Check before! whether game piece can walk to this position.
@@ -204,11 +187,33 @@ protected:
      */
     void movePieceInTargetArea(IGamePiece_SPTR piece, int position);
 
-    /** *********************************************
-     * Private methods of MainLogicBase             *
-     * *********************************************/
+    /**
+     * Returns the GamePiece with the given 'id' or nullptr if not available.
+     */
+    IGamePiece_SPTR getGamePieceToID(int id);
 
-private:
+    /**
+     * Returns the next player based on the current player.
+     * Checks if the choosen player has already finished and if so, takes next player.
+     */
+    int determineNextPlayer();
+
+    /**
+     * Check if a specified player is finished or not.
+     */
+    bool playerIsNotFinished(int player);
+
+    /**
+     * Check pieces in target area.
+     * If they are finished, mark them.
+     */
+    void markFinishedPiecesOfTeam(std::vector<IGamePiece_SPTR> &targetAreaPieces);
+
+    /**
+     * Check if a given vector contains a given number.
+     */
+    bool contains(std::vector<int> vector, int containedNumber);
+
     /**
      * Export the current state of the game. May throw.
      */

@@ -1,18 +1,17 @@
 #include "CppClassMainLogicBase.hpp"
-#include "CppDebugHelper.hpp"
-#include "CppClassKI.hpp"
 
 #include "CppExportImport.hpp"
+
+#include "CppClassKI.hpp"
 #include "CppStructsForConfigAndState.hpp"
 
 /** ***************************************
  * Constructors of MainLogicBase          *
  * ***************************************/
 
-
 MainLogicBase::MainLogicBase(IUI_SPTR uiObject, std::shared_ptr<GameConfig> config)
 {
-    if (uiObject == nullptr)
+    if (uiObject == nullptr || config == nullptr)
     {
         throw argument_nullptr_exception();
     }
@@ -22,40 +21,34 @@ MainLogicBase::MainLogicBase(IUI_SPTR uiObject, std::shared_ptr<GameConfig> conf
     {
         throw illegal_argument();
     }
-    printDebug("Config not loaded in base?");
-    this->config = config;
-    
 
-    // Default: So 4 homes, 4 players, 4 pieces per player
+    this->config = config;
 
     // Check if there are less players than homes. If so, check if, filled with KI is true. If not, check if spreadOnBoard is true
     int numberOfAllPlayers = config->players;
     for (int index = 0; index < config->players; index++)
     {
         players[index] = nullptr;
-    
     }
     if (config->players < config->homes)
     {
         if (config->fillKI)
         {
-            // Note which are KI and which not
-
             // Set numberOfPlayers to numberOfHomes
             numberOfAllPlayers = config->homes;
-
-            // Mark which ones are KI and mark names right
         }
     }
 
+    // Init board
     board.reset(new Board(config->homes == 4 ? false : true, numberOfAllPlayers, config->pieces, config->spread));
-    // Individual rules
-
-    
 
     dice = std::make_unique<Dice>();
+
     currentPlayer = dice->getStartPlayer(board->getNumberOfPlayers());
+
     stats = std::make_unique<Statistics>();
+
+    // Maybe fill with KI-players
     if (config->fillKI)
     {
         for (int index = config->players; index < config->homes; index++)
@@ -63,6 +56,8 @@ MainLogicBase::MainLogicBase(IUI_SPTR uiObject, std::shared_ptr<GameConfig> conf
             players[index] = std::make_shared<KI>(board->getEndFields()[index], board->getNumberOfFields());
         }
     }
+
+    // Make names
     if (config->names.size() < numberOfAllPlayers)
     {
         int countKI = 1;
@@ -78,10 +73,10 @@ MainLogicBase::MainLogicBase(IUI_SPTR uiObject, std::shared_ptr<GameConfig> conf
             }
             else
             {
-         
+
                 std::string name = "StealthPlayer ";
                 name.append(std::to_string(countHuman));
-  
+
                 config->names.push_back(name);
                 countHuman += 1;
             }
@@ -89,10 +84,10 @@ MainLogicBase::MainLogicBase(IUI_SPTR uiObject, std::shared_ptr<GameConfig> conf
     }
     nameOfPlayers = config->names;
 }
+
 /** ***************************************
  * Public methods of MainLogicBase        *
  * ***************************************/
-
 
 void MainLogicBase::startGame()
 {
@@ -101,15 +96,16 @@ void MainLogicBase::startGame()
     // Counter if someone is allowed to roll multiple times (if no piece can walk)
     int rollCounter = 1;
 
-    // GamePiece which was moved in last move
-    //lastGamePiece = nullptr;
-
-    // Game loop. (FUTURE IDEA: Possibility to cancel game)
+    // Game loop.
     while (gameIsNotFinished())
     {
-        if(ui->exportIsWanted()){
-            printDebug("export is wanted");
-            exportGameState();
+        if (ui->exitIsWanted())
+        {
+            if (ui->exportIsWanted())
+            {
+                printDebug("Export is wanted");
+                exportGameState();
+            }
             return;
         }
         printDebug("Loop running..");
@@ -122,14 +118,15 @@ void MainLogicBase::startGame()
 
         printDebug(currentDiceRoll);
         // Ask current player to roll dice and roll dice (This is not necessary but only for animation or game feeling)
-        // TODO Ask player and directly show roll.
         // if KI present choice, other ask
-        if(players[currentPlayer] == nullptr){
- ui->rollDice(nameOfPlayers[currentPlayer], currentDiceRoll);
-        } else{
+        if (players[currentPlayer] == nullptr)
+        {
+            ui->rollDice(nameOfPlayers[currentPlayer], currentDiceRoll);
+        }
+        else
+        {
             ui->showInformation(nameOfPlayers[currentPlayer] + " rolled a -" + std::to_string(currentDiceRoll) + "-");
         }
-       
 
         // Indicator whether after this move the next player should be determined or if the current player again
         bool nextPlayer = true;
@@ -154,16 +151,16 @@ void MainLogicBase::startGame()
         else
         {
             // Determine all possible walking moves
-            //printDebug("Get pieces selection");
 
             std::map<IGamePiece_SPTR, std::vector<std::pair<int, bool>>> moveAblePieces = getGamePiecesWithNewPositions(currentDiceRoll, lastGamePiece);
-            //printDebug("Selection found");
+
             // Get Selection from UI
             std::map<IGamePieceUI_SPTR, std::vector<std::pair<int, bool>>> selectable = convertMapForUI(moveAblePieces);
-            //printDebug("Converted");
+
             if (selectable.size() == 0)
             {
                 printDebug("No pieces possible");
+                ui->showInformation(nameOfPlayers[currentPlayer] + ": No walk possible");
             }
             else
             {
@@ -181,16 +178,14 @@ void MainLogicBase::startGame()
                     selection = ui->chooseOneGamePiece(selectable, nameOfPlayers[currentPlayer]);
                 }
 
-                printDebug("chosen");
-                printDebug(selection.first->getID());
                 // If we had a 6 mark it
                 if (currentDiceRoll == 6 && !selection.second.second)
                 {
                     printDebug("Mark last piece");
-                    if(!rules->goWithAnotherPieceOnSecondRollOfDice()){
- lastGamePiece = std::dynamic_pointer_cast<IGamePiece>(selection.first);
+                    if (!rules->goWithAnotherPieceOnSecondRollOfDice())
+                    {
+                        lastGamePiece = std::dynamic_pointer_cast<IGamePiece>(selection.first);
                     }
-                   
 
                     nextPlayer = false;
                 }
@@ -209,31 +204,30 @@ void MainLogicBase::startGame()
                 {
                     printDebug("Field");
                     movePieceOnField(convertedSelection.first, convertedSelection.second.first);
-                    if(rules->jumpOnEdges()){
-                        // Check if we are on jump field. If so, we have to check the position we jumped from to.
+                    if (rules->jumpOnEdges())
+                    {
+                        // Check if we are on jump field. If so, we have to check the position we jumped from too.
                         int positionWeJumpedFrom = getJumpPosition(convertedSelection.second.first);
                         IGamePiece_SPTR conflictPiece = nullptr;
                         do
                         {
-                                          if((conflictPiece = getConflictGamePiece(positionWeJumpedFrom)) != nullptr){
-                                              conflictPiece->setPosition(0);
-                                             
-                        }
+                            if ((conflictPiece = getConflictGamePiece(positionWeJumpedFrom)) != nullptr)
+                            {
+                                conflictPiece->setPosition(0);
+                            }
                         } while (conflictPiece != nullptr);
-                        
-
                     }
                 }
             }
         }
         // Update UI
         std::vector<std::vector<IGamePieceUI_SPTR>> pieces = board->getGamePieces();
-        //std::cout << std::endl << pieces.size() << std::endl << std::flush;
+
         ui->updateBoard(pieces);
+
         // Determine next current player
         if (nextPlayer)
         {
-            //printDebug("Determine next player");
             rollCounter = 1;
             lastGamePiece = nullptr;
             currentPlayer = determineNextPlayer();
@@ -242,114 +236,59 @@ void MainLogicBase::startGame()
 
     // Game is finished
     printDebug("Game finished");
-    // Present winner on UI
-    ui->showInformation("The winner is: " + std::to_string(winners[0]));
-    //ui->showInformation(std::to_string(winners[0]));
-    printDebug("The winners are: ");
-    printDebug(winners);
-    ui->showDiceStats(stats);
-    //stats->showDiceStats();
 
-    // Leave game loop (FUTURE IDEA: Possibility for restart?)
+    // Present winner on UI
+    ui->showInformation("Game ended");
+
+    //ui->showInformation("The winner is: " + std::to_string(winners[0]));
+    std::vector<std::string> uiWinners;
+    for (int index = 0; index < winners.size(); index++)
+    {
+        uiWinners.push_back(nameOfPlayers[winners[index]]);
+    }
+    ui->showWinners(uiWinners);
+
+    ui->showDiceStats(stats);
+
+    // Leave game loop
     printDebug("End of game");
 }
 
-IGamePiece_SPTR MainLogicBase::getGamePieceToID(int id){
-    std::vector<std::vector<IGamePieceUI_SPTR>> teams = board->getGamePieces();
-    for(int outIndex = 0; outIndex < teams.size(); outIndex++){
-        for(int inIndex = 0; inIndex < teams[outIndex].size(); inIndex++){
-            if(teams[outIndex][inIndex]->getID() == id){
-                return std::dynamic_pointer_cast<IGamePiece>(teams[outIndex][inIndex]);
-            }
-        }
+void MainLogicBase::importGameState(std::vector<std::shared_ptr<GamePieceState>> &piecesState, int player, int lastPiece, std::shared_ptr<Statistics> statistics)
+{
+    if (piecesState.size() != board->getNumberOfPlayers() * board->getNumberOfGamePiecesPerPlayer())
+    {
+        throw new illegal_argument;
     }
-    return nullptr;
-}
-void MainLogicBase::exportGameState(){
-    printDebug("In export");
-    std::shared_ptr<GameState> state = std::make_shared<GameState>();
-    std::vector<GamePieceState> pieces;
-     std::vector<std::vector<IGamePieceUI_SPTR>> teams = board->getGamePieces();
-   for(int outIndex = 0; outIndex < teams.size(); outIndex++){
-        for(int inIndex = 0; inIndex < teams[outIndex].size(); inIndex++){
-            IGamePieceUI_SPTR piece = teams[outIndex][inIndex];
-           std::shared_ptr<GamePieceState> pieceState = std::make_shared<GamePieceState>();
-            pieceState->finished = piece->isFinished();
-            pieceState->id = piece->getID();
-            pieceState->inTargetArea = piece->isInTargetArea();
-            pieceState->position = piece->getPosition();
-            state->pieceStates.push_back(pieceState);
-        }
-    }
-    state->currentPlayer = currentPlayer;
-    state->idOfLastPiece = lastGamePiece ? lastGamePiece->getID(): 0;
- 
-    state->stats = stats;
-    printDebug("In export before saving");
-    // printDebug("11");
-    // config->names;
-    // printDebug("22");
-    // printDebug("33");
-    // printDebug("44");
-    // printDebug("55");
-    maednhelper::saveFile(config, state);
-}
-void MainLogicBase::importGameState(std::vector<std::shared_ptr<GamePieceState>> &piecesState, int player, int lastPiece, std::shared_ptr<Statistics> statistics){
-    if(piecesState.size() != board->getNumberOfPlayers() * board->getNumberOfGamePiecesPerPlayer()){
-        //throw 
+    if (statistics == nullptr)
+    {
+        throw new argument_nullptr_exception;
     }
     currentPlayer = player;
     lastGamePiece = lastPiece == 0 ? nullptr : getGamePieceToID(lastPiece);
     stats = statistics;
-    for(int index = 0; index < piecesState.size(); index++){
-       std::shared_ptr<GamePieceState> state = piecesState[index];
-       IGamePiece_SPTR gamePiece = getGamePieceToID(state->id);
-       if(state->inTargetArea){
-           gamePiece->setToTargetArea(state->position);
-       } else {
-           gamePiece->setPosition(state->position);
-       }
-       if(state->finished){
-           gamePiece->setFinished();
-       }
-    }   
+    for (int index = 0; index < piecesState.size(); index++)
+    {
+        std::shared_ptr<GamePieceState> state = piecesState[index];
+        IGamePiece_SPTR gamePiece = getGamePieceToID(state->id);
+        if (state->inTargetArea)
+        {
+            gamePiece->setToTargetArea(state->position);
+        }
+        else
+        {
+            gamePiece->setPosition(state->position);
+        }
+        if (state->finished)
+        {
+            gamePiece->setFinished();
+        }
+    }
 }
 
 /** ***************************************
  * Protected methods of MainLogicBase     *
  * ***************************************/
-
-int MainLogicBase::determineNextPlayer()
-{
-    bool searchNextPlayer = true;
-    int nextPlayer = currentPlayer;
-    printDebug("CurrentPlayer: " + std::to_string(nextPlayer));
-
-    // Search so long for next player until one is found which has not finished yet or until all were tested. If so the game is finished anyways.
-    for (int testedPlayers = 0; testedPlayers < board->getNumberOfPlayers(); testedPlayers++)
-    {
-        nextPlayer = (nextPlayer + 1) % board->getNumberOfPlayers();
-        if (playerIsNotFinished(nextPlayer))
-        {
-            printDebug("Next player found: " + std::to_string(nextPlayer));
-            break;
-        }
-    }
-    return nextPlayer;
-}
-
-bool MainLogicBase::playerIsNotFinished(int player)
-{
-    bool result = false;
-    for (int index = 0; index < board->getTeam(player).size(); index++)
-    {
-        if (!board->getTeam(player)[index]->isFinished())
-        {
-            result = true;
-        }
-    }
-    return result;
-}
 
 void MainLogicBase::addPlayerToWinnersIfNotPresent(int player)
 {
@@ -382,7 +321,7 @@ int MainLogicBase::getJumpPosition(int field)
     return -1;
 }
 
-bool MainLogicBase::checkIfFree(std::vector<IGamePiece_SPTR> pieces, int position)
+bool MainLogicBase::checkIfFree(std::vector<IGamePiece_SPTR> &pieces, int position)
 {
     for (int index = 0; index < pieces.size(); index++)
     {
@@ -394,41 +333,6 @@ bool MainLogicBase::checkIfFree(std::vector<IGamePiece_SPTR> pieces, int positio
     return true;
 }
 
-void MainLogicBase::markFinishedPiecesOfTeam(std::vector<IGamePiece_SPTR> &targetAreaPieces)
-{
-    // Check all target area position. Start with the hightest, because only then a game piece can be finished when no free position before are left.
-    for (int position = board->getNumberOfGamePiecesPerPlayer(); position > 0; position--)
-    {
-        // Check all target area pieces if they are on the current position. If not no other piece can be finished. So skip remaining.
-        bool noPieceFound = true;
-        for (int piece = 0; piece < targetAreaPieces.size(); piece++)
-        {
-            if (targetAreaPieces[piece]->getPosition() == position)
-            {
-                targetAreaPieces[piece]->setFinished();
-                noPieceFound = false;
-            }
-        }
-        if (noPieceFound)
-        {
-            break;
-        }
-    }
-}
-
-bool MainLogicBase::contains(std::vector<int> vector, int containedNumber)
-{
-    bool isContained = false;
-    for (int index = 0; index < vector.size(); index++)
-    {
-        if (vector[index] == containedNumber)
-        {
-            isContained = true;
-        }
-    }
-    return isContained;
-}
-
 int MainLogicBase::containsEndField(int start, int steps, int player)
 {
     int targetPosition;
@@ -436,7 +340,7 @@ int MainLogicBase::containsEndField(int start, int steps, int player)
 
     for (int currentField = start; currentField < start + steps; currentField++)
     {
-        
+
         if (currentField == board->getEndFields()[player])
         {
             // Get new position
@@ -451,15 +355,15 @@ int MainLogicBase::containsEndField(int start, int steps, int player)
     return -1;
 }
 
-bool MainLogicBase::waitBeforeEndField(int start, int steps, int player){
+bool MainLogicBase::waitBeforeEndField(int start, int steps, int player)
+{
 
-   
     for (int currentField = start; currentField < start + steps; currentField++)
     {
-        
+
         if (currentField == board->getEndFields()[player])
         {
-return true;
+            return true;
         }
     }
     return false;
@@ -474,6 +378,98 @@ std::map<IGamePieceUI_SPTR, std::vector<std::pair<int, bool>>> MainLogicBase::co
         IGamePieceUI_SPTR convertedPiece = it->first;
         result[convertedPiece] = it->second;
         it++;
+    }
+    return result;
+}
+
+IGamePiece_SPTR MainLogicBase::getConflictGamePiece(int position)
+{
+    // If we are save on the start fields and our position to check is a start field there is no conflict
+    if (rules->saveOnStartField() && contains(board->getStartfields(), position))
+    {
+        printDebug("Return nullptr as there is no conflict");
+        return nullptr;
+    }
+
+    // Check if some other piece, which is not in target area is on this position.
+    for (int player = 0; player < board->getNumberOfPlayers(); player++)
+    {
+        printDebug("In search-loop for other pieces");
+        std::vector<IGamePiece_SPTR> currentTeam = board->getOutsideTeam(player);
+        if (player != currentPlayer || rules->mustThrowOwnPieces())
+        {
+
+            for (int inIndex = 0; inIndex < currentTeam.size(); inIndex++)
+            {
+                if (currentTeam[inIndex]->getPosition() == position)
+                {
+                    return currentTeam[inIndex];
+                }
+            }
+        }
+    }
+    // No conflicting piece found
+    return nullptr;
+}
+
+bool MainLogicBase::positionInTargetAreaIsFree(int field, int player)
+{
+    std::vector<IGamePiece_SPTR> team = board->getTargetAreaTeam(player);
+    for (int index = 0; index < team.size(); index++)
+    {
+        if (team[index]->getPosition() == field)
+        {
+            return false;
+        }
+    }
+    return true;
+}
+
+bool MainLogicBase::noOwnPieceThere(int newPosition)
+{
+    std::vector<IGamePiece_SPTR> team = board->getTeam(currentPlayer);
+    for (int index = 0; index < team.size(); index++)
+    {
+        if (team[index]->getPosition() == newPosition && !team[index]->isInTargetArea())
+        {
+            return false;
+        }
+    }
+    return true;
+}
+
+/** ***************************************
+ * Private methods of MainLogicBase       *
+ * ***************************************/
+
+int MainLogicBase::determineNextPlayer()
+{
+    bool searchNextPlayer = true;
+    int nextPlayer = currentPlayer;
+    printDebug("CurrentPlayer: " + std::to_string(nextPlayer));
+
+    // Search so long for next player until one is found which has not finished yet or until all were tested. If so the game is finished anyways.
+    for (int testedPlayers = 0; testedPlayers < board->getNumberOfPlayers(); testedPlayers++)
+    {
+        nextPlayer = (nextPlayer + 1) % board->getNumberOfPlayers();
+        if (playerIsNotFinished(nextPlayer))
+        {
+            printDebug("Next player found: " + std::to_string(nextPlayer));
+            break;
+        }
+    }
+    return nextPlayer;
+}
+
+bool MainLogicBase::playerIsNotFinished(int player)
+{
+    bool result = false;
+    for (int index = 0; index < board->getTeam(player).size(); index++)
+    {
+        if (!board->getTeam(player)[index]->isFinished())
+        {
+            result = true;
+        }
     }
     return result;
 }
@@ -527,52 +523,81 @@ void MainLogicBase::movePieceInTargetArea(IGamePiece_SPTR piece, int position)
     markFinishedPiecesOfTeam(team);
 }
 
-IGamePiece_SPTR MainLogicBase::getConflictGamePiece(int position)
+IGamePiece_SPTR MainLogicBase::getGamePieceToID(int id)
 {
-    // If we are save on the start fields and our position to check is a start field there is no conflict
-    if (rules->saveOnStartField() && contains(board->getStartfields(), position))
+    std::vector<std::vector<IGamePieceUI_SPTR>> teams = board->getGamePieces();
+    for (int outIndex = 0; outIndex < teams.size(); outIndex++)
     {
-        printDebug("Return nullptr as there is no conflict");
-        return nullptr;
-    }
-
-    // Check if some other piece, which is not in target area is on this position.
-    for (int player = 0; player < board->getNumberOfPlayers(); player++)
-    {
-        printDebug("In search-loop for other pieces");
-        std::vector<IGamePiece_SPTR> currentTeam = board->getOutsideTeam(player);
-        if (player != currentPlayer || rules->mustThrowOwnPieces())
+        for (int inIndex = 0; inIndex < teams[outIndex].size(); inIndex++)
         {
-
-            for (int inIndex = 0; inIndex < currentTeam.size(); inIndex++)
+            if (teams[outIndex][inIndex]->getID() == id)
             {
-                if (currentTeam[inIndex]->getPosition() == position)
-                {
-                    return currentTeam[inIndex];
-                }
+                return std::dynamic_pointer_cast<IGamePiece>(teams[outIndex][inIndex]);
             }
         }
     }
-    // No conflicting piece found
     return nullptr;
 }
 
-bool MainLogicBase::positionInTargetAreaIsFree(int field, int player){
-    std::vector<IGamePiece_SPTR> team = board->getTargetAreaTeam(player);
-    for(int index = 0; index < team.size(); index++){
-        if(team[index]->getPosition() == field){
-            return false;
+void MainLogicBase::exportGameState()
+{
+    printDebug("In export");
+    std::shared_ptr<GameState> state = std::make_shared<GameState>();
+    std::vector<GamePieceState> pieces;
+    std::vector<std::vector<IGamePieceUI_SPTR>> teams = board->getGamePieces();
+    for (int outIndex = 0; outIndex < teams.size(); outIndex++)
+    {
+        for (int inIndex = 0; inIndex < teams[outIndex].size(); inIndex++)
+        {
+            IGamePieceUI_SPTR piece = teams[outIndex][inIndex];
+            std::shared_ptr<GamePieceState> pieceState = std::make_shared<GamePieceState>();
+            pieceState->finished = piece->isFinished();
+            pieceState->id = piece->getID();
+            pieceState->inTargetArea = piece->isInTargetArea();
+            pieceState->position = piece->getPosition();
+            state->pieceStates.push_back(pieceState);
         }
     }
-    return true;
+    state->currentPlayer = currentPlayer;
+    state->idOfLastPiece = lastGamePiece ? lastGamePiece->getID() : 0;
+
+    state->stats = stats;
+    printDebug("In export before saving");
+
+    maednhelper::saveFile(config, state);
 }
 
-bool MainLogicBase::noOwnPieceThere(int newPosition){
-    std::vector<IGamePiece_SPTR> team = board->getTeam(currentPlayer);
-    for(int index = 0; index < team.size(); index++){
-        if(team[index]->getPosition() == newPosition && !team[index]->isInTargetArea()){
-            return false;
+void MainLogicBase::markFinishedPiecesOfTeam(std::vector<IGamePiece_SPTR> &targetAreaPieces)
+{
+    // Check all target area position. Start with the hightest, because only then a game piece can be finished when no free position before are left.
+    for (int position = board->getNumberOfGamePiecesPerPlayer(); position > 0; position--)
+    {
+        // Check all target area pieces if they are on the current position. If not no other piece can be finished. So skip remaining.
+        bool noPieceFound = true;
+        for (int piece = 0; piece < targetAreaPieces.size(); piece++)
+        {
+            if (targetAreaPieces[piece]->getPosition() == position)
+            {
+                targetAreaPieces[piece]->setFinished();
+                noPieceFound = false;
+            }
+        }
+        if (noPieceFound)
+        {
+            break;
         }
     }
-    return true;
+}
+
+bool MainLogicBase::contains(std::vector<int> vector, int containedNumber)
+{
+    bool isContained = false;
+    for (int index = 0; index < vector.size(); index++)
+    {
+        if (vector[index] == containedNumber)
+        {
+            isContained = true;
+        }
+    }
+    return isContained;
 }

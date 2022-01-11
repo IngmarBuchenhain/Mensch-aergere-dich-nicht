@@ -1,22 +1,13 @@
 #include "CppClassMainLogicHard.hpp"
-#include "CppDebugHelper.hpp"
-
-#include "CppClassKI.hpp"
-
-#include<iostream>
 
 /** *************************************
  * Constructors of MainLogicHard        *
  * *************************************/
 
-
-
-MainLogicHard::MainLogicHard(IUI_SPTR uiObject, std::shared_ptr<GameConfig> config) : MainLogicBase(uiObject, config){
-rules = std::make_unique<RuleSet>(true, true, true, false, true, false, true, false, true, true, false, true); // Default
-
+MainLogicHard::MainLogicHard(IUI_SPTR uiObject, std::shared_ptr<GameConfig> config) : MainLogicBase(uiObject, config)
+{
+    rules = std::make_unique<RuleSet>(true, true, true, false, true, false, true, false, true, true, false, true); // Hard
 }
-
-
 
 /** *************************************
  * Private methods of MainLogicHard     *
@@ -25,17 +16,14 @@ rules = std::make_unique<RuleSet>(true, true, true, false, true, false, true, fa
 std::map<IGamePiece_SPTR, std::vector<std::pair<int, bool>>> MainLogicHard::getGamePiecesWithNewPositions(int diceRoll, IGamePiece_SPTR lastPiece)
 {
     std::map<IGamePiece_SPTR, std::vector<std::pair<int, bool>>> walkAblePieces;
-        std::map<IGamePiece_SPTR, std::vector<std::pair<int, bool>>> walkAblePiecesThrowing;
+    std::map<IGamePiece_SPTR, std::vector<std::pair<int, bool>>> walkAblePiecesThrowing;
     std::vector<IGamePiece_SPTR> team = board->getTeam(currentPlayer);
     bool alreadyFinished = false;
     bool notOnlyThrowsAllowed = true;
     for (int pieceIndex = 0; pieceIndex < team.size(); pieceIndex++)
     {
-        // printDebug("Current piece ID to check possibilites");
-
         IGamePiece_SPTR currentPiece = team[pieceIndex];
-        // printDebug(currentPiece->getID());
-        // printDebug(currentPiece->getPosition());
+
         if (alreadyFinished)
         {
             break;
@@ -49,25 +37,20 @@ std::map<IGamePiece_SPTR, std::vector<std::pair<int, bool>>> MainLogicHard::getG
         }
         std::vector<std::pair<int, bool>> possibilities;
         std::vector<std::pair<int, bool>> possibilitiesThrow;
-        // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-        // Wie bestimme ich was wann passiert? Wie speicher ich das zwischen?
-        //Wenn eine 6 ist und ich kann raus, dann muss ich raus.
-       /// Sonst muss ich checken ob ich was werfen kann. Wenn ja, gehen nur diese.
-        //Es kann aber sein, dass ich andere figuren zuerst anschauen. Das heißt alles zwischenspeichern?
-        // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
         if (diceRoll == 6 && currentPiece->getPosition() == 0)
         { // 6 Check
             // Check if startfield free
             // Get startfield
             int start = board->getStartfields()[currentPlayer];
             std::vector<IGamePiece_SPTR> team = board->getTeam(currentPlayer);
-            if(checkIfFree(team, start)){
- std::pair<int, bool> position;
-            position.first = start;
-            position.second = false;
-            possibilities.push_back(position);
+            if (checkIfFree(team, start))
+            {
+                std::pair<int, bool> position;
+                position.first = start;
+                position.second = false;
+                possibilities.push_back(position);
             }
-           
         }
         else
         {
@@ -76,55 +59,59 @@ std::map<IGamePiece_SPTR, std::vector<std::pair<int, bool>>> MainLogicHard::getG
             bool getPossibilities = true;
             if (diceRoll == 6 && board->getHomeAreaTeam(currentPlayer).size() != 0)
             {
-
                 getPossibilities = false;
             }
             if (getPossibilities)
             {
                 // First check if we can throw someone. If so, this is the only action. If not, do the normal stuff.
-                               int forwardPosition;
+                int forwardPosition;
                 int backwardPosition;
 
-                if(!currentPiece->isInTargetArea()){
+                if (!currentPiece->isInTargetArea())
+                {
                     forwardPosition = (currentPiece->getPosition() + diceRoll) % board->getNumberOfFields();
-                    if(forwardPosition == 0){
+                    if (forwardPosition == 0)
+                    {
                         forwardPosition = board->getNumberOfFields();
                     }
                     backwardPosition = (currentPiece->getPosition() - diceRoll);
-                    if(backwardPosition <= 0){
+                    if (backwardPosition <= 0)
+                    {
                         backwardPosition = board->getNumberOfFields() + backwardPosition;
                     }
                     // Check these positions for other players
                     IGamePiece_SPTR throwForward = getConflictGamePiece(forwardPosition);
                     IGamePiece_SPTR throwBackward = getConflictGamePiece(backwardPosition);
-                    if(throwForward != nullptr){
+                    if (throwForward != nullptr)
+                    {
                         notOnlyThrowsAllowed = false;
-                                                int jumpPosition;
-                            if((jumpPosition = getJumpPosition(forwardPosition)) != -1){
-                                forwardPosition = jumpPosition;
-                            }
-                         std::pair<int, bool> position;
-                    position.first = forwardPosition;
-                    //printDebug(currentPiece->getPosition() + diceRoll);
-                    position.second = false;
-                    possibilitiesThrow.push_back(position);
-                    }   
-                    if(throwBackward != nullptr){
+                        int jumpPosition;
+                        if ((jumpPosition = getJumpPosition(forwardPosition)) != -1)
+                        {
+                            forwardPosition = jumpPosition;
+                        }
+                        std::pair<int, bool> position;
+                        position.first = forwardPosition;
+                        position.second = false;
+                        possibilitiesThrow.push_back(position);
+                    }
+                    if (throwBackward != nullptr)
+                    {
                         notOnlyThrowsAllowed = false;
-                                                int jumpPosition;
-                            if((jumpPosition = getJumpPosition(backwardPosition)) != -1){
-                                backwardPosition = jumpPosition;
-                            }
-                         std::pair<int, bool> position;
-                    position.first = backwardPosition;
-                    //printDebug(currentPiece->getPosition() + diceRoll);
-                    position.second = false;
-                    possibilitiesThrow.push_back(position);
+                        int jumpPosition;
+                        if ((jumpPosition = getJumpPosition(backwardPosition)) != -1)
+                        {
+                            backwardPosition = jumpPosition;
+                        }
+                        std::pair<int, bool> position;
+                        position.first = backwardPosition;
+                        position.second = false;
+                        possibilitiesThrow.push_back(position);
                     }
                 }
- 
+
                 // Here old normal stuff
-                    if (currentPiece->isInTargetArea() && (currentPiece->getPosition() + diceRoll) <= board->getNumberOfGamePiecesPerPlayer() && wayIsFree(currentPiece->getPosition(), currentPiece->getPosition() + diceRoll, currentPlayer))
+                if (currentPiece->isInTargetArea() && (currentPiece->getPosition() + diceRoll) <= board->getNumberOfGamePiecesPerPlayer() && wayIsFree(currentPiece->getPosition(), currentPiece->getPosition() + diceRoll, currentPlayer))
                 {
                     // Check if way is free, if so add
                     printDebug("Is in target area");
@@ -136,7 +123,6 @@ std::map<IGamePiece_SPTR, std::vector<std::pair<int, bool>>> MainLogicHard::getG
                 }
                 else if (!currentPiece->isInTargetArea() && currentPiece->getPosition() != 0)
                 {
-
                     // Check if endField is in range
                     int targetAreaPosition;
                     if ((targetAreaPosition = containsEndField(currentPiece->getPosition(), diceRoll, currentPlayer)) != -1)
@@ -149,16 +135,20 @@ std::map<IGamePiece_SPTR, std::vector<std::pair<int, bool>>> MainLogicHard::getG
                             position.first = targetAreaPosition;
                             position.second = true;
                             possibilities.push_back(position);
-                        } else{
+                        }
+                        else
+                        {
                             int newPosition = (currentPiece->getPosition() + diceRoll) % board->getNumberOfFields();
-                            if(newPosition == 0){
+                            if (newPosition == 0)
+                            {
                                 newPosition = board->getNumberOfFields();
                             }
-                             int jumpPosition;
-                            if((jumpPosition = getJumpPosition(newPosition)) != -1){
+                            int jumpPosition;
+                            if ((jumpPosition = getJumpPosition(newPosition)) != -1)
+                            {
                                 newPosition = jumpPosition;
                             }
-                                                        std::pair<int, bool> position;
+                            std::pair<int, bool> position;
                             position.first = newPosition;
                             position.second = false;
                             possibilities.push_back(position);
@@ -166,7 +156,6 @@ std::map<IGamePiece_SPTR, std::vector<std::pair<int, bool>>> MainLogicHard::getG
                     }
                     else
                     {
-                        
                         // Get new position
                         printDebug("Normal walk");
                         int newPosition = (currentPiece->getPosition() + diceRoll) % board->getNumberOfFields();
@@ -177,23 +166,20 @@ std::map<IGamePiece_SPTR, std::vector<std::pair<int, bool>>> MainLogicHard::getG
 
                         printDebug(newPosition);
                         int jumpPosition;
-                            if((jumpPosition = getJumpPosition(newPosition)) != -1){
-                                newPosition = jumpPosition;
-                            }
-                            std::pair<int, bool> position;
-                            position.first = newPosition;
-                            position.second = false;
-                            possibilities.push_back(position);
-                        
+                        if ((jumpPosition = getJumpPosition(newPosition)) != -1)
+                        {
+                            newPosition = jumpPosition;
+                        }
+                        std::pair<int, bool> position;
+                        position.first = newPosition;
+                        position.second = false;
+                        possibilities.push_back(position);
                     }
                 }
-
-                // If no home area members remained we can walk with this piece. Check possibilities
-                // If currentPosition + dicesteps- 1 contains endfield, this can walk into target.
-                // Check other possibilities. Forward and backward.
             }
         }
-        if(possibilitiesThrow.size() > 0){
+        if (possibilitiesThrow.size() > 0)
+        {
             walkAblePiecesThrowing.insert(std::make_pair(currentPiece, possibilitiesThrow));
         }
         if (possibilities.size() > 0)
@@ -202,12 +188,14 @@ std::map<IGamePiece_SPTR, std::vector<std::pair<int, bool>>> MainLogicHard::getG
             walkAblePieces.insert(std::make_pair(currentPiece, possibilities));
         }
     }
-    if(notOnlyThrowsAllowed){
-return walkAblePieces;
-    } else{
+    if (notOnlyThrowsAllowed)
+    {
+        return walkAblePieces;
+    }
+    else
+    {
         return walkAblePiecesThrowing;
     }
-    
 }
 
 bool MainLogicHard::wayIsFree(int start, int position, int player)
@@ -259,18 +247,19 @@ bool MainLogicHard::gameIsNotFinished()
         }
         if (allPiecesFinished)
         {
-
             addPlayerToWinnersIfNotPresent(player);
-            //return false;
         }
     }
     return !allPlayerFinished;
 }
 
-bool MainLogicHard::targetTeamFinished(int currentPlayer){
+bool MainLogicHard::targetTeamFinished(int currentPlayer)
+{
     std::vector<IGamePiece_SPTR> team = board->getTargetAreaTeam(currentPlayer);
-    for(int piece = 0; piece < team.size(); piece++){
-        if(!team[piece]->isFinished()){
+    for (int piece = 0; piece < team.size(); piece++)
+    {
+        if (!team[piece]->isFinished())
+        {
             return false;
         }
     }

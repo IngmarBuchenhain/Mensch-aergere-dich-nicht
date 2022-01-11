@@ -1,22 +1,13 @@
 #include "CppClassMainLogicEasy.hpp"
-#include "CppDebugHelper.hpp"
-
-#include "CppClassKI.hpp"
-
-#include<iostream>
 
 /** *************************************
  * Constructors of MainLogicEasy        *
  * *************************************/
 
-
-
-MainLogicEasy::MainLogicEasy(IUI_SPTR uiObject, std::shared_ptr<GameConfig> config) : MainLogicBase(uiObject, config){
-rules = std::make_unique<RuleSet>(false, false, false, true, false, true, false, true, false, false, true, false); // Default
-
+MainLogicEasy::MainLogicEasy(IUI_SPTR uiObject, std::shared_ptr<GameConfig> config) : MainLogicBase(uiObject, config)
+{
+    rules = std::make_unique<RuleSet>(false, false, false, true, false, true, false, true, false, false, true, false); // Easy
 }
-
-
 
 /** *************************************
  * Public methods of MainLogicEasy      *
@@ -33,11 +24,7 @@ std::map<IGamePiece_SPTR, std::vector<std::pair<int, bool>>> MainLogicEasy::getG
 
     for (int pieceIndex = 0; pieceIndex < team.size(); pieceIndex++)
     {
-        // printDebug("Current piece ID to check possibilites");
-
         IGamePiece_SPTR currentPiece = team[pieceIndex];
-        // printDebug(currentPiece->getID());
-        // printDebug(currentPiece->getPosition());
 
         std::vector<std::pair<int, bool>> possibilities;
         if (diceRoll == 6 && currentPiece->getPosition() == 0)
@@ -46,51 +33,46 @@ std::map<IGamePiece_SPTR, std::vector<std::pair<int, bool>>> MainLogicEasy::getG
             // Get startfield
             int start = board->getStartfields()[currentPlayer];
             std::vector<IGamePiece_SPTR> team = board->getTeam(currentPlayer);
-     
- std::pair<int, bool> position;
+
+            std::pair<int, bool> position;
             position.first = start;
             position.second = false;
             possibilities.push_back(position);
-           
-           
         }
         else
         {
             // No 6 or not an
             // Get possibilities
-
-       
-                if (currentPiece->isInTargetArea() && (currentPiece->getPosition() + diceRoll) <= board->getNumberOfGamePiecesPerPlayer() && wayIsFree(currentPiece->getPosition(), currentPiece->getPosition() + diceRoll, currentPlayer))
+            if (currentPiece->isInTargetArea() && (currentPiece->getPosition() + diceRoll) <= board->getNumberOfGamePiecesPerPlayer() && wayIsFree(currentPiece->getPosition(), currentPiece->getPosition() + diceRoll, currentPlayer))
+            {
+                // Check if way is free, if so add
+                printDebug("Is in target area");
+                std::pair<int, bool> position;
+                position.first = currentPiece->getPosition() + diceRoll;
+                printDebug(currentPiece->getPosition() + diceRoll);
+                position.second = true;
+                possibilities.push_back(position);
+            }
+            else if (!currentPiece->isInTargetArea() && currentPiece->getPosition() != 0)
+            {
+                // Check if endField is in range
+                int targetAreaPosition;
+                if ((targetAreaPosition = containsEndField(currentPiece->getPosition(), diceRoll, currentPlayer)) != -1)
                 {
-                    // Check if way is free, if so add
-                    printDebug("Is in target area");
-                    std::pair<int, bool> position;
-                    position.first = currentPiece->getPosition() + diceRoll;
-                    printDebug(currentPiece->getPosition() + diceRoll);
-                    position.second = true;
-                    possibilities.push_back(position);
-                }
-                else if (!currentPiece->isInTargetArea() && currentPiece->getPosition() != 0)
-                {
-
-                    // Check if endField is in range
-                    int targetAreaPosition;
-                    if ((targetAreaPosition = containsEndField(currentPiece->getPosition(), diceRoll, currentPlayer)) != -1)
+                    printDebug("Going to target area - Number:");
+                    printDebug(targetAreaPosition);
+                    if (wayIsFree(0, targetAreaPosition, currentPlayer))
                     {
-                        printDebug("Going to target area - Number:");
-                        printDebug(targetAreaPosition);
-                        if (wayIsFree(0, targetAreaPosition, currentPlayer))
-                        {
-                            std::pair<int, bool> position;
-                            position.first = targetAreaPosition;
-                            position.second = true;
-                            possibilities.push_back(position);
-                        }
+                        std::pair<int, bool> position;
+                        position.first = targetAreaPosition;
+                        position.second = true;
+                        possibilities.push_back(position);
                     }
-                    else
+                }
+                else
+                {
+                    if (!waitBeforeEndField(currentPiece->getPosition(), diceRoll, currentPlayer))
                     {
-                        if (!waitBeforeEndField(currentPiece->getPosition(), diceRoll, currentPlayer))
-                        {
                         // Get new position
                         printDebug("Normal walk");
                         int newPosition = (currentPiece->getPosition() + diceRoll) % board->getNumberOfFields();
@@ -107,14 +89,9 @@ std::map<IGamePiece_SPTR, std::vector<std::pair<int, bool>>> MainLogicEasy::getG
                             position.second = false;
                             possibilities.push_back(position);
                         }
-                        }
                     }
                 }
-
-                // If no home area members remained we can walk with this piece. Check possibilities
-                // If currentPosition + dicesteps- 1 contains endfield, this can walk into target.
-                // Check other possibilities. Forward and backward.
-            
+            }
         }
         if (possibilities.size() > 0)
         {
@@ -122,19 +99,16 @@ std::map<IGamePiece_SPTR, std::vector<std::pair<int, bool>>> MainLogicEasy::getG
             walkAblePieces.insert(std::make_pair(currentPiece, possibilities));
         }
     }
-
     return walkAblePieces;
 }
 
 bool MainLogicEasy::wayIsFree(int start, int position, int player)
 {
-            if (positionInTargetAreaIsFree(position, player))
-            {
-                return true;
-            }
-            return false;
-
-
+    if (positionInTargetAreaIsFree(position, player))
+    {
+        return true;
+    }
+    return false;
 }
 
 bool MainLogicEasy::currentPlayerIsAllowedToRollAgain(int currentDiceRoll)
@@ -149,7 +123,6 @@ bool MainLogicEasy::currentPlayerIsAllowedToRollAgain(int currentDiceRoll)
         {
             return true;
         }
-        
     }
     return false;
 }

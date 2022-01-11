@@ -1,7 +1,4 @@
 #include "CppClassMainLogicDefault.hpp"
-#include "CppDebugHelper.hpp"
-
-#include "CppClassKI.hpp"
 
 /** *************************************
  * Constructors of MainLogicDefault     *
@@ -27,11 +24,8 @@ std::map<IGamePiece_SPTR, std::vector<std::pair<int, bool>>> MainLogicDefault::g
     bool alreadyFinished = false;
     for (int pieceIndex = 0; pieceIndex < team.size(); pieceIndex++)
     {
-        // printDebug("Current piece ID to check possibilites");
-
         IGamePiece_SPTR currentPiece = team[pieceIndex];
-        // printDebug(currentPiece->getID());
-        // printDebug(currentPiece->getPosition());
+
         if (alreadyFinished)
         {
             break;
@@ -120,10 +114,6 @@ std::map<IGamePiece_SPTR, std::vector<std::pair<int, bool>>> MainLogicDefault::g
                         }
                     }
                 }
-
-                // If no home area members remained we can walk with this piece. Check possibilities
-                // If currentPosition + dicesteps- 1 contains endfield, this can walk into target.
-                // Check other possibilities. Forward and backward.
             }
         }
         if (possibilities.size() > 0)
@@ -132,7 +122,6 @@ std::map<IGamePiece_SPTR, std::vector<std::pair<int, bool>>> MainLogicDefault::g
             walkAblePieces.insert(std::make_pair(currentPiece, possibilities));
         }
     }
-
     return walkAblePieces;
 }
 
@@ -151,8 +140,6 @@ bool MainLogicDefault::wayIsFree(int start, int position, int player)
     }
     return true;
 }
-
-
 
 bool MainLogicDefault::currentPlayerIsAllowedToRollAgain(int currentDiceRoll)
 {
