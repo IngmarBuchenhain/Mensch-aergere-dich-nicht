@@ -3,8 +3,11 @@
 
 #include <vector>
 #include <memory>
+#include <map>
 
 #include "CppIGamePieceUI.hpp"
+#include "CppIJumpPair.hpp"
+
 
 /**
  * Representation of the board for use with the ui.
@@ -19,6 +22,8 @@ public:
 // 2-6
     virtual int getNumberOfPlayers() = 0;
 
+
+
 public:
     virtual int getNumberOfGamePiecesPerPlayer() = 0;
 
@@ -30,7 +35,7 @@ public:
     public:
     virtual std::vector<int> getEndFields() = 0;
     public:
-    virtual std::vector<int[2]> getJumpFields() = 0;
+    virtual std::vector<IJumpPair_SPTR> getJumpFields() = 0;
 
 public:
     virtual std::vector<std::vector<IGamePieceUI_SPTR>> getGamePieces() = 0;

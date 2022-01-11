@@ -26,20 +26,17 @@ public:
 
     virtual void initBoard(IBoardUI_SPTR board) = 0;
 
-
 public:
     /**
      * Presents some information to user.
      */
     virtual void showInformation(std::string message) = 0;
 
-
-// public:
-//     /**
-//      * Presents the given number to the user. NOT NECESSARY?
-//      */
-//     virtual void showDice(int diceNumber) = 0;
-
+    // public:
+    //     /**
+    //      * Presents the given number to the user. NOT NECESSARY?
+    //      */
+    //     virtual void showDice(int diceNumber) = 0;
 
 public:
     /**
@@ -48,16 +45,22 @@ public:
      */
 
     virtual void rollDice(int currentPlayer, int diceNumber) = 0;
+    virtual void rollDice(std::string currentPlayer, int diceNumber) = 0;
 
+public:
+    /**
+     * DEPRECATED: Present the current player all game pieces he can walk with, and let him choose one.
+     */
+    virtual IGamePieceUI_SPTR chooseGamePiece(std::vector<IGamePieceUI_SPTR> &gamePieces, int currentPlayer) = 0;
 
 public:
     /**
      * Present the current player all game pieces he can walk with, and let him choose one.
+     * Each piece may have multiple possibilities to walk. The int is the new position, the bool indicates whether the new position is in the target area.
      */
-
-    virtual IGamePieceUI_SPTR chooseGamePiece(std::vector<IGamePieceUI_SPTR> &gamePieces, int currentPlayer) = 0;
-
-
+    virtual std::pair<IGamePieceUI_SPTR, std::pair<int, bool>> chooseOneGamePiece(std::map<IGamePieceUI_SPTR, std::vector<std::pair<int, bool>>> &possiblePieces, int currentPlayer) = 0;
+    virtual std::pair<IGamePieceUI_SPTR, std::pair<int, bool>> chooseOneGamePiece(std::map<IGamePieceUI_SPTR, std::vector<std::pair<int, bool>>> &possiblePieces, std::string currentPlayer) = 0;
+    virtual bool exportIsWanted() = 0;
 public:
     /**
      * Updates the drawn board game with changed game pieces.
@@ -65,17 +68,10 @@ public:
      * Throws exception if no board was initialized!
      */
 
-   // virtual bool updateBoard(std::vector<IGamePieceUI_SPTR> &gamePieces) = 0;
-    virtual void updateBoard(std::vector<std::vector<IGamePieceUI_SPTR>> &gamePieces) = 0;
-  
+    // virtual bool updateBoard(std::vector<IGamePieceUI_SPTR> &gamePieces) = 0;
+    virtual void updateBoard(std::vector<std::vector<IGamePieceUI_SPTR>> gamePieces) = 0;
 };
 
 typedef std::shared_ptr<IUI> IUI_SPTR;
-
-
-
-
-
-
 
 #endif
