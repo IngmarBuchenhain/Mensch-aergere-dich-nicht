@@ -167,7 +167,7 @@ int main(int argc, char **argv)
         }
         catch (...)
         {
-            printError("Failure on start or while running game logic due to unknown Error!");
+            printError("Failure on start or while running game logic due to unknown Error! If you tried loading a game the file may be corrupted");
             errorsOccured = true;
         }
     }

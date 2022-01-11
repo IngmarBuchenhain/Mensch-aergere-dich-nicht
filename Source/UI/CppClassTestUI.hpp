@@ -1,11 +1,13 @@
 #ifndef MAEDN_CLASS_TEST_UI_HPP
 #define MAEDN_CLASS_TEST_UI_HPP
 
-// This is only for testing! Not necessarily clean code! Only rudimentary to check logic development
+// OLD !!!!!!!!!!! This is only for testing! Not necessarily clean code! Only rudimentary to check logic development !!!!!!!!!!!!
 
 #include <iostream>
 #include "CppIUI.hpp"
-
+/**
+ * Obsolete: Was used while developing. Not for production!! No clean code!
+ */
 class TestUI : public IUI
 {
     bool exportWanted = false;
