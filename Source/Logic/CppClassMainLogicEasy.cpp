@@ -89,6 +89,8 @@ std::map<IGamePiece_SPTR, std::vector<std::pair<int, bool>>> MainLogicEasy::getG
                     }
                     else
                     {
+                        if (!waitBeforeEndField(currentPiece->getPosition(), diceRoll, currentPlayer))
+                        {
                         // Get new position
                         printDebug("Normal walk");
                         int newPosition = (currentPiece->getPosition() + diceRoll) % board->getNumberOfFields();
@@ -104,6 +106,7 @@ std::map<IGamePiece_SPTR, std::vector<std::pair<int, bool>>> MainLogicEasy::getG
                             position.first = newPosition;
                             position.second = false;
                             possibilities.push_back(position);
+                        }
                         }
                     }
                 }

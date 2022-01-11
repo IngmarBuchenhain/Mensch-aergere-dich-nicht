@@ -7,18 +7,14 @@
  * Constructors of MainLogicDefault     *
  * *************************************/
 
-
-
-MainLogicDefault::MainLogicDefault(IUI_SPTR uiObject, std::shared_ptr<GameConfig> config) : MainLogicBase(uiObject, config){
-rules = std::make_unique<RuleSet>(); // Default
-
+MainLogicDefault::MainLogicDefault(IUI_SPTR uiObject, std::shared_ptr<GameConfig> config) : MainLogicBase(uiObject, config)
+{
+    rules = std::make_unique<RuleSet>(); // Default
 }
-
 
 /** *************************************
  * Public methods of MainLogicDefault   *
  * *************************************/
-
 
 /** *************************************
  * Private methods of MainLogicDefault  *
@@ -54,13 +50,13 @@ std::map<IGamePiece_SPTR, std::vector<std::pair<int, bool>>> MainLogicDefault::g
             // Get startfield
             int start = board->getStartfields()[currentPlayer];
             std::vector<IGamePiece_SPTR> team = board->getTeam(currentPlayer);
-            if(checkIfFree(team, start)){
- std::pair<int, bool> position;
-            position.first = start;
-            position.second = false;
-            possibilities.push_back(position);
+            if (checkIfFree(team, start))
+            {
+                std::pair<int, bool> position;
+                position.first = start;
+                position.second = false;
+                possibilities.push_back(position);
             }
-           
         }
         else
         {
@@ -103,21 +99,24 @@ std::map<IGamePiece_SPTR, std::vector<std::pair<int, bool>>> MainLogicDefault::g
                     }
                     else
                     {
-                        // Get new position
-                        printDebug("Normal walk");
-                        int newPosition = (currentPiece->getPosition() + diceRoll) % board->getNumberOfFields();
-                        if (newPosition == 0)
+                        if (!waitBeforeEndField(currentPiece->getPosition(), diceRoll, currentPlayer))
                         {
-                            newPosition = board->getNumberOfFields();
-                        }
+                            // Get new position
+                            printDebug("Normal walk");
+                            int newPosition = (currentPiece->getPosition() + diceRoll) % board->getNumberOfFields();
+                            if (newPosition == 0)
+                            {
+                                newPosition = board->getNumberOfFields();
+                            }
 
-                        printDebug(newPosition);
-                        if (noOwnPieceThere(newPosition))
-                        {
-                            std::pair<int, bool> position;
-                            position.first = newPosition;
-                            position.second = false;
-                            possibilities.push_back(position);
+                            printDebug(newPosition);
+                            if (noOwnPieceThere(newPosition))
+                            {
+                                std::pair<int, bool> position;
+                                position.first = newPosition;
+                                position.second = false;
+                                possibilities.push_back(position);
+                            }
                         }
                     }
                 }
@@ -152,6 +151,8 @@ bool MainLogicDefault::wayIsFree(int start, int position, int player)
     }
     return true;
 }
+
+
 
 bool MainLogicDefault::currentPlayerIsAllowedToRollAgain(int currentDiceRoll)
 {

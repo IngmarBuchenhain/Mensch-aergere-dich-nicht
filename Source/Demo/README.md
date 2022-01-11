@@ -12,7 +12,7 @@ The following enumeration represent the lines of the save-game-file and the expl
 10.
 11.
 12.
-13. Indicator whether this is a saved game or only configuration (1: This is a save-game - Load the state; Else: Only take the configuration)
+13. Indicator whether this is a saved game or only configuration (1: This is a save-game - Load the state; Else number: Only take the configuration)
 14. Dice rolls of number 1
 15. Dice rolls of number 2
 16. to 19 - Remaining dice numbers

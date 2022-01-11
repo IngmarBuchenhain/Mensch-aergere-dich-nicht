@@ -1,7 +1,7 @@
 #ifndef MAEDN_RULE_SET_HPP
 #define MAEDN_RULE_SET_HPP
 
-#include<memory>
+#include <memory>
 
 /**
  * Representation of the rules of a maedn-game. An object of this class is read-only, as it has only private properties describing the rules.
@@ -20,7 +20,7 @@ class RuleSet
     bool walkByTargetAreaIfNotPossibleToWalkInIntern;
 
     bool saveOnStartFieldIntern;
-    bool mustAlwaysFreeStartFieldIntern; 
+    bool mustAlwaysFreeStartFieldIntern;
     bool allowedToUseOutsidePieceOnSixWhenPiecesLeftHomeIntern;
 
     bool onlyRollThreeTimesIfNoPieceOutAndTargetAreaOnEndIntern;
@@ -78,6 +78,7 @@ public:
 
 public:
     bool goWithAnotherPieceOnSecondRollOfDice();
+
 public:
     bool playUntilAllPlayersFinished();
 };

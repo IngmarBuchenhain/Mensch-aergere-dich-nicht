@@ -28,9 +28,9 @@ class MainLogicBase
 
 protected:
     // Game configuration
-    IBoard_SPTR board;  // I need the shared pointer so I can give the UI the board as pointer to an interface.
-    RuleSet_UPTR rules; // I only need unique pointer as I only use it in here.
-    Dice_UPTR dice;
+    IBoard_SPTR board = nullptr;  // I need the shared pointer so I can give the UI the board as pointer to an interface.
+    RuleSet_UPTR rules = nullptr; // I only need unique pointer as I only use it in here.
+    Dice_UPTR dice = nullptr;
     int currentPlayer;
     IGamePiece_SPTR lastGamePiece = nullptr;
     std::vector<int> winners; // May be one or if played until all finished multiple.
@@ -159,9 +159,14 @@ IGamePiece_SPTR getGamePieceToID(int id);
     bool contains(std::vector<int> vector, int containedNumber);
 
     /**
-     * Check if the endField of a given player is between the 'start' field and a number of given steps.
+     * Check if the endField of a given player is between the 'start' field and a number of given steps and returns the target field if so. Otherwise returns -1.
      */
     int containsEndField(int start, int steps, int player);
+
+    /**
+     * Check if the endField of a given player is between the 'start' field and a number of given steps.
+     */
+    bool waitBeforeEndField(int start, int steps, int player);
 
     /**
      * Check if a specified position in target area of a player is free.
@@ -169,7 +174,7 @@ IGamePiece_SPTR getGamePieceToID(int id);
     bool positionInTargetAreaIsFree(int field, int player);
 
     /**
-     * Check if on the given position is no own piece of the current player.
+     * Check if on the given position is no own piece of the current player. Only for field positions!
      */
     bool noOwnPieceThere(int newPosition);
 

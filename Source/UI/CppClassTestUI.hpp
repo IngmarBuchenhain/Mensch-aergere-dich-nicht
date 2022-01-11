@@ -14,7 +14,6 @@ class TestUI : public IUI
     IBoardUI_SPTR boardCache;
     int state = 0;
 
-
 public:
     void initBoard(IBoardUI_SPTR board) override
     {
@@ -40,8 +39,6 @@ public:
         return exportWanted;
     }
 
-
-
 public:
     /**
      * Ask/Make the current player to roll the dice.
@@ -63,16 +60,18 @@ public:
         std::cout << std::endl
                   << currentPlayer << ": It's your turn! If you want to roll the dice, press 'Enter'";
         //  std::cin.ignore(10);
-countTest++;
-if(countTest > 50){
-    std::cout << "Do you want to quit and save game? 'y' if yes anything else either";
-    char exit;
-    std::cin >> exit;
-    if(exit == 'y'){
-        exitWanted = true;
-        exportWanted = true;
-    }
-}
+        countTest++;
+        if (countTest > 5000)
+        {
+            std::cout << "Do you want to quit and save game? 'y' if yes anything else either";
+            char exit;
+            std::cin >> exit;
+            if (exit == 'y')
+            {
+                exitWanted = true;
+                exportWanted = true;
+            }
+        }
         std::cin.ignore();
         std::cout << std::endl
                   << "You rolled a -" << diceNumber << "-" << std::endl
@@ -134,10 +133,10 @@ public:
     }
 
 public:
-    void showStats(std::shared_ptr<Statistics> stats) override
-    {
-        stats->showDiceStats();
-    }
+    // void showStats(std::shared_ptr<Statistics> stats) override
+    // {
+    //     stats->showDiceStats();
+    // }
 
     bool exitIsWanted() override
     {
@@ -194,8 +193,7 @@ public:
                 {
                     std::cout << " X ";
                 }
-   }
-
+            }
         }
         std::cout << std::endl
                   << std::flush;
@@ -217,6 +215,42 @@ public:
         }
         std::cout << std::endl
                   << std::flush;
+    }
+
+public:
+    /**
+     * Present the stats. 
+     */
+    void showDiceStats(std::shared_ptr<Statistics> stats) override
+    {
+        std::cout << std::endl
+                  << "Dice statistics" << std::endl;
+        std::cout << "Number of total dice rolls: " << stats->getNumberOfTotalRolls() << std::endl;
+        std::cout << "Dice distribution:" << std::endl;
+        for (int diceNumber = 1; diceNumber < 7; diceNumber++)
+        {
+            std::cout << diceNumber << ": ";
+            // Make it align
+            if (stats->getNumberRolls(diceNumber) < 100 && stats->getNumberRolls(diceNumber) > 9)
+            {
+                std::cout << " ";
+            }
+            else if (stats->getNumberRolls(diceNumber) < 10)
+            {
+                std::cout << "  ";
+            }
+            std::cout << stats->getNumberRolls(diceNumber) << " ";
+
+            // Normalize for bars
+            double normalizedNumber = ((double)stats->getNumberRolls(diceNumber) / (double)stats->getNumberOfTotalRolls()) * 400;
+            int temp = (int)normalizedNumber;
+            // Show bars
+            for (int index = 0; index < temp; index++)
+            {
+                std::cout << "\u25A0";
+            }
+            std::cout << std::endl;
+        }
     }
 };
 

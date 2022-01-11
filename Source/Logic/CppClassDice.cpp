@@ -1,5 +1,6 @@
 #include "CppClassDice.hpp"
-#include<random>
+
+#include <random>
 
 // Will be used to obtain a seed for the random number engine.
 std::random_device rd;
@@ -17,17 +18,14 @@ int getRandomNumberBetween(int lower, int upper)
 }
 
 /**
-* Default constructor.
-*/
-Dice::Dice() {}
-
-/**
 * Roll the dice and return a number between 1 and 6 (including).
 */
 int Dice::roll()
 {
     return getRandomNumberBetween(1, 6);
 }
-int Dice::getStartPlayer(int numberOfPlayers){
+
+int Dice::getStartPlayer(int numberOfPlayers)
+{
     return getRandomNumberBetween(0, numberOfPlayers - 1);
 }

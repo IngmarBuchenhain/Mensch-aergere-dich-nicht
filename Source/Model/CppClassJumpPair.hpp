@@ -13,12 +13,20 @@ public:
 
 public:
     /**
-         * Check if single is contained in here. If so, returns the partner.
-         */
+     * Check if 'single' is contained in here. If so, returns the partner. If not, returns negative (-1) value.
+     */
     int getPartnerOrNegative(int single) override;
 
 public:
+    /**
+     * Get first of the pair. May not be the first in numerical order.
+     */
     int getFirst() override;
+
+public:
+    /**
+     * Get second of the pair. May not be the second in numerical order.
+     */
     int getSecond() override;
 };
 

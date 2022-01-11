@@ -1,10 +1,9 @@
+#include "CppExportImport.hpp"
+
 #include <fstream>
 #include <filesystem>
 
 #include "CppDebugHelper.hpp"
-
-#include "CppExportImport.hpp"
-#include "CppStructsForConfigAndState.hpp"
 
 namespace maednhelper
 {
@@ -136,6 +135,7 @@ namespace maednhelper
         std::string tempFileName = fileName;
         int fileCount = 1;
 
+        // Don't overwrite existing files
         while (std::filesystem::exists(tempFileName))
         {
             tempFileName = fileName;
@@ -143,10 +143,10 @@ namespace maednhelper
             fileCount++;
         }
         fileName = tempFileName;
-        printDebug("1");
+
         std::ofstream maednfile;
         maednfile.open(fileName);
-        printDebug("2");
+
         maednfile << config->homes << std::endl;
         maednfile << config->players << std::endl;
         maednfile << config->pieces << std::endl;
@@ -164,7 +164,7 @@ namespace maednhelper
                 maednfile << std::endl;
             }
         }
-        printDebug("3");
+
         maednfile << 1 << std::endl;
         maednfile << stats->getNumberRolls(1) << std::endl;
         maednfile << stats->getNumberRolls(2) << std::endl;

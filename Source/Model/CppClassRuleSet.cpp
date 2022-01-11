@@ -108,6 +108,7 @@ bool RuleSet::goWithAnotherPieceOnSecondRollOfDice()
     return goWithAnotherPieceOnSecondRollOfDiceIntern;
 }
 
-bool RuleSet::playUntilAllPlayersFinished(){
+bool RuleSet::playUntilAllPlayersFinished()
+{
     return playUntilAllPlayersFinishedIntern;
 }

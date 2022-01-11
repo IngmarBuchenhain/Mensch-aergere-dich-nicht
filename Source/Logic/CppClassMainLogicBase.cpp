@@ -246,7 +246,8 @@ void MainLogicBase::startGame()
     //ui->showInformation(std::to_string(winners[0]));
     printDebug("The winners are: ");
     printDebug(winners);
-    stats->showDiceStats();
+    ui->showDiceStats(stats);
+    //stats->showDiceStats();
 
     // Leave game loop (FUTURE IDEA: Possibility for restart?)
     printDebug("End of game");
@@ -449,6 +450,20 @@ int MainLogicBase::containsEndField(int start, int steps, int player)
     return -1;
 }
 
+bool MainLogicBase::waitBeforeEndField(int start, int steps, int player){
+
+   
+    for (int currentField = start; currentField < start + steps; currentField++)
+    {
+        
+        if (currentField == board->getEndFields()[player])
+        {
+return true;
+        }
+    }
+    return false;
+}
+
 std::map<IGamePieceUI_SPTR, std::vector<std::pair<int, bool>>> MainLogicBase::convertMapForUI(std::map<IGamePiece_SPTR, std::vector<std::pair<int, bool>>> &origin)
 {
     std::map<IGamePieceUI_SPTR, std::vector<std::pair<int, bool>>> result;
@@ -554,7 +569,7 @@ bool MainLogicBase::positionInTargetAreaIsFree(int field, int player){
 bool MainLogicBase::noOwnPieceThere(int newPosition){
     std::vector<IGamePiece_SPTR> team = board->getTeam(currentPlayer);
     for(int index = 0; index < team.size(); index++){
-        if(team[index]->getPosition() == newPosition){
+        if(team[index]->getPosition() == newPosition && !team[index]->isInTargetArea()){
             return false;
         }
     }
