@@ -18,6 +18,13 @@ Board::Board(bool bigField, int numberOfPlayers, int numberOfPieces, bool spread
         numberOfWalkingFields = 48;
         numberOfHomes = 6;
 
+        IJumpPair_SPTR jump0 = std::make_shared<JumpPair>(4, 28);
+        jumpFields.push_back(jump0);
+        IJumpPair_SPTR jump1 = std::make_shared<JumpPair>(12, 36);
+        jumpFields.push_back(jump1);
+        IJumpPair_SPTR jump2 = std::make_shared<JumpPair>(20, 44);
+        jumpFields.push_back(jump2);
+
         // Maybe assign end and startfields so, that players are spread on Board
         if (numberOfPlayers < 6 && spreadOnBoard)
         {
@@ -61,6 +68,11 @@ Board::Board(bool bigField, int numberOfPlayers, int numberOfPieces, bool spread
     {
         numberOfWalkingFields = 40;
         numberOfHomes = 4;
+
+        IJumpPair_SPTR jump0 = std::make_shared<JumpPair>(5, 20);
+        jumpFields.push_back(jump0);
+        IJumpPair_SPTR jump1 = std::make_shared<JumpPair>(15, 35);
+        jumpFields.push_back(jump1);
 
         if (numberOfPlayers == 2 && spreadOnBoard)
         {

@@ -62,6 +62,9 @@ private:
 
 private:
     bool targetTeamFinished(int currentPlayer);
+
+private:
+    bool pieceOnStartField();
 };
 
 #endif

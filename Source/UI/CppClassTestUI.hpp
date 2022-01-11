@@ -1,11 +1,13 @@
 #ifndef MAEDN_CLASS_TEST_UI_HPP
 #define MAEDN_CLASS_TEST_UI_HPP
 
-// This is only for testing! Not necessarily clean code! Only rudimentary to check logic development
+// OLD !!!!!!!!!!! This is only for testing! Not necessarily clean code! Only rudimentary to check logic development !!!!!!!!!!!!
 
 #include <iostream>
 #include "CppIUI.hpp"
-
+/**
+ * Obsolete: Was used while developing. Not for production!! No clean code!
+ */
 class TestUI : public IUI
 {
     bool exportWanted = false;
@@ -30,7 +32,7 @@ public:
     void showInformation(std::string message) override
     {
         std::cout << std::endl
-                  << "Message: " << message << std::endl
+                  << message << std::endl
                   << std::flush;
     }
     bool exportIsWanted() override
@@ -111,13 +113,26 @@ public:
     std::pair<IGamePieceUI_SPTR, std::pair<int, bool>> chooseOneGamePiece(std::map<IGamePieceUI_SPTR, std::vector<std::pair<int, bool>>> &possiblePieces, std::string currentPlayer) override
     {
         //printDebug("In converter");
-        std::cout << currentPlayer << ": Choose which piece to move!" << std::endl;
+        std::cout << currentPlayer << ": Choose which piece to move: ";
         std::pair<IGamePieceUI_SPTR, std::pair<int, bool>> result;
         //printDebug("Not chosen");
         std::map<IGamePieceUI_SPTR, std::vector<std::pair<int, bool>>>::iterator it = possiblePieces.begin();
+        int count = 0;
         while (it != possiblePieces.end())
         {
+            if(count > 0){
+ std::cout << " || ";
+            }
+           count++;
             // printDebug(it->first->getID());
+            std::cout << "ID: " << it->first->getID() << " Moves: ";
+            for(int i = 0; i < it->second.size(); i++){
+                std::cout << " P: ";
+                std::cout << it->second[i].first << " T: " << it->second[i].second;
+                if(i < it->second.size()-1){
+                    std::cout << " | ";
+                }
+            }
             it++;
         }
 
@@ -154,11 +169,12 @@ public:
         {
             std::cout << std::endl
                       << "The winners are: " << std::endl;
-        }
-        for (int i = 0; i < winners.size(); i++)
+                       for (int i = 0; i < winners.size(); i++)
         {
             std::cout << i + 1 << ".: " << winners[i] << std::endl;
         }
+        }
+       
     }
     /**
      * Updates the drawn board game with changed game pieces.

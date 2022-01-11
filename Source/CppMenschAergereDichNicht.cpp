@@ -58,11 +58,12 @@ int main(int argc, char **argv)
         catch (std::exception &ex)
         {
             printError("Failure while reading configuration file due to:", ex);
+            printError("Your configuration file may be wrong! See README to get right input arguments format.");
             errorsOccured = true;
         }
         catch (...)
         {
-            printError("Failure while reading configuration file due to unknown error");
+            printError("Failure while reading configuration file due to unknown error. Did you give a configuration file really?");
             errorsOccured = true;
         }
     }
@@ -111,6 +112,7 @@ int main(int argc, char **argv)
         catch (std::exception &ex)
         {
             printError("Failure while reading input arguments of application:", ex);
+            printError("See README to get right input arguments format.");
             errorsOccured = true;
         }
         catch (...)
@@ -165,7 +167,7 @@ int main(int argc, char **argv)
         }
         catch (...)
         {
-            printError("Failure on start or while running game logic due to unknown Error!");
+            printError("Failure on start or while running game logic due to unknown Error! If you tried loading a game the file may be corrupted");
             errorsOccured = true;
         }
     }

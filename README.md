@@ -65,6 +65,8 @@ In General:
 This game offers 3 different rule sets you can choose from (Default, Easy and Hard). Use the number in brackets in the input arguments or the configuration file. Obviously it is possible that these rule sets differ from those you now as everyone play this game his own way. But while developing this game it became clear that its mostly luck, independent of the rules or strategy, who's winning, so just have fun with slight adjustments ;-)
 Choose wisely!
 Following an explanation to the different rule sets (each time all rules with True/False):
+### General
+If you have a 6 followed by another 6 you can not walk the second walk, except the easy rules.
 ### Default: Boring Default Rules (0 or else than 1/2)
 - You must throw other pieces if you can (even if you have to walk by your target!): **False**
 - You must throw your own pieces (only in special situations like if you are on the start field and have a 6 or if you are coming to the jumping field after going out of the home): **False**
@@ -106,7 +108,9 @@ Following an explanation to the different rule sets (each time all rules with Tr
 - You must jump on the edges: **False**
 - You are allowed to use an outside piece with a six (even if pieces are left home): **True**
 - Game is finished when all players (including KI) have finished (Else finished when first player finished): **False**
-
+#### Clarification
+On the start field multiple pieces are possible.
+On the field if you would have to throw your own piece, you simply can not walk (except you have other free pieces).
 ## Contributors
 - [Niklas Arnold](https://github.com/niklasar)
 - [Ingmar Bauckhage](https://github.com/IngmarBuchenhain)
