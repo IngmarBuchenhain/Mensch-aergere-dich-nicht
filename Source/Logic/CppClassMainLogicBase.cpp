@@ -249,6 +249,7 @@ void MainLogicBase::startGame()
     ui->showWinners(uiWinners);
 
     ui->showDiceStats(stats);
+    ui->showInformation("Thank you for playing! See you soon!");
 
     // Leave game loop
     printDebug("End of game");
