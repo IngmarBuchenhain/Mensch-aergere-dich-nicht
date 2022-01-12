@@ -22,6 +22,7 @@ std::map<IGamePiece_SPTR, std::vector<std::pair<int, bool>>> MainLogicEasy::getG
     std::map<IGamePiece_SPTR, std::vector<std::pair<int, bool>>> walkAblePieces;
     std::vector<IGamePiece_SPTR> team = board->getTeam(currentPlayer);
 
+    // Check whole team
     for (int pieceIndex = 0; pieceIndex < team.size(); pieceIndex++)
     {
         IGamePiece_SPTR currentPiece = team[pieceIndex];
@@ -41,7 +42,7 @@ std::map<IGamePiece_SPTR, std::vector<std::pair<int, bool>>> MainLogicEasy::getG
         }
         else
         {
-            // No 6 or not an
+            // No 6 or not a home piece
             // Get possibilities
             if (currentPiece->isInTargetArea() && (currentPiece->getPosition() + diceRoll) <= board->getNumberOfGamePiecesPerPlayer() && wayIsFree(currentPiece->getPosition(), currentPiece->getPosition() + diceRoll, currentPlayer))
             {

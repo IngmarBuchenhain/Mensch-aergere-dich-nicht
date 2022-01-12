@@ -11,6 +11,9 @@ class IBoard : public IBoardUI
 {
 
 public:
+    /**
+     * Get whole team of given player.
+     */
     virtual std::vector<IGamePiece_SPTR> getTeam(int player) = 0;
 
 public:

@@ -24,7 +24,7 @@ MainLogicBase::MainLogicBase(IUI_SPTR uiObject, std::shared_ptr<GameConfig> conf
 
     this->config = config;
 
-    // Check if there are less players than homes. If so, check if, filled with KI is true. If not, check if spreadOnBoard is true
+    // Set human players, and if the user wish to fill remaining homes with KI note that
     int numberOfAllPlayers = config->players;
     for (int index = 0; index < config->players; index++)
     {
@@ -100,7 +100,7 @@ void MainLogicBase::startGame()
     while (gameIsNotFinished())
     {
         if (ui->exitIsWanted())
-        {
+        { // Check for exit/export wish
             if (ui->exportIsWanted())
             {
                 printDebug("Export is wanted");
@@ -118,7 +118,7 @@ void MainLogicBase::startGame()
 
         printDebug(currentDiceRoll);
         // Ask current player to roll dice and roll dice (This is not necessary but only for animation or game feeling)
-        // if KI present choice, other ask
+        // if KI present choice, else ask
         if (players[currentPlayer] == nullptr)
         {
             ui->rollDice(nameOfPlayers[currentPlayer], currentDiceRoll, currentPlayer);
@@ -214,7 +214,6 @@ void MainLogicBase::startGame()
                             if ((conflictPiece = getConflictGamePiece(positionWeJumpedFrom)) != nullptr)
                             {
                                 conflictPiece->setPosition(0);
-                                
                             }
                         } while (conflictPiece != nullptr);
                     }
@@ -241,7 +240,6 @@ void MainLogicBase::startGame()
     // Present winner on UI
     ui->showInformation("Game ended");
 
-    //ui->showInformation("The winner is: " + std::to_string(winners[0]));
     std::vector<std::string> uiWinners;
     for (int index = 0; index < winners.size(); index++)
     {
