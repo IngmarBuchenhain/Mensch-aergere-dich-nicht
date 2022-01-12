@@ -39,3 +39,4 @@ maedn
 
 # Apple filesystem
 .DS_Store
+.vscode/settings.json

@@ -16,7 +16,24 @@ void UI::initBoard(IBoardUI_SPTR board)
 
     gamePieces = board->getGamePieces();
 
+    startFields = board->getStartfields();
+
+    endFields = board->getEndFields();
+
     updateBoard(gamePieces);
+
+    for (int i = 0; i < numberOfPlayers; i++) {
+        if (startFields[i] == 1) {
+            colorOrder[i] = color_red;
+        } else if(startFields[i] == 11) {
+            colorOrder[i] = color_blue;
+        } else if(startFields[i] == 21) {
+            colorOrder[i] = color_yellow;
+        } else {
+            colorOrder[i] = color_green;            
+        }        
+    }
+    
 
 }
 
@@ -32,68 +49,31 @@ void UI::updateBoard(std::vector<std::vector<IGamePieceUI_SPTR>> gamePieces)
     {
         for (int j = 0; j < numberOfGamePiecesPerPlayer; j++)
         {
-            if (gamePieces[i][j]->isInTargetArea())
-            {
+            if (gamePieces[i][j]->isInTargetArea()) {
                 int x;
                 int y;
-                if (gamePieces[i][j]->getID() < numberOfGamePiecesPerPlayer)
-                {
+                if (startFields[i] == 1) {
                     y = finishFields[gamePieces[i][j]->getPosition() - 1][0];
                     x = finishFields[gamePieces[i][j]->getPosition() - 1][1];
-                }
-                else if (gamePieces[i][j]->getID() < (2 * numberOfGamePiecesPerPlayer))
-                {
+                } else if (startFields[i] == 11) {
                     y = finishFields[gamePieces[i][j]->getPosition() + 3][0];
                     x = finishFields[gamePieces[i][j]->getPosition() + 3][1];
-                }
-                else if (gamePieces[i][j]->getID() < (3 * numberOfGamePiecesPerPlayer))
-                {
+                } else if (startFields[i] == 21) {
                     y = finishFields[gamePieces[i][j]->getPosition() + 7][0];
                     x = finishFields[gamePieces[i][j]->getPosition() + 7][1];
-                }
-                else
-                {
+                } else {
                     y = finishFields[gamePieces[i][j]->getPosition() + 11][0];
                     x = finishFields[gamePieces[i][j]->getPosition() + 11][1];
                 }
 
-                if (i == 0)
-                {
-                    visualBoard[y][x] = color_red + "██" + color_reset;
-                }
-                else if (i == 1)
-                {
-                    visualBoard[y][x] = color_blue + "██" + color_reset;
-                }
-                else if (i == 2)
-                {
-                    visualBoard[y][x] = color_yellow + "██" + color_reset;
-                }
-                else
-                {
-                    visualBoard[y][x] = color_green + "██" + color_reset;
-                }
-            }
-            else
-            {
+                visualBoard[y][x] = colorOrder[i] + "██" + color_reset;
+
+            } else {
                 int y = fields[gamePieces[i][j]->getPosition() - 1][0];
                 int x = fields[gamePieces[i][j]->getPosition() - 1][1];
-                if (i == 0)
-                {
-                    visualBoard[y][x] = color_red + "██" + color_reset;
-                }
-                else if (i == 1)
-                {
-                    visualBoard[y][x] = color_blue + "██" + color_reset;
-                }
-                else if (i == 2)
-                {
-                    visualBoard[y][x] = color_yellow + "██" + color_reset;
-                }
-                else
-                {
-                    visualBoard[y][x] = color_green + "██" + color_reset;
-                }
+                
+                visualBoard[y][x] = colorOrder[i] + "██" + color_reset;
+                
             }
         }
     }
@@ -119,17 +99,17 @@ std::pair<IGamePieceUI_SPTR, std::pair<int, bool>> UI::chooseOneGamePiece(std::m
         {
             int x;
             int y;
-            if (it->first->getID() < numberOfGamePiecesPerPlayer)
+            if (startFields[playerNumber] == 1)
             {
                 y = finishFields[it->first->getPosition() - 1][0];
                 x = finishFields[it->first->getPosition() - 1][1];
             }
-            else if (it->first->getID() < (2 * numberOfGamePiecesPerPlayer))
+            else if (startFields[playerNumber] == 11)
             {
                 y = finishFields[it->first->getPosition() + 3][0];
                 x = finishFields[it->first->getPosition() + 3][1];
             }
-            else if (it->first->getID() < (3 * numberOfGamePiecesPerPlayer))
+            else if (startFields[playerNumber] == 21)
             {
                 y = finishFields[it->first->getPosition() + 7][0];
                 x = finishFields[it->first->getPosition() + 7][1];
@@ -140,61 +120,83 @@ std::pair<IGamePieceUI_SPTR, std::pair<int, bool>> UI::chooseOneGamePiece(std::m
                 x = finishFields[it->first->getPosition() + 11][1];
             }
 
-            if (i == 0)
-            {
-                visualBoard[y][x] = color_red + "█" + std::to_string(i) + color_reset;
-            }
-            else if (i == 1)
-            {
-                visualBoard[y][x] = color_blue + "█" + std::to_string(i) + color_reset;
-            }
-            else if (i == 2)
-            {
-                visualBoard[y][x] = color_yellow + "█" + std::to_string(i) + color_reset;
-            }
-            else
-            {
-                visualBoard[y][x] = color_green + "█" + std::to_string(i) + color_reset;
-            }
+            visualBoard[y][x] = colorOrder[playerNumber] + "█" + std::to_string(i) + color_reset;
+           
         }
         else
         {
             int y = fields[it->first->getPosition() - 1][0];
             int x = fields[it->first->getPosition() - 1][1];
-            if (i == 0)
-            {
-                visualBoard[y][x] = color_red + "█" + std::to_string(i) + color_reset;
-            }
-            else if (i == 1)
-            {
-                visualBoard[y][x] = color_blue + "█" + std::to_string(i) + color_reset;
-            }
-            else if (i == 2)
-            {
-                visualBoard[y][x] = color_yellow + "█" + std::to_string(i) + color_reset;
-            }
-            else
-            {
-                visualBoard[y][x] = color_green + "█" + std::to_string(i) + color_reset;
-            }
+            
+            visualBoard[y][x] = colorOrder[playerNumber] + "█" + std::to_string(i) + color_reset;
+            
         }
         i++;
     }
 
-    showInformation("Wähle die Figur mit der du ziehen möchtest. (Zahl eingeben und mit ENTER bestätigen)");
+    showInformation(colorOrder[playerNumber] + currentPlayer + color_green + ": Wähle die Figur mit der du ziehen möchtest. (Zahl eingeben und mit ENTER bestätigen)", color_green);
 
     int selection;
     std::cin >> selection;
 
-    std::pair<IGamePieceUI_SPTR, std::pair<int, bool>> output{possiblePieces.begin()->first, possiblePieces.begin()->second[0]};
+    if (selection == 0) {
+        showInformation("Das Spiel wird nach diesem Spielzug beendet", color_green);
+        exitWanted = true;
+
+        showInformation("Wähle die Figur mit der du ziehen möchtest. (Zahl eingeben und mit ENTER bestätigen)", color_green);
+        while (selection <= 0 || selection > numberOfPlayers) {
+            std::cin >> selection;
+            if (selection <= 0 || selection > numberOfPlayers) {
+                showInformation("Ungültige Eingabe! Wähle die Figur mit der du ziehen möchtest.", color_red);
+            }
+        }
+    } else {
+        while (selection <= 0 || selection > numberOfPlayers) {
+            showInformation("Ungültige Eingabe! Wähle die Figur mit der du ziehen möchtest.", color_red);
+            std::cin >> selection;
+        }
+    }
+
+    auto iterator = possiblePieces.begin();
+    std::advance(iterator, selection - 1);
+
+    if (it->second.size() > 1) {
+        showInformation("Rückwärts (0) Vorwärts (1) laufen?", color_green);
+        std::cin >> selection;
+
+        if (selection == 0) {
+            if (iterator->second[0] > it->second[1]) {
+                selection = 1;
+            } else {
+                selection = 0;
+            }            
+        } else {
+            if (iterator->second[0] > iterator->second[1]) {
+                selection = 0;
+            } else {
+                selection = 1;
+            }  
+        }
+    }
+
+    std::pair<IGamePieceUI_SPTR, std::pair<int, bool>> output{iterator->first, iterator->second[selection]};
+
+    if (exitWanted == true) {
+        system("clear");
+        showInformation("Willst du den aktuellen Spielstand speichern? Ja: 1", color_red);
+        std::cin >> selection;
+        if (selection == 1) {
+            exportWanted = true;
+        }
+    }
 
     return output;
 }
 
-void UI::showInformation(std::string message)
+void UI::showInformation(std::string message, std::string color)
 {
     std::cout << std::endl
-              << color_red << message << color_reset << std::endl;
+              << color << message << color_reset << std::endl;
 }
 
 void UI::rollDice(std::string currentPlayer, int playerNumber, int diceNumber)
@@ -228,8 +230,8 @@ void UI::rollDice(std::string currentPlayer, int playerNumber, int diceNumber)
     }
 
     std::cout << std::endl
-              << color_red << currentPlayer << color_green << ", du bist an der Reihe zu würfeln." << std::endl
-              << "Drücke dazu ENTER." << color_reset << std::endl;
+              << colorOrder[playerNumber] << currentPlayer << color_reset << ", du bist an der Reihe zu würfeln." << std::endl
+              << "Drücke dazu ENTER." << std::endl;
 
     std::cin.ignore();
 

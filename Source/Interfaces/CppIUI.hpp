@@ -34,6 +34,7 @@ public:
      * Presents some information to user.
      */
     virtual void showInformation(std::string message) = 0;
+    virtual void showInformation(std::string message, std::string color) = 0;
     virtual void showWinners(std::vector<std::string> winners) = 0;
     // public:
     //     /**
