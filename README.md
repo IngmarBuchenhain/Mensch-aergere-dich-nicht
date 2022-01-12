@@ -36,6 +36,7 @@ Developtment was implemented to provide independent working on the project, ther
 1. Load repository (main branch or one of the releases)
 2. Run 'make' in 'Source'-directory. You can provide a path to which the executable ('maedn') should be build via 'make outpath=path/you/like' (tested on macos).
 3. With 'make run' you can run a quick pre-configured game
+4. If you want to you can use the alternative TestUI. Simply alter the commentatoin in lines 136/137 in CppMenschAergereDichNicht.cpp and build again.
 ### Run the game
 The settings of the game are selected by CL-argument or by configuration file. Once the game started you can not change settings but has to restart (You should never change rules of a game midway anyways...).
 1. Configure game and run: This is done by command line arguments to the game executable. Following options
