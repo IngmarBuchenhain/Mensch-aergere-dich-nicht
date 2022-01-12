@@ -7,7 +7,7 @@
  * Easily switch for whole application using this DebugHelper printing of debug messages.
  * Should be true only while developing.
  */
-extern const bool DEBUG = false;
+extern const bool DEBUG = true;
 
 /**
  * Easily switch for whole application using this DebugHelper printing of error messages.

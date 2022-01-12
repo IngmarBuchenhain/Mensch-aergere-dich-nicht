@@ -1,6 +1,10 @@
 #ifndef MAEDN_I_UI_HPP
 #define MAEDN_I_UI_HPP
 
+#include <map>
+#include <utility>
+#include <vector>
+
 #include "CppIGamePieceUI.hpp"
 #include "CppIBoardUI.hpp"
 
@@ -43,22 +47,17 @@ public:
      * Does not real produces a number, but simply provides interaction with user and maybe animation..
      */
 
-    virtual void rollDice(int currentPlayer, int diceNumber) = 0;
-    virtual void rollDice(std::string currentPlayer, int diceNumber) = 0;
 
-public:
-    /**
-     * DEPRECATED: Present the current player all game pieces he can walk with, and let him choose one.
-     */
-    virtual IGamePieceUI_SPTR chooseGamePiece(std::vector<IGamePieceUI_SPTR> &gamePieces, int currentPlayer) = 0;
+    virtual void rollDice(std::string currentPlayer, int playerNumber, int diceNumber) = 0;
+
 
 public:
     /**
      * Present the current player all game pieces he can walk with, and let him choose one.
      * Each piece may have multiple possibilities to walk. The int is the new position, the bool indicates whether the new position is in the target area.
      */
-    virtual std::pair<IGamePieceUI_SPTR, std::pair<int, bool>> chooseOneGamePiece(std::map<IGamePieceUI_SPTR, std::vector<std::pair<int, bool>>> &possiblePieces, int currentPlayer) = 0;
-    virtual std::pair<IGamePieceUI_SPTR, std::pair<int, bool>> chooseOneGamePiece(std::map<IGamePieceUI_SPTR, std::vector<std::pair<int, bool>>> &possiblePieces, std::string currentPlayer) = 0;
+
+    virtual std::pair<IGamePieceUI_SPTR, std::pair<int, bool>> chooseOneGamePiece(std::map<IGamePieceUI_SPTR, std::vector<std::pair<int, bool>>> &possiblePieces, std::string currentPlayer, int playerNumber) = 0;
     virtual bool exportIsWanted() = 0;
     virtual bool exitIsWanted() = 0;
 

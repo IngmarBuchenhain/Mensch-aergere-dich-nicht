@@ -19,8 +19,8 @@ link = g++ $(lv)
 exeName = maedn
 
 # Linking
-$(outpath)$(exeName): CppMenschAergereDichNicht.o CppDebugHelper.o CppExportImport.o CppClassMainLogicBase.o CppClassMainLogicDefault.o CppClassMainLogicEasy.o CppClassMainLogicHard.o CppClassDice.o CppClassBoard.o CppClassGamePiece.o CppClassStatistics.o CppClassJumpPair.o CppClassRuleSet.o CppClassKI.o
-	$(link) -o $(outpath)$(exeName) CppMenschAergereDichNicht.o CppDebugHelper.o CppExportImport.o CppClassMainLogicBase.o CppClassMainLogicDefault.o CppClassMainLogicEasy.o CppClassMainLogicHard.o CppClassDice.o CppClassBoard.o CppClassGamePiece.o CppClassStatistics.o CppClassJumpPair.o CppClassRuleSet.o CppClassKI.o
+$(outpath)$(exeName): CppMenschAergereDichNicht.o CppDebugHelper.o CppExportImport.o CppClassMainLogicBase.o CppClassMainLogicDefault.o CppClassMainLogicEasy.o CppClassMainLogicHard.o CppClassDice.o CppClassBoard.o CppClassGamePiece.o CppClassStatistics.o CppClassJumpPair.o CppClassRuleSet.o CppClassKI.o CppClassMainUI.o
+	$(link) -o $(outpath)$(exeName) CppMenschAergereDichNicht.o CppDebugHelper.o CppExportImport.o CppClassMainLogicBase.o CppClassMainLogicDefault.o CppClassMainLogicEasy.o CppClassMainLogicHard.o CppClassDice.o CppClassBoard.o CppClassGamePiece.o CppClassStatistics.o CppClassJumpPair.o CppClassRuleSet.o CppClassKI.o CppClassMainUI.o
 
 # Source
 CppMenschAergereDichNicht.o: CppMenschAergereDichNicht.cpp 
@@ -59,6 +59,8 @@ CppClassStatistics.o: $(mo)/CppClassStatistics.cpp
 	$(build) -c $(mo)/CppClassStatistics.cpp
 
 # UI
+CppClassMainUI.o: $(ui)/CppClassMainUI.cpp
+	$(build) -c $(ui)/CppClassMainUI.cpp
 
 # make
 run: $(outpath)$(exeName) mostlyclean

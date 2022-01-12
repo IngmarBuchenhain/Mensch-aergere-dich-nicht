@@ -121,7 +121,7 @@ void MainLogicBase::startGame()
         // if KI present choice, other ask
         if (players[currentPlayer] == nullptr)
         {
-            ui->rollDice(nameOfPlayers[currentPlayer], currentDiceRoll);
+            ui->rollDice(nameOfPlayers[currentPlayer], currentDiceRoll, currentPlayer);
         }
         else
         {
@@ -175,7 +175,7 @@ void MainLogicBase::startGame()
                 }
                 else
                 {
-                    selection = ui->chooseOneGamePiece(selectable, nameOfPlayers[currentPlayer]);
+                    selection = ui->chooseOneGamePiece(selectable, nameOfPlayers[currentPlayer], currentPlayer);
                 }
 
                 // If we had a 6 mark it
