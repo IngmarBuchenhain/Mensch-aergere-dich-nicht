@@ -46,18 +46,18 @@ public:
      * Ask/Make the current player to roll the dice.
      * Does not real produces a number, but simply provides interaction with user and maybe animation..
      */
-    void rollDice(int currentPlayer, int diceNumber) override
-    {
-        std::cout << std::endl
-                  << "Player " << currentPlayer << ": It's your turn! If you want to roll the dice, press 'Enter'";
-        //  std::cin.ignore(10);
-        //std::cin.ignore();
-        std::cout << std::endl
-                  << "Great! You rolled a -" << diceNumber << "-" << std::endl
-                  << std::flush;
-    }
+    // void rollDice(int currentPlayer, int diceNumber) override
+    // {
+    //     std::cout << std::endl
+    //               << "Player " << currentPlayer << ": It's your turn! If you want to roll the dice, press 'Enter'";
+    //     //  std::cin.ignore(10);
+    //     //std::cin.ignore();
+    //     std::cout << std::endl
+    //               << "Great! You rolled a -" << diceNumber << "-" << std::endl
+    //               << std::flush;
+    // }
 
-    void rollDice(std::string currentPlayer, int diceNumber) override
+    void rollDice(std::string currentPlayer, int playerNumber, int diceNumber) override
     {
         std::cout << std::endl
                   << currentPlayer << ": It's your turn! If you want to roll the dice, press 'Enter'";
@@ -80,37 +80,37 @@ public:
                   << std::flush;
     }
 
+// public:
+//     /**
+//      * Present the current player all game pieces he can walk with, and let him choose one.
+//      */
+
+//     IGamePieceUI_SPTR chooseGamePiece(std::vector<IGamePieceUI_SPTR> &gamePieces, int currentPlayer) override
+//     {
+//         return gamePieces[0];
+//     }
+
 public:
-    /**
-     * Present the current player all game pieces he can walk with, and let him choose one.
-     */
+    // std::pair<IGamePieceUI_SPTR, std::pair<int, bool>> chooseOneGamePiece(std::map<IGamePieceUI_SPTR, std::vector<std::pair<int, bool>>> &possiblePieces, int currentPlayer) override
+    // {
+    //     //printDebug("In converter");
+    //     std::pair<IGamePieceUI_SPTR, std::pair<int, bool>> result;
+    //     //printDebug("Not chosen");
+    //     std::map<IGamePieceUI_SPTR, std::vector<std::pair<int, bool>>>::iterator it = possiblePieces.begin();
+    //     while (it != possiblePieces.end())
+    //     {
+    //         // printDebug(it->first->getID());
+    //         it++;
+    //     }
 
-    IGamePieceUI_SPTR chooseGamePiece(std::vector<IGamePieceUI_SPTR> &gamePieces, int currentPlayer) override
-    {
-        return gamePieces[0];
-    }
-
-public:
-    std::pair<IGamePieceUI_SPTR, std::pair<int, bool>> chooseOneGamePiece(std::map<IGamePieceUI_SPTR, std::vector<std::pair<int, bool>>> &possiblePieces, int currentPlayer) override
-    {
-        //printDebug("In converter");
-        std::pair<IGamePieceUI_SPTR, std::pair<int, bool>> result;
-        //printDebug("Not chosen");
-        std::map<IGamePieceUI_SPTR, std::vector<std::pair<int, bool>>>::iterator it = possiblePieces.begin();
-        while (it != possiblePieces.end())
-        {
-            // printDebug(it->first->getID());
-            it++;
-        }
-
-        result.first = possiblePieces.begin()->first;
-        //printDebug("Assigned piece");
-        result.second = possiblePieces.begin()->second[0];
-        exportWanted = true;
-        //printDebug("Assigned walk");
-        return result;
-    }
-    std::pair<IGamePieceUI_SPTR, std::pair<int, bool>> chooseOneGamePiece(std::map<IGamePieceUI_SPTR, std::vector<std::pair<int, bool>>> &possiblePieces, std::string currentPlayer) override
+    //     result.first = possiblePieces.begin()->first;
+    //     //printDebug("Assigned piece");
+    //     result.second = possiblePieces.begin()->second[0];
+    //     exportWanted = true;
+    //     //printDebug("Assigned walk");
+    //     return result;
+    // }
+    std::pair<IGamePieceUI_SPTR, std::pair<int, bool>> chooseOneGamePiece(std::map<IGamePieceUI_SPTR, std::vector<std::pair<int, bool>>> &possiblePieces, std::string currentPlayer, int playerNumber) override
     {
         //printDebug("In converter");
         std::cout << currentPlayer << ": Choose which piece to move: ";
