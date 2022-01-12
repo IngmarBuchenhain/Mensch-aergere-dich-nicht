@@ -34,7 +34,7 @@ Developtment was implemented to provide independent working on the project, ther
 - GCC with g++ if use of provided MAKEFILE is wanted
 ### Build the game
 1. Load repository (main branch or one of the releases)
-2. Run 'make' in 'Source'-directory. You can provide a path to which the executable ('maedn') should be build via 'make outpath=path/you/like'
+2. Run 'make' in 'Source'-directory. You can provide a path to which the executable ('maedn') should be build via 'make outpath=path/you/like' (tested on macos).
 3. With 'make run' you can run a quick pre-configured game
 ### Run the game
 The settings of the game are selected by CL-argument or by configuration file. Once the game started you can not change settings but has to restart (You should never change rules of a game midway anyways...).
