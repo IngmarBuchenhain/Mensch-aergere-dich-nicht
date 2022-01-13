@@ -58,7 +58,7 @@ public:
     //               << "Great! You rolled a -" << diceNumber << "-" << std::endl
     //               << std::flush;
     // }
-void rollDice(std::string currentPlayer, int diceNumber) override{
+void rollDiceKI(std::string currentPlayer, int playerNumber, int diceNumber) override{
       std::cout << std::endl
                   << currentPlayer << ": It's your turn! You rolled a " << diceNumber;
 }

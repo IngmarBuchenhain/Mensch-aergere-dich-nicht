@@ -51,7 +51,7 @@ public:
     /**
      * Present the dice roll of a KI player
      */
-    virtual void rollDice(std::string currentPlayer, int diceNumber) = 0;
+    virtual void rollDiceKI(std::string currentPlayer, int playerNumber, int diceNumber) = 0;
 
 public:
     /**

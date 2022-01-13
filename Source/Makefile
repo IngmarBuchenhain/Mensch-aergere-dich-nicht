@@ -19,8 +19,8 @@ link = g++ $(lv)
 exeName = maedn
 
 # Linking
-$(outpath)$(exeName): CppMenschAergereDichNicht.o CppDebugHelper.o CppExportImport.o CppClassMainLogicBase.o CppClassMainLogicDefault.o CppClassMainLogicEasy.o CppClassMainLogicHard.o CppClassDice.o CppClassBoard.o CppClassGamePiece.o CppClassStatistics.o CppClassJumpPair.o CppClassRuleSet.o CppClassKI.o CppClassMainUI.o
-	$(link) -o $(outpath)$(exeName) CppMenschAergereDichNicht.o CppDebugHelper.o CppExportImport.o CppClassMainLogicBase.o CppClassMainLogicDefault.o CppClassMainLogicEasy.o CppClassMainLogicHard.o CppClassDice.o CppClassBoard.o CppClassGamePiece.o CppClassStatistics.o CppClassJumpPair.o CppClassRuleSet.o CppClassKI.o CppClassMainUI.o
+$(outpath)$(exeName): CppMenschAergereDichNicht.o CppDebugHelper.o CppExportImport.o CppClassMainLogicBase.o CppClassMainLogicDefault.o CppClassMainLogicEasy.o CppClassMainLogicHard.o CppClassDice.o CppClassBoard.o CppClassGamePiece.o CppClassStatistics.o CppClassJumpPair.o CppClassRuleSet.o CppClassKI.o CppClassMainUI.o CppClassMainUILarge.o
+	$(link) -o $(outpath)$(exeName) CppMenschAergereDichNicht.o CppDebugHelper.o CppExportImport.o CppClassMainLogicBase.o CppClassMainLogicDefault.o CppClassMainLogicEasy.o CppClassMainLogicHard.o CppClassDice.o CppClassBoard.o CppClassGamePiece.o CppClassStatistics.o CppClassJumpPair.o CppClassRuleSet.o CppClassKI.o CppClassMainUI.o CppClassMainUILarge.o
 
 # Source
 CppMenschAergereDichNicht.o: CppMenschAergereDichNicht.cpp 
@@ -61,10 +61,12 @@ CppClassStatistics.o: $(mo)/CppClassStatistics.cpp
 # UI
 CppClassMainUI.o: $(ui)/CppClassMainUI.cpp
 	$(build) -c $(ui)/CppClassMainUI.cpp
+CppClassMainUILarge.o: $(ui)/CppClassMainUILarge.cpp
+	$(build) -c $(ui)/CppClassMainUILarge.cpp
 
 # make
 run: $(outpath)$(exeName) mostlyclean
-	./$(outpath)$(exeName) 4 3 3 0 1 0 Torsten Niklas Ingmar
+	./$(outpath)$(exeName) 6 6 4 1 1 0 Torsten Ingmar Niklas Alex Lurch Tester
 mostlyclean:
 	rm -f *.o a.out $(mo)/*.o $(lo)/*.o $(ui)/*.o $(ifs)/*.o $(mo)/*.out $(lo)/*.out $(ui)/*.out $(ifs)/*.out
 clean: mostlyclean

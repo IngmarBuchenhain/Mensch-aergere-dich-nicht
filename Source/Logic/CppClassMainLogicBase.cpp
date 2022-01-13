@@ -125,7 +125,7 @@ void MainLogicBase::startGame()
         }
         else
         {
-            ui->rollDice(nameOfPlayers[currentPlayer], currentDiceRoll);
+            ui->rollDiceKI(nameOfPlayers[currentPlayer], currentPlayer, currentDiceRoll);
         }
 
         // Indicator whether after this move the next player should be determined or if the current player again
