@@ -29,16 +29,14 @@ public:
     virtual void initBoard(IBoardUI_SPTR board) = 0;
 
 public:
+
+    virtual void showInformation(std::string message, std::string color) = 0;
+ 
+public:
     /**
      * Updates the drawn board game with changed game pieces.
      * Must call 'initBoard'-method first!
      */
-
-
-    virtual void showInformation(std::string message, std::string color) = 0;
- 
-
-
     virtual void updateBoard(std::vector<std::vector<IGamePieceUI_SPTR>> gamePieces) = 0;
 
 
