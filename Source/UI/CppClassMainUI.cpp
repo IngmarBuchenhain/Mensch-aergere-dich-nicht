@@ -151,7 +151,7 @@ void UI::printBoard(std::string visualBoard[21][21]) {
     }    
 }
 
-std::pair<IGamePieceUI_SPTR, std::pair<int, bool>> UI::chooseOneGamePiece(std::map<IGamePieceUI_SPTR, std::vector<std::pair<int, bool>>> &possiblePieces, std::string currentPlayer, int playerNumber)
+std::pair<IGamePieceUI_SPTR, std::pair<int, bool>> UI::chooseOneGamePiece(std::map<IGamePieceUI_SPTR, std::vector<std::pair<int, bool>>> &possiblePieces, std::string currentPlayer, int playerNumber, int diceNumber)
 {
     std::map<IGamePieceUI_SPTR, std::vector<std::pair<int, bool>>>::iterator it;
     int i = 0;
@@ -213,6 +213,10 @@ std::pair<IGamePieceUI_SPTR, std::pair<int, bool>> UI::chooseOneGamePiece(std::m
         }
         i++;
     }
+    
+    clearScreen(visualBoard);
+    
+    showInformation("Du kannst " + diceNumberSafe + " Felder fahren.", color_green);
 
     showInformation(colorOrder[playerNumber] + currentPlayer + color_green + ": Wähle die Figur mit der du ziehen möchtest. (Zahl eingeben und mit ENTER bestätigen; '0' beendet nach dem Zug das Spiel)", color_green);
 
@@ -295,6 +299,7 @@ void UI::showInformation(std::string message)
 
 void UI::rollDice(std::string currentPlayer, int diceNumber)
 {
+    diceNumberSafe = diceNumber;
     clearScreen(visualBoard);
 
     std::string visualDice[9][9];
@@ -377,6 +382,7 @@ void UI::rollDice(std::string currentPlayer, int diceNumber)
 
 void UI::rollDice(std::string currentPlayer, int playerNumber, int diceNumber)
 {
+    diceNumberSafe = diceNumber;
     clearScreen(visualBoard);
 
     std::cout << std::endl;
