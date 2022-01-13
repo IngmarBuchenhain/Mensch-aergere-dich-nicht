@@ -66,7 +66,7 @@ MainLogicBase::MainLogicBase(IUI_SPTR uiObject, std::shared_ptr<GameConfig> conf
         {
             if (players[index] != nullptr)
             {
-                std::string name = "ThenotsointelligentbutluckyKI ";
+                std::string name = "TheNotSoIntelligentButLuckyKI ";
                 name.append(std::to_string(countKI));
                 config->names.push_back(name);
                 countKI += 1;
