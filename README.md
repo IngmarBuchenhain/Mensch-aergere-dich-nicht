@@ -3,7 +3,7 @@ This is a simple board game known by most people which can be played by CLI.
 
  [➤ Thoughts on development](https://github.com/IngmarBuchenhain/Mensch-aergere-dich-nicht#thoughts-on-development)\
  [➤ How to play](https://github.com/IngmarBuchenhain/Mensch-aergere-dich-nicht#how-to-play)\
- [➤ Rule Sets](https://github.com/IngmarBuchenhain/Mensch-aergere-dich-nicht#rule-sets)\
+ [➤ Rule Sets](https://github.com/IngmarBuchenhain/Mensch-aergere-dich-nicht#rule-sets)
 
 ## Thoughts on development
 - Developed for unix-based os (tested on macos 12 (Arm/Intel) and ubuntu 20)
