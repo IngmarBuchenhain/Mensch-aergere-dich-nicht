@@ -48,6 +48,7 @@ public:
      * Does not really produces a number, but simply provides interaction with user and maybe animation..
      */
     virtual void rollDice(std::string currentPlayer, int playerNumber, int diceNumber) = 0;
+    virtual void rollDice(std::string currentPlayer, int diceNumber) = 0;
 
 public:
     /**

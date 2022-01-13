@@ -125,7 +125,7 @@ void MainLogicBase::startGame()
         }
         else
         {
-            ui->showInformation(nameOfPlayers[currentPlayer] + " rolled a -" + std::to_string(currentDiceRoll) + "-");
+            ui->rollDice(nameOfPlayers[currentPlayer], currentDiceRoll);
         }
 
         // Indicator whether after this move the next player should be determined or if the current player again

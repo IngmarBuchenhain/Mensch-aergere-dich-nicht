@@ -69,7 +69,7 @@ Board::Board(bool bigField, int numberOfPlayers, int numberOfPieces, bool spread
         numberOfWalkingFields = 40;
         numberOfHomes = 4;
 
-        IJumpPair_SPTR jump0 = std::make_shared<JumpPair>(5, 20);
+        IJumpPair_SPTR jump0 = std::make_shared<JumpPair>(5, 25);
         jumpFields.push_back(jump0);
         IJumpPair_SPTR jump1 = std::make_shared<JumpPair>(15, 35);
         jumpFields.push_back(jump1);
