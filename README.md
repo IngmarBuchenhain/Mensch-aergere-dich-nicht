@@ -62,11 +62,13 @@ The settings of the game are given to the game by CL-argument directly or by con
 
 Examples:
 Assuming you used MAKEFILE and are still in the Source-directory.  
+
 None:
 ```plain
 ./maedn
 ```
 will start a game with the small board (4 homes), 4 human players, 4 pieces each, the default rules. Names are provided by the game.  
+
 Six or more:
 ```plain
 ./maedn 4 3 4 0 1 0 Torsten Ingmar Niklas
@@ -94,7 +96,7 @@ will start a game like configured in 'maedngame1' and resume from the state in t
 ## Play
 Well, everyone should know Mensch-ärgere-dich-nicht. If not, buy the real game or draw it on a paper and have fun getting annoyed by your fellow players. :D
 In General:
-- Goal of the game: Getting all of your game pieces from the home area into the target area. You walk on the field in direction of the clock.
+- Goal of the game: Getting all of your game pieces from the home area into the target area. You walk on the field in clock-direction.
 1. You have to roll the dice (1-6)
 2. You walk on the field (if you can not walk on the field you might roll again (depending on rules))
 3. Next player (except you had a 6)
@@ -105,7 +107,7 @@ This game offers 3 different rule sets you can choose from (Default, Easy and Ha
 Choose wisely!
 Following an explanation to the different rule sets (each time all rules with True/False):
 ### General
-If you have a 6 followed by another 6 you can not walk the second walk, except the easy rules.
+If you have in-house-pieces and a 6 followed by another 6 you can not walk the second walk, except the easy rules. This is because you have to go with the same piece after a six (except easy), but also have to go out if you have still pieces in-house.
 ### Default: Boring Default Rules (0 or else than 1/2)
 - You must throw other pieces if you can (even if you have to walk by your target!): **False**
 - You must throw your own pieces (only in special situations like if you are on the start field and have a 6 or if you are coming to the jumping field after going out of the home): **False**
