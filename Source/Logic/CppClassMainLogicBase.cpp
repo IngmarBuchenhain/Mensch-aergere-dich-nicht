@@ -160,7 +160,7 @@ void MainLogicBase::startGame()
             if (selectable.size() == 0)
             {
                 printDebug("No pieces possible");
-                ui->showInformation(nameOfPlayers[currentPlayer] + ": No walk possible");
+                ui->showInformation(nameOfPlayers[currentPlayer] + ": Kein Zug möglich!");
             }
             else
             {
@@ -171,11 +171,11 @@ void MainLogicBase::startGame()
                 {
                     printDebug("KI");
                     selection = players[currentPlayer]->chooseGamePiece(selectable);
-                    ui->showInformation(nameOfPlayers[currentPlayer] + " chose a game piece");
+                    ui->showInformation(nameOfPlayers[currentPlayer] + " hat seinen Zug gemacht.");
                 }
                 else
                 {
-                    selection = ui->chooseOneGamePiece(selectable, nameOfPlayers[currentPlayer], currentPlayer);
+                    selection = ui->chooseOneGamePiece(selectable, nameOfPlayers[currentPlayer], currentPlayer, currentDiceRoll);
                 }
 
                 // If we had a 6 mark it
@@ -238,7 +238,7 @@ void MainLogicBase::startGame()
     printDebug("Game finished");
 
     // Present winner on UI
-    ui->showInformation("Game ended");
+    ui->showInformation("Game over");
 
     std::vector<std::string> uiWinners;
     for (int index = 0; index < winners.size(); index++)
@@ -248,7 +248,7 @@ void MainLogicBase::startGame()
     ui->showWinners(uiWinners);
 
     ui->showDiceStats(stats);
-    ui->showInformation("Thank you for playing! See you soon!");
+    ui->showInformation("Dankeschön für's Spielen! Komm bald wieder!");
 
     // Leave game loop
     printDebug("End of game");

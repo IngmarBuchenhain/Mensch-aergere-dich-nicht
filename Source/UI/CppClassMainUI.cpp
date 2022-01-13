@@ -60,7 +60,7 @@ void UI::initBoard(IBoardUI_SPTR board)
 
 
      showInformation("Weiter mit ENTER.", color_green);
-     std::cin.ignore();
+     std::cin.ignore(40,'\n');
      std::cin.ignore();
  }
 
@@ -151,7 +151,7 @@ void UI::printBoard(std::string visualBoard[21][21]) {
     }    
 }
 
-std::pair<IGamePieceUI_SPTR, std::pair<int, bool>> UI::chooseOneGamePiece(std::map<IGamePieceUI_SPTR, std::vector<std::pair<int, bool>>> &possiblePieces, std::string currentPlayer, int playerNumber)
+std::pair<IGamePieceUI_SPTR, std::pair<int, bool>> UI::chooseOneGamePiece(std::map<IGamePieceUI_SPTR, std::vector<std::pair<int, bool>>> &possiblePieces, std::string currentPlayer, int playerNumber, int diceNumberSafe)
 {
     std::map<IGamePieceUI_SPTR, std::vector<std::pair<int, bool>>>::iterator it;
     int i = 0;
@@ -213,19 +213,25 @@ std::pair<IGamePieceUI_SPTR, std::pair<int, bool>> UI::chooseOneGamePiece(std::m
         }
         i++;
     }
-
+    
     clearScreen(visualBoard);
+    
+    showInformation("Du kannst " + std::to_string(diceNumberSafe) + " Felder fahren.", color_green);
 
-    showInformation(colorOrder[playerNumber] + currentPlayer + color_green + ": Wähle die Figur mit der du ziehen möchtest. (Zahl eingeben und mit ENTER bestätigen)", color_green);
+    showInformation(colorOrder[playerNumber] + currentPlayer + color_green + ": Wähle die Figur mit der du ziehen möchtest. (Zahl eingeben und mit ENTER bestätigen; '0' beendet nach dem Zug das Spiel)", color_green);
 
     int selection;
-    std::cin >> selection;
+    while (!(std::cin >> selection)) {
+        std::cout << color_red << "Bitte gebe einen gültigen Wert an."<< color_reset << std::endl;
+        std::cin.clear();
+        std::cin.ignore(40,'\n');
+    }
 
     if (selection == 0) {
         showInformation("Das Spiel wird nach diesem Spielzug beendet", color_green);
         exitWanted = true;
 
-        showInformation("Wähle die Figur mit der du ziehen möchtest. (Zahl eingeben und mit ENTER bestätigen)", color_green);
+        showInformation("Wähle die Figur mit der du ziehen möchtest. (Zahl eingeben und mit ENTER bestätigen; '0' beendet nach dem Zug das Spiel)", color_green);
         while (selection <= 0 || selection > possiblePieces.size()) {
             std::cin >> selection;
             if (selection <= 0 || selection > possiblePieces.size()) {
@@ -293,6 +299,7 @@ void UI::showInformation(std::string message)
 
 void UI::rollDice(std::string currentPlayer, int diceNumber)
 {
+    diceNumberSafe = diceNumber;
     clearScreen(visualBoard);
 
     std::string visualDice[9][9];
@@ -370,11 +377,12 @@ void UI::rollDice(std::string currentPlayer, int diceNumber)
               << color_red << diceMessage << color_green << std::endl
               << "Drücke ENTER um fortzufahren." << color_reset << std::endl;
 
-    std::cin.ignore();
+    std::cin.ignore(40,'\n');
 }
 
 void UI::rollDice(std::string currentPlayer, int playerNumber, int diceNumber)
 {
+    diceNumberSafe = diceNumber;
     clearScreen(visualBoard);
 
     std::cout << std::endl;
@@ -407,7 +415,7 @@ void UI::rollDice(std::string currentPlayer, int playerNumber, int diceNumber)
               << colorOrder[playerNumber] << currentPlayer << color_reset << ", du bist an der Reihe zu würfeln." << std::endl
               << color_green << "Drücke ENTER um fortzufahren." << color_reset << std::endl;
 
-    std::cin.ignore();
+    std::cin.ignore(40,'\n');
 
     clearScreen(visualBoard);;
 
@@ -421,7 +429,7 @@ void UI::rollDice(std::string currentPlayer, int playerNumber, int diceNumber)
     case 2:
         visualDice[6][2] = basicField;
         visualDice[2][6] = basicField;
-        diceMessage = "Nur weil es Augenzahl heiß, heißt das nicht, dass du auch nur ein Zwei würfeln darfst.";
+        diceMessage = "Nur weil es Augenzahl heißt, heißt das nicht, dass du nur ein Zwei würfeln darfst.";
         break;
     case 3:
         visualDice[6][2] = basicField;
@@ -470,7 +478,7 @@ void UI::rollDice(std::string currentPlayer, int playerNumber, int diceNumber)
               << color_red << diceMessage << color_green << std::endl
               << "Drücke ENTER um fortzufahren." << color_reset << std::endl;
 
-    std::cin.ignore();
+    std::cin.ignore(40,'\n');
 }
 
 void UI::setUpSmallBoard(int fieldSize)
@@ -748,9 +756,9 @@ void UI::showDiceStats(std::shared_ptr<Statistics> stats)
 {
     clearScreen(visualBoard);
     std::cout << std::endl
-              << "Dice statistics" << std::endl;
-    std::cout << "Number of total dice rolls: " << stats->getNumberOfTotalRolls() << std::endl;
-    std::cout << "Dice distribution:" << std::endl;
+              << "Würfel Statistik" << std::endl;
+    std::cout << "Anzahl Gesamtwürfe: " << stats->getNumberOfTotalRolls() << std::endl;
+    std::cout << "Würfel-Verteilung:" << std::endl;
     for (int diceNumber = 1; diceNumber < 7; diceNumber++)
     {
         std::cout << diceNumber << ": ";
@@ -788,7 +796,8 @@ int main() {
         }
         std::cout << std::endl;
     }
-    std::cin.ignore();
+    
+    ;
     system("clear");
     return 0;
 }
