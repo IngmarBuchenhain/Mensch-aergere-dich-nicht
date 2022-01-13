@@ -1,6 +1,11 @@
 # Mensch-aergere-dich-nicht
 This is a simple board game known by most people which can be played by CLI.
 
+ [➤ Thoughtsondevelopment](https://github.com/IngmarBuchenhain/Mensch-Aergere-Dich-Nicht#user-content-Thoughts on development)\
+ [➤ HowToPlay](https://github.com/DHBW-Inf20/CppMuhle#user-content-dependencies)\
+ [➤ Building](https://github.com/DHBW-Inf20/CppMuhle#user-content-building)\
+ [➤ Demo](https://github.com/DHBW-Inf20/CppMuhle#user-content-demo)
+
 ## Thoughts on development
 - Developed for unix-based os (tested on macos 12 (Arm/Intel) and ubuntu 20)
 - Start via command line parameters (Different options to configure you individual game)
@@ -150,7 +155,7 @@ If you have in-house-pieces and a 6 followed by another 6 you can not walk the s
 - You are allowed to use an outside piece with a six (even if pieces are left home): **True**
 - Game is finished when all players (including KI) have finished (Else finished when first player finished): **False**
 #### Clarification
-On the start field multiple pieces are possible.
+On the start field multiple pieces are possible. If multiple pieces are standing on a start field this is marked in the UI by a '!' besides this start field.  
 On the field if you would have to throw your own piece, you simply can not walk (except you have other free pieces).
 ## Contributors
 - [Niklas Arnold](https://github.com/niklasar)
