@@ -1,8 +1,11 @@
 # Mensch-aergere-dich-nicht
 This is a simple board game known by most people which can be played by CLI.
-## Thoughts on development
-### Wish list
 
+## Thoughts on development
+- Developed for unix-based os (tested on macos 12 (Arm/Intel) and ubuntu 20)
+- Start via command line parameters (Different options to configure you individual game)
+
+### Feature Wish list
 #### Must Have
 
 - [x] General game logic
@@ -21,24 +24,32 @@ This is a simple board game known by most people which can be played by CLI.
 
 - [x] Simple KI
 - [ ] Network multiplayer (Delayed for future release)
+
 ### Architecture and stuff
-Developtment was implemented to provide independent working on the project, therefore:
-1. Have a model/models representating the game
-2. Split development into UI and Logic
-3. Make interfaces on how these modules should work together (Logic uses an UI-interface, so can be easily switched; UI knows the Model via interface to present it to the user when asked by the logic). Different interfaces of model for UI and Logic (UI don't have to know as much as Logic)
-4. Implement different rule sets by specialized logic classes.
-5. Model consist of Board with GamePieces. In addition there are helper classes for rules or statistics
-6. KI also is included in Logic per interface, so easy replacement is possible
+Development was implemented to provide independent working on the project, therefore:
+1. Have a model/models representating the game/board/gamestate as interface. (Models-Directory). 
+2. Split development into UI and Logic. Logic manipulates Model and uses UI to present it to the user and have interactions with user. Concrete implementation of model is also easily replaceable because of interface (UI-Directory/Logic-Directory).
+3. Make interfaces on how these modules should work together (Logic uses an UI-interface, so can be easily switched; UI knows the Model via interface to present it to the user when asked by the logic). Different interfaces of model for UI and Logic (UI don't have to know as much as Logic) (Interfaces-Directory).
+4. Implement different rule sets by specialized logic classes. With this approach it is easier to implement new rule variations.
+5. Implement different board sizes (UI) with different UI-classes as they can be easily switched in logic.
+5. Model consist of Board with GamePieces. In addition there are helper classes for rules or statistics.
+6. KI also is included in Logic via interface, so easy replacement is possible.
 ## How to play
 ### Dependencies
-- GCC with g++ if use of provided MAKEFILE is wanted
+- GCC with g++ if use of provided MAKEFILE (and make then) is wanted
 ### Build the game
-1. Load repository (main branch or one of the releases)
-2. Run 'make' in 'Source'-directory. You can provide a path to which the executable ('maedn') should be build via 'make outpath=path/you/like' (tested on macos).
-3. With 'make run' you can run a quick pre-configured game
-4. If you want to you can use the alternative TestUI. Simply alter the commentatoin in lines 136/137 in CppMenschAergereDichNicht.cpp and build again.
+1. Load repository (main branch or one of the releases).
+2. Run 'make' in 'Source'-directory. You can provide a path to which the executable ('maedn') should be build via 'make outpath=path/you/like' (tested on macos/ubuntu).
+3. With 'make run' you can run a quick pre-configured game.
+
+### Troubleshooting
+If MAKEFILE is not working (maybe Windows):
+- Use a c++ compiler (best will be GCC with g++) with language version 17.
+- Compile and link all *.cpp files you find.
+- This should do the same as the MAKEFILE
+
 ### Run the game
-The settings of the game are selected by CL-argument or by configuration file. Once the game started you can not change settings but has to restart (You should never change rules of a game midway anyways...).
+The settings of the game are selected by CL-argument or by configuration file. Once the game started you can not change settings but have to restart (You should never change rules of a game midway anyways...).
 1. Configure game and run: This is done by command line arguments to the game executable. Following options
     - None: Pre-configured default game (not like 'make run'!): 4 Homes, 4 Players, 4 Pieces, Default rules
     - 6 or more (not counting the app itself): Starts an individual game. The six arguments are integers as followed in order. Everything after that are strings with players names.
@@ -48,6 +59,10 @@ The settings of the game are selected by CL-argument or by configuration file. O
         4. 0-2 - RuleSet (0: Default; 1: Hard; 2: Easy)
         5. 0/1 - Fill remaining homes with KI-players (0: No; 1: Yes)
         6. 0/1 - Spread players on board (0: No; 1: Yes)(Only if not filled with KI and sensible to spread)
+        '''plain
+        Example:
+        ./maedn 4 3 4
+        '''
     - One: This must be a file in same directory (or a path). This must hold the same arguments like the 6 arguments, each in one line. Each name in a new line. With this you can have multiple configuration files to quickly start games. (See also sample file in 'Demo'-directory 'maedngame' for configuration only and 'maedngame1' for a save-file)
 2. You can run via 'make run' a pre-configured game (4 Homes, 3 Players (Torsten, Niklas, Ingmar), 4 Pieces each, Default rules, Fill remaining homes with KI)
 3. You can load a saved game with one CL-argument too: If you have exported a game state before, just take this file as CL-argument. It will hold game configuration and state.
