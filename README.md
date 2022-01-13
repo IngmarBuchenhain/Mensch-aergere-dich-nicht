@@ -40,7 +40,7 @@ Development was implemented to provide independent working on the project, there
 ### Build the game
 1. Load repository (main branch or one of the releases).
 2. Run 'make' in 'Source'-directory. You can provide a path to which the executable ('maedn') should be build via 'make outpath=path/you/like' (tested on macos/ubuntu).
-3. With 'make run' you can run a quick pre-configured game.
+3. With 'make run' you can run a quick pre-configured game. (See below "Run the game" and MAKEFILE for explanation)
 
 ### Troubleshooting
 If MAKEFILE is not working (maybe Windows):
@@ -52,13 +52,13 @@ If MAKEFILE is not working (maybe Windows):
 The settings of the game are given to the game by CL-argument directly or by configuration file. Once the game started you can not change settings but have to restart (You should never change rules of a game midway anyways...). Different options for arguments are available:
 1. None: Pre-configured default game (not like 'make run'!): 4 Homes, 4 Players, 4 Pieces, Default rules
 2. 6 or more (not counting the app itself): Starts an individual game. The six arguments are integers as followed in order. Everything after that are strings with players names. Names are not necessary.
-        1. 4/6 - Number of Homes (Small or big board)
-        2. 1-6 - Number of (human) players. Note: More players than homes won't work ;-)
-        3. 3/4 - Number of game pieces per player
-        4. 0-2 - RuleSet (0: Default; 1: Hard; 2: Easy)
-        5. 0/1 - Fill remaining homes with KI-players (0: No; 1: Yes)
-        6. 0/1 - Spread players on board (0: No; 1: Yes)(Only if not filled with KI and sensible to spread)
-3. One: This must be a file in same directory (or a path). This must hold the same arguments like the 6 arguments, each in one line. Each name in a new line. With this you can have multiple configuration files to quickly start games. (See also sample file in 'Demo'-directory 'maedngame' for configuration only and 'maedngame1' for a save-file)
+    1. 4/6 - Number of Homes (Small or big board)
+    2. 1-6 - Number of (human) players. Note: More players than homes won't work ;-)
+    3. 3/4 - Number of game pieces per player
+    4. 0-2 - RuleSet (0: Default; 1: Hard; 2: Easy)
+    5. 0/1 - Fill remaining homes with KI-players (0: No; 1: Yes)
+    6. 0/1 - Spread players on board (0: No; 1: Yes)(Only if not filled with KI and sensible to spread)
+3. One: This must be a file in same directory (or a path). This must hold the same arguments like the 6 arguments, each in one line. Each name in a new line. With this you can have multiple configuration files to quickly start games. (See also sample file in 'Demo'-directory 'maedngame' for configuration only and 'maedngame1' for a save-file)  
 Examples:
 Assuming you used MAKEFILE and are still in the Source-directory.
 ```plain
@@ -79,10 +79,10 @@ will start a game with the small board (4 homes), 2 human players, 4 pieces each
 ```plain
 ./maedn Demo/maedngame
 ```
-will start a game with the small board (4 homes), 3 human players, 4 pieces each, the hard rules. Remaining homes will be filled with KI-player. Human players have the given names.
-2. You can run via 'make run' a pre-configured game (4 Homes, 3 Players (Torsten, Niklas, Ingmar), 4 Pieces each, Default rules, Fill remaining homes with KI)
-3. You can load a saved game with one CL-argument too: If you have exported a game state before, just take this file as CL-argument. It will hold game configuration and state.
-4. If you are in the game you can exit the game and save the state if you wish. The saved file ('maedngame' or if already there with a number following will hold configuration and state of the game)
+will start a game with the small board (4 homes), 3 human players, 4 pieces each, the hard rules. Remaining homes will be filled with KI-player. Human players have the given names.  
+
+4. You can load a saved game with one CL-argument too: If you have exported a game state before, just take this file as CL-argument. It will hold game configuration and state.
+6. If you are in the game you can exit the game and save the state if you wish. The saved file ('maedngame' or if already there with a number following will hold configuration and state of the game)
 - See also in 'Demo'-directory for explanation of config/state-file
 ## Play
 Well, everyone should know Mensch-ärgere-dich-nicht. If not, buy the real game or draw it on a paper and have fun getting annoyed by your fellow players. :D
