@@ -139,7 +139,7 @@ int main(int argc, char **argv)
             IUI_SPTR ui(new UI);
             if (config->homes == 6)
             {
-                ui.reset(new LARGEUI); // Hier andere UI KLasse nehmen
+                ui.reset(new LARGEUI); // Take the big field
             }
 
             // Create logic object with UI-object and config as argument
