@@ -5,6 +5,7 @@
 
 #include <string>
 #include <exception>
+#include <vector>
 
 // Exceptions
 class unexpected_game_piece : public std::exception

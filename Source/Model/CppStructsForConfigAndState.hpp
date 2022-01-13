@@ -2,6 +2,7 @@
 #define MAEDN_STRUCT_STATES_HPP
 
 #include <vector>
+#include <memory>
 
 #include "CppClassStatistics.hpp"
 

@@ -33,7 +33,14 @@ public:
      * Updates the drawn board game with changed game pieces.
      * Must call 'initBoard'-method first!
      */
+
+
+    virtual void showInformation(std::string message, std::string color) = 0;
+    virtual void showWinners(std::vector<std::string> winners) = 0;
+
+
     virtual void updateBoard(std::vector<std::vector<IGamePieceUI_SPTR>> gamePieces) = 0;
+
 
 public:
     /**

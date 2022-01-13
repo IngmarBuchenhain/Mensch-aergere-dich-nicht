@@ -29,7 +29,7 @@ public:
     /**
      * Presents some information to user.
      */
-    void showInformation(std::string message) override
+    void showInformation(std::string message, std::string color) override
     {
         std::cout << std::endl
                   << message << std::endl

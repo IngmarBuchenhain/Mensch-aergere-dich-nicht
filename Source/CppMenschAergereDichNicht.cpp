@@ -133,8 +133,8 @@ int main(int argc, char **argv)
         {
             // Create UI-Object
             printDebug("Try to create UI-object");
-           IUI_SPTR ui(new TestUI);
-            //IUI_SPTR ui(new UI);
+            //IUI_SPTR ui(new TestUI);
+            IUI_SPTR ui(new UI);
 
             // Create logic object with UI-object and config as argument
             printDebug("Try to create game-logic-object");
@@ -143,9 +143,11 @@ int main(int argc, char **argv)
             switch (config->rules)
             {
             case 1:
+                printDebug("Hard rules");
                 mainLogic.reset(new MainLogicHard(ui, config));
                 break;
             case 2:
+                printDebug("Easy rules");
                 mainLogic.reset(new MainLogicEasy(ui, config));
                 break;
             default:
