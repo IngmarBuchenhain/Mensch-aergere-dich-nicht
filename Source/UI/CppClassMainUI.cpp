@@ -151,7 +151,7 @@ void UI::printBoard(std::string visualBoard[21][21]) {
     }    
 }
 
-std::pair<IGamePieceUI_SPTR, std::pair<int, bool>> UI::chooseOneGamePiece(std::map<IGamePieceUI_SPTR, std::vector<std::pair<int, bool>>> &possiblePieces, std::string currentPlayer, int playerNumber, int diceNumber)
+std::pair<IGamePieceUI_SPTR, std::pair<int, bool>> UI::chooseOneGamePiece(std::map<IGamePieceUI_SPTR, std::vector<std::pair<int, bool>>> &possiblePieces, std::string currentPlayer, int playerNumber, int diceNumberSafe)
 {
     std::map<IGamePieceUI_SPTR, std::vector<std::pair<int, bool>>>::iterator it;
     int i = 0;
@@ -216,15 +216,15 @@ std::pair<IGamePieceUI_SPTR, std::pair<int, bool>> UI::chooseOneGamePiece(std::m
     
     clearScreen(visualBoard);
     
-    showInformation("Du kannst " + diceNumberSafe + " Felder fahren.", color_green);
+    showInformation("Du kannst " + to_string(diceNumberSafe) + " Felder fahren.", color_green);
 
     showInformation(colorOrder[playerNumber] + currentPlayer + color_green + ": Wähle die Figur mit der du ziehen möchtest. (Zahl eingeben und mit ENTER bestätigen; '0' beendet nach dem Zug das Spiel)", color_green);
 
     int selection;
     while (!(std::cin >> selection)) {
-        cout << color_red << "Bitte gebe einen gültigen Wert an."<< color_reset << endl;
-        cin.clear();
-        cin.ignore(40,'\n');
+        std::cout << color_red << "Bitte gebe einen gültigen Wert an."<< color_reset << std::endl;
+        std::cin.clear();
+        std::cin.ignore(40,'\n');
     }
 
     if (selection == 0) {
