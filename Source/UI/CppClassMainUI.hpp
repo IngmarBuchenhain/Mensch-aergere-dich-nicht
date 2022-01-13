@@ -10,7 +10,8 @@
 
 class UI:public IUI {
 
-void clearScreen();
+void clearScreen(std::string visualBoard[21][21]);
+void printBoard(std::string visualBoard[21][21]);
 void setUpSmallBoard(int fieldSize);
 void updateBoard(std::vector<std::vector<IGamePieceUI_SPTR>> gamePieces) override;
 void showInformation(std::string message) override;
@@ -28,6 +29,10 @@ std::string color_red = "\033[31m";
 std::string color_blue = "\033[34m";
 std::string color_green = "\033[32m";
 std::string color_yellow = "\033[33m";
+
+std::string basicField = "██";
+std::string lightField = "▒▒";
+std::string halfField = "█";
 
 bool exportWanted = false;
 bool exitWanted = false;

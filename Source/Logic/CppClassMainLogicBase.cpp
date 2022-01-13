@@ -121,7 +121,7 @@ void MainLogicBase::startGame()
         // if KI present choice, other ask
         if (players[currentPlayer] == nullptr)
         {
-            ui->rollDice(nameOfPlayers[currentPlayer], currentDiceRoll, currentPlayer);
+            ui->rollDice(nameOfPlayers[currentPlayer], currentPlayer, currentDiceRoll);
         }
         else
         {

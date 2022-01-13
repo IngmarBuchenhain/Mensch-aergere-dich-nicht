@@ -1,9 +1,13 @@
 #include "CppClassMainUI.hpp"
 
+void UI::clearScreen(std::string visualBoard[21][21]) {
+    system("clear");
+    printBoard(visualBoard);
+}
+
 void UI::initBoard(IBoardUI_SPTR board)
 {
-    board_ptr = board;
-
+    std::cout << "initBoard" << std::endl;
     fieldSize = board->getNumberOfFields();
 
     numberOfPlayers = board->getNumberOfPlayers();
@@ -20,36 +24,71 @@ void UI::initBoard(IBoardUI_SPTR board)
 
     endFields = board->getEndFields();
 
-    updateBoard(gamePieces);
-
     for (int i = 0; i < numberOfPlayers; i++) {
         if (startFields[i] == 1) {
-            colorOrder[i] = color_red;
+            colorOrder.push_back (color_red);
         } else if(startFields[i] == 11) {
-            colorOrder[i] = color_blue;
+            colorOrder.push_back (color_blue);
         } else if(startFields[i] == 21) {
-            colorOrder[i] = color_yellow;
+            colorOrder.push_back (color_yellow);
         } else {
-            colorOrder[i] = color_green;            
+            colorOrder.push_back (color_green);            
         }        
     }
-    
+
+    clearScreen(visualBoard);
+
+    updateBoard(gamePieces);
 
 }
 
- void UI::showWinners(std::vector<std::string> winners){
+ void UI::showWinners(std::vector<std::string> winners) {
+     std::cout << "showWinners" << std::endl;
+     clearScreen(visualBoard);;
+     std::cout << std::endl;
+     for (int i = 0; i < winners.size(); i++) {
+         if (i == 0) {
+             std::cout << color_green << "1. " << winners[i] << color_reset << std::endl;
+         } else if (i == 1) {
+             std::cout << color_yellow << "1. " << winners[i] << color_reset << std::endl;
+         } else if (i == 2) {
+             std::cout << color_red << "1. " << winners[i] << color_reset << std::endl;
+         } else {
 
+             std::cout << (i+1) << ". " << winners[i] << std::endl;
+         }
+     }
  }
 
 void UI::updateBoard(std::vector<std::vector<IGamePieceUI_SPTR>> gamePieces)
 {
+    std::cout << "updateBoard" << std::endl;
     setUpSmallBoard(40);
 
     for (int i = 0; i < numberOfPlayers; i++)
     {
         for (int j = 0; j < numberOfGamePiecesPerPlayer; j++)
         {
-            if (gamePieces[i][j]->isInTargetArea()) {
+            if (gamePieces[i][j]->getPosition() == 0) {
+                int x;
+                int y;
+                if (startFields[i] == 1) {
+                    y = houses[gamePieces[i][j]->getID() % 4][0];
+                    x = houses[gamePieces[i][j]->getID() % 4][1];
+                } else if (startFields[i] == 11) {
+                    y = houses[(gamePieces[i][j]->getID() % 4) + 4][0];
+                    x = houses[(gamePieces[i][j]->getID() % 4) + 4][1];
+                } else if (startFields[i] == 21) {
+                    y = houses[(gamePieces[i][j]->getID() % 4) + 8][0];
+                    x = houses[(gamePieces[i][j]->getID() % 4) + 8][1];
+                } else {
+                    y = houses[(gamePieces[i][j]->getID() % 4) + 12][0];
+                    x = houses[(gamePieces[i][j]->getID() % 4) + 12][1];
+                }
+
+                visualBoard[y][x] = colorOrder[i] + basicField + color_reset;
+
+            } else if (gamePieces[i][j]->isInTargetArea()) {
                 int x;
                 int y;
                 if (startFields[i] == 1) {
@@ -66,18 +105,27 @@ void UI::updateBoard(std::vector<std::vector<IGamePieceUI_SPTR>> gamePieces)
                     x = finishFields[gamePieces[i][j]->getPosition() + 11][1];
                 }
 
-                visualBoard[y][x] = colorOrder[i] + "██" + color_reset;
+                visualBoard[y][x] = colorOrder[i] + basicField + color_reset;
 
             } else {
                 int y = fields[gamePieces[i][j]->getPosition() - 1][0];
                 int x = fields[gamePieces[i][j]->getPosition() - 1][1];
                 
-                visualBoard[y][x] = colorOrder[i] + "██" + color_reset;
+                visualBoard[y][x] = colorOrder[i] + basicField + color_reset;
                 
             }
         }
     }
 
+    printBoard(visualBoard);
+
+    showInformation("Drücke ENTER um fortzufahren.", color_green);
+
+    std::cin.ignore();
+    
+}
+
+void UI::printBoard(std::string visualBoard[21][21]) {
     // print board
     for (int i = 0; i < 21; i++)
     {
@@ -86,17 +134,38 @@ void UI::updateBoard(std::vector<std::vector<IGamePieceUI_SPTR>> gamePieces)
             std::cout << visualBoard[i][j];
         }
         std::cout << std::endl;
-    }
+    }    
 }
 
 std::pair<IGamePieceUI_SPTR, std::pair<int, bool>> UI::chooseOneGamePiece(std::map<IGamePieceUI_SPTR, std::vector<std::pair<int, bool>>> &possiblePieces, std::string currentPlayer, int playerNumber)
 {
+    std::cout << "chooseOneGamePiece" << std::endl;
     std::map<IGamePieceUI_SPTR, std::vector<std::pair<int, bool>>>::iterator it;
-    int i = 1;
+    int i = 0;
     for (it = possiblePieces.begin(); it != possiblePieces.end(); it++)
     {
-        if (it->first->isInTargetArea())
-        {
+        if (it->first->getPosition() == 0) {
+            int x;
+            int y;
+            std::cout << startFields[i] << std::endl;
+            if (colorOrder[playerNumber] == color_red) {
+                y = houses[it->first->getID() % 4][0];
+                x = houses[it->first->getID() % 4][1];
+            } else if (colorOrder[playerNumber] == color_blue) {
+                y = houses[(it->first->getID() % 4) + 4][0];
+                x = houses[(it->first->getID() % 4) + 4][1];
+            } else if (colorOrder[playerNumber] == color_yellow) {
+                y = houses[(it->first->getID() % 4) + 8][0];
+                x = houses[(it->first->getID() % 4) + 8][1];
+            } else {
+                y = houses[(it->first->getID() % 4) + 12][0];
+                x = houses[(it->first->getID() % 4) + 12][1];
+            }
+                std::cout << x << ", " << y << std::endl;
+            
+            visualBoard[y][x] = colorOrder[playerNumber] + halfField + std::to_string(i+1) + color_reset;
+
+        } else if (it->first->isInTargetArea()) {
             int x;
             int y;
             if (startFields[playerNumber] == 1)
@@ -120,7 +189,7 @@ std::pair<IGamePieceUI_SPTR, std::pair<int, bool>> UI::chooseOneGamePiece(std::m
                 x = finishFields[it->first->getPosition() + 11][1];
             }
 
-            visualBoard[y][x] = colorOrder[playerNumber] + "█" + std::to_string(i) + color_reset;
+            visualBoard[y][x] = colorOrder[playerNumber] + halfField + std::to_string(i+1) + color_reset;
            
         }
         else
@@ -128,13 +197,16 @@ std::pair<IGamePieceUI_SPTR, std::pair<int, bool>> UI::chooseOneGamePiece(std::m
             int y = fields[it->first->getPosition() - 1][0];
             int x = fields[it->first->getPosition() - 1][1];
             
-            visualBoard[y][x] = colorOrder[playerNumber] + "█" + std::to_string(i) + color_reset;
+            visualBoard[y][x] = colorOrder[playerNumber] + halfField + std::to_string(i+1) + color_reset;
             
         }
         i++;
     }
 
+    printBoard(visualBoard);
+
     showInformation(colorOrder[playerNumber] + currentPlayer + color_green + ": Wähle die Figur mit der du ziehen möchtest. (Zahl eingeben und mit ENTER bestätigen)", color_green);
+    std::cout << possiblePieces.size() << std::endl;
 
     int selection;
     std::cin >> selection;
@@ -144,28 +216,36 @@ std::pair<IGamePieceUI_SPTR, std::pair<int, bool>> UI::chooseOneGamePiece(std::m
         exitWanted = true;
 
         showInformation("Wähle die Figur mit der du ziehen möchtest. (Zahl eingeben und mit ENTER bestätigen)", color_green);
-        while (selection <= 0 || selection > numberOfPlayers) {
+        while (selection <= 0 || selection > possiblePieces.size()) {
             std::cin >> selection;
-            if (selection <= 0 || selection > numberOfPlayers) {
+            if (selection <= 0 || selection > possiblePieces.size()) {
                 showInformation("Ungültige Eingabe! Wähle die Figur mit der du ziehen möchtest.", color_red);
             }
         }
     } else {
-        while (selection <= 0 || selection > numberOfPlayers) {
+        while (selection <= 0 || selection > possiblePieces.size()) {
             showInformation("Ungültige Eingabe! Wähle die Figur mit der du ziehen möchtest.", color_red);
             std::cin >> selection;
         }
     }
 
-    auto iterator = possiblePieces.begin();
-    std::advance(iterator, selection - 1);
+    selection--;
 
-    if (it->second.size() > 1) {
+    std::cout << "Gewählte Figur:" << selection << std::endl;
+
+    auto iterator = possiblePieces.begin();
+    std::advance(iterator, selection);
+
+    std::cout << "possibilities:" << iterator->second.size() << std::endl;
+
+    selection = 0;
+
+    if (iterator->second.size() > 1) {
         showInformation("Rückwärts (0) Vorwärts (1) laufen?", color_green);
         std::cin >> selection;
 
         if (selection == 0) {
-            if (iterator->second[0] > it->second[1]) {
+            if (iterator->second[0] > iterator->second[1]) {
                 selection = 1;
             } else {
                 selection = 0;
@@ -179,10 +259,16 @@ std::pair<IGamePieceUI_SPTR, std::pair<int, bool>> UI::chooseOneGamePiece(std::m
         }
     }
 
+    
+    std::cout << "selection:" << selection << std::endl;
+    std::cout << "zweites:" << iterator->second[selection].first << std::endl;
+    std::cout << "erstes:" << iterator->second[0].first << std::endl;
+    std::cout << "zweites:" << iterator->second[1].first << std::endl;
+
     std::pair<IGamePieceUI_SPTR, std::pair<int, bool>> output{iterator->first, iterator->second[selection]};
 
     if (exitWanted == true) {
-        system("clear");
+        clearScreen(visualBoard);
         showInformation("Willst du den aktuellen Spielstand speichern? Ja: 1", color_red);
         std::cin >> selection;
         if (selection == 1) {
@@ -195,13 +281,22 @@ std::pair<IGamePieceUI_SPTR, std::pair<int, bool>> UI::chooseOneGamePiece(std::m
 
 void UI::showInformation(std::string message, std::string color)
 {
+    std::cout << "showInfo 1" << std::endl;
     std::cout << std::endl
               << color << message << color_reset << std::endl;
 }
 
+void UI::showInformation(std::string message)
+{
+    std::cout << "showInfo 2" << std::endl;
+    std::cout << std::endl
+              << color_red << message << color_reset << std::endl;
+}
+
 void UI::rollDice(std::string currentPlayer, int playerNumber, int diceNumber)
 {
-    system("clear");
+    std::cout << "rollDice"  << currentPlayer << playerNumber << diceNumber << std::endl;
+    clearScreen(visualBoard);
 
     std::cout << std::endl;
     std::string visualDice[9][9];
@@ -211,7 +306,7 @@ void UI::rollDice(std::string currentPlayer, int playerNumber, int diceNumber)
         {
             if (i == 0 || i == 8 || j == 0 || j == 8)
             {
-                visualDice[i][j] = "██";
+                visualDice[i][j] = basicField;
             }
             else
             {
@@ -231,53 +326,53 @@ void UI::rollDice(std::string currentPlayer, int playerNumber, int diceNumber)
 
     std::cout << std::endl
               << colorOrder[playerNumber] << currentPlayer << color_reset << ", du bist an der Reihe zu würfeln." << std::endl
-              << "Drücke dazu ENTER." << std::endl;
+              << color_green << "Drücke ENTER um fortzufahren." << color_reset << std::endl;
 
     std::cin.ignore();
 
-    system("clear");
+    clearScreen(visualBoard);;
 
     std::string diceMessage;
     switch (diceNumber)
     {
     case 1:
-        visualDice[4][4] = "██";
+        visualDice[4][4] = basicField;
         diceMessage = "Du hast eine Eins gewürfelt. Ist das Alles?";
         break;
     case 2:
-        visualDice[6][2] = "██";
-        visualDice[2][6] = "██";
+        visualDice[6][2] = basicField;
+        visualDice[2][6] = basicField;
         diceMessage = "Nur weil es Augenzahl heiß, heißt das nicht, dass du auch nur ein Zwei würfeln darfst.";
         break;
     case 3:
-        visualDice[6][2] = "██";
-        visualDice[4][4] = "██";
-        visualDice[2][6] = "██";
+        visualDice[6][2] = basicField;
+        visualDice[4][4] = basicField;
+        visualDice[2][6] = basicField;
         diceMessage = "Wir kommen der Sache schon näher.";
         break;
     case 4:
-        visualDice[2][2] = "██";
-        visualDice[6][2] = "██";
-        visualDice[2][6] = "██";
-        visualDice[6][6] = "██";
+        visualDice[2][2] = basicField;
+        visualDice[6][2] = basicField;
+        visualDice[2][6] = basicField;
+        visualDice[6][6] = basicField;
         diceMessage = "Immerhin mehr als Drei.";
         break;
     case 5:
-        visualDice[2][2] = "██";
-        visualDice[6][2] = "██";
-        visualDice[4][4] = "██";
-        visualDice[2][6] = "██";
-        visualDice[6][6] = "██";
+        visualDice[2][2] = basicField;
+        visualDice[6][2] = basicField;
+        visualDice[4][4] = basicField;
+        visualDice[2][6] = basicField;
+        visualDice[6][6] = basicField;
         diceMessage = "Wenn du dir jetzt denkst 'so knapp' hast du wohl nie in Mathe aufgepasst.";
         break;
 
     default:
-        visualDice[2][2] = "██";
-        visualDice[4][2] = "██";
-        visualDice[6][2] = "██";
-        visualDice[2][6] = "██";
-        visualDice[4][6] = "██";
-        visualDice[6][6] = "██";
+        visualDice[2][2] = basicField;
+        visualDice[4][2] = basicField;
+        visualDice[6][2] = basicField;
+        visualDice[2][6] = basicField;
+        visualDice[4][6] = basicField;
+        visualDice[6][6] = basicField;
         diceMessage = "Whooooo!!! EINE SECHS!!!";
         break;
     }
@@ -300,6 +395,7 @@ void UI::rollDice(std::string currentPlayer, int playerNumber, int diceNumber)
 
 void UI::setUpSmallBoard(int fieldSize)
 {
+    std::cout << "setUpSmallBoard" << std::endl;
     // 1 - 10
     fields[0][0] = 8;
     fields[0][1] = 0;
@@ -471,7 +567,7 @@ void UI::setUpSmallBoard(int fieldSize)
     // set normal fields
     for (int i = 0; i < 40; i++)
     {
-        visualBoard[fields[i][0]][fields[i][1]] = "██";
+        visualBoard[fields[i][0]][fields[i][1]] = basicField;
     }
 
     // set background of houses
@@ -483,19 +579,19 @@ void UI::setUpSmallBoard(int fieldSize)
             {
                 if (i == 0)
                 {
-                    visualBoard[houses[i][0] + j][houses[i][1] + k] = color_red + "▒▒" + color_reset;
+                    visualBoard[houses[i][0] + j][houses[i][1] + k] = color_red + lightField + color_reset;
                 }
                 else if (i == 4)
                 {
-                    visualBoard[houses[i][0] + j][houses[i][1] + k] = color_blue + "▒▒" + color_reset;
+                    visualBoard[houses[i][0] + j][houses[i][1] + k] = color_blue + lightField + color_reset;
                 }
                 else if (i == 8)
                 {
-                    visualBoard[houses[i][0] + j][houses[i][1] + k] = color_yellow + "▒▒" + color_reset;
+                    visualBoard[houses[i][0] + j][houses[i][1] + k] = color_yellow + lightField + color_reset;
                 }
                 else
                 {
-                    visualBoard[houses[i][0] + j][houses[i][1] + k] = color_green + "▒▒" + color_reset;
+                    visualBoard[houses[i][0] + j][houses[i][1] + k] = color_green + lightField + color_reset;
                 }
             }
         }
@@ -506,46 +602,46 @@ void UI::setUpSmallBoard(int fieldSize)
     {
         if (i < 4)
         {
-            visualBoard[houses[i][0]][houses[i][1]] = "██";
+            visualBoard[houses[i][0]][houses[i][1]] = basicField;
         }
         else if (i < 8)
         {
-            visualBoard[houses[i][0]][houses[i][1]] = "██";
+            visualBoard[houses[i][0]][houses[i][1]] = basicField;
         }
         else if (i < 12)
         {
-            visualBoard[houses[i][0]][houses[i][1]] = "██";
+            visualBoard[houses[i][0]][houses[i][1]] = basicField;
         }
         else
         {
-            visualBoard[houses[i][0]][houses[i][1]] = "██";
+            visualBoard[houses[i][0]][houses[i][1]] = basicField;
         }
     }
 
     // set startpoints
-    visualBoard[fields[0][0]][fields[0][1]] = color_red + "▒▒" + color_reset;
-    visualBoard[fields[10][0]][fields[10][1]] = color_blue + "▒▒" + color_reset;
-    visualBoard[fields[20][0]][fields[20][1]] = color_yellow + "▒▒" + color_reset;
-    visualBoard[fields[30][0]][fields[30][1]] = color_green + "▒▒" + color_reset;
+    visualBoard[fields[0][0]][fields[0][1]] = color_red + lightField + color_reset;
+    visualBoard[fields[10][0]][fields[10][1]] = color_blue + lightField + color_reset;
+    visualBoard[fields[20][0]][fields[20][1]] = color_yellow + lightField + color_reset;
+    visualBoard[fields[30][0]][fields[30][1]] = color_green + lightField + color_reset;
 
     // set finishFields
     for (int i = 0; i < 16; i++)
     {
         if (i < 4)
         {
-            visualBoard[finishFields[i][0]][finishFields[i][1]] = color_red + "▒▒" + color_reset;
+            visualBoard[finishFields[i][0]][finishFields[i][1]] = color_red + lightField + color_reset;
         }
         else if (i < 8)
         {
-            visualBoard[finishFields[i][0]][finishFields[i][1]] = color_blue + "▒▒" + color_reset;
+            visualBoard[finishFields[i][0]][finishFields[i][1]] = color_blue + lightField + color_reset;
         }
         else if (i < 12)
         {
-            visualBoard[finishFields[i][0]][finishFields[i][1]] = color_yellow + "▒▒" + color_reset;
+            visualBoard[finishFields[i][0]][finishFields[i][1]] = color_yellow + lightField + color_reset;
         }
         else
         {
-            visualBoard[finishFields[i][0]][finishFields[i][1]] = color_green + "▒▒" + color_reset;
+            visualBoard[finishFields[i][0]][finishFields[i][1]] = color_green + lightField + color_reset;
         }
     }
 }
@@ -562,6 +658,8 @@ bool UI::exportIsWanted()
 
 void UI::showDiceStats(std::shared_ptr<Statistics> stats)
 {
+    std::cout << "showDiceStats" << std::endl;
+    clearScreen(visualBoard);
     std::cout << std::endl
               << "Dice statistics" << std::endl;
     std::cout << "Number of total dice rolls: " << stats->getNumberOfTotalRolls() << std::endl;

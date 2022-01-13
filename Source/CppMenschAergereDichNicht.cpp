@@ -143,9 +143,11 @@ int main(int argc, char **argv)
             switch (config->rules)
             {
             case 1:
+                printDebug("Hard rules");
                 mainLogic.reset(new MainLogicHard(ui, config));
                 break;
             case 2:
+                printDebug("Easy rules");
                 mainLogic.reset(new MainLogicEasy(ui, config));
                 break;
             default:
