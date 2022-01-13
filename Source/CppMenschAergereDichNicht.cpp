@@ -133,12 +133,12 @@ int main(int argc, char **argv)
         {
             // Create UI-Object
             printDebug("Try to create UI-object");
-            IUI_SPTR ui(new TestUI);
-            //IUI_SPTR ui(new UI);
-            // if (config->homes == 6)
-            // {
-            //     ui.reset(new UI); // Hier andere UI KLasse nehmen
-            // }
+            //IUI_SPTR ui(new TestUI);
+            IUI_SPTR ui(new UI);
+            if (config->homes == 6)
+            {
+                ui.reset(new UI); // Hier andere UI KLasse nehmen
+            }
 
             // Create logic object with UI-object and config as argument
             printDebug("Try to create game-logic-object");
