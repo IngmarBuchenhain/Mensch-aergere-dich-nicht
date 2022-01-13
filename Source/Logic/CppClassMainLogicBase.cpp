@@ -175,7 +175,7 @@ void MainLogicBase::startGame()
                 }
                 else
                 {
-                    selection = ui->chooseOneGamePiece(selectable, nameOfPlayers[currentPlayer], currentPlayer);
+                    selection = ui->chooseOneGamePiece(selectable, nameOfPlayers[currentPlayer], currentPlayer, currentDiceRoll);
                 }
 
                 // If we had a 6 mark it

@@ -216,7 +216,7 @@ std::pair<IGamePieceUI_SPTR, std::pair<int, bool>> UI::chooseOneGamePiece(std::m
     
     clearScreen(visualBoard);
     
-    showInformation("Du kannst " + to_string(diceNumberSafe) + " Felder fahren.", color_green);
+    showInformation("Du kannst " + std::to_string(diceNumberSafe) + " Felder fahren.", color_green);
 
     showInformation(colorOrder[playerNumber] + currentPlayer + color_green + ": Wähle die Figur mit der du ziehen möchtest. (Zahl eingeben und mit ENTER bestätigen; '0' beendet nach dem Zug das Spiel)", color_green);
 

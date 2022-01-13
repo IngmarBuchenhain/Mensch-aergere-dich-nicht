@@ -110,7 +110,7 @@ public:
     //     //printDebug("Assigned walk");
     //     return result;
     // }
-    std::pair<IGamePieceUI_SPTR, std::pair<int, bool>> chooseOneGamePiece(std::map<IGamePieceUI_SPTR, std::vector<std::pair<int, bool>>> &possiblePieces, std::string currentPlayer, int playerNumber) override
+    std::pair<IGamePieceUI_SPTR, std::pair<int, bool>> chooseOneGamePiece(std::map<IGamePieceUI_SPTR, std::vector<std::pair<int, bool>>> &possiblePieces, std::string currentPlayer, int playerNumber, int diceNumberSafe) override
     {
         //printDebug("In converter");
         std::cout << currentPlayer << ": Choose which piece to move: ";

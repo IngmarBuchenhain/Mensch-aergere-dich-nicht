@@ -17,7 +17,7 @@ void updateBoard(std::vector<std::vector<IGamePieceUI_SPTR>> gamePieces) overrid
 void showInformation(std::string message) override;
 void showInformation(std::string message, std::string color) override;
 void initBoard(IBoardUI_SPTR board) override;
-std::pair<IGamePieceUI_SPTR, std::pair<int, bool>> chooseOneGamePiece(std::map<IGamePieceUI_SPTR, std::vector<std::pair<int, bool>>> &possiblePieces, std::string currentPlayer, int playerNumber) override;
+std::pair<IGamePieceUI_SPTR, std::pair<int, bool>> chooseOneGamePiece(std::map<IGamePieceUI_SPTR, std::vector<std::pair<int, bool>>> &possiblePieces, std::string currentPlayer, int playerNumber, int diceNumberSafe) override;
 void rollDice(std::string currentPlayer, int playerNumber, int diceNumber) override;
 void rollDice(std::string currentPlayer, int diceNumber) override;
 bool exitIsWanted() override;

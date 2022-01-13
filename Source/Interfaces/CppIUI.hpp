@@ -60,7 +60,7 @@ public:
      * Present the current player all game pieces he can walk with, and let him choose one.
      * Each piece may have multiple possibilities to walk. The int is the new position, the bool indicates whether the new position is in the target area.
      */
-    virtual std::pair<IGamePieceUI_SPTR, std::pair<int, bool>> chooseOneGamePiece(std::map<IGamePieceUI_SPTR, std::vector<std::pair<int, bool>>> &possiblePieces, std::string currentPlayer, int playerNumber) = 0;
+    virtual std::pair<IGamePieceUI_SPTR, std::pair<int, bool>> chooseOneGamePiece(std::map<IGamePieceUI_SPTR, std::vector<std::pair<int, bool>>> &possiblePieces, std::string currentPlayer, int playerNumber, int diceNumberSafe) = 0;
 
 public:
     /**
