@@ -60,7 +60,7 @@ void UI::initBoard(IBoardUI_SPTR board)
 
 
      showInformation("Weiter mit ENTER.", color_green);
-     std::cin.ignore();
+     std::cin.ignore(40,'\n');
      std::cin.ignore();
  }
 
@@ -377,7 +377,7 @@ void UI::rollDice(std::string currentPlayer, int diceNumber)
               << color_red << diceMessage << color_green << std::endl
               << "Drücke ENTER um fortzufahren." << color_reset << std::endl;
 
-    std::cin.ignore();
+    std::cin.ignore(40,'\n');
 }
 
 void UI::rollDice(std::string currentPlayer, int playerNumber, int diceNumber)
@@ -415,7 +415,7 @@ void UI::rollDice(std::string currentPlayer, int playerNumber, int diceNumber)
               << colorOrder[playerNumber] << currentPlayer << color_reset << ", du bist an der Reihe zu würfeln." << std::endl
               << color_green << "Drücke ENTER um fortzufahren." << color_reset << std::endl;
 
-    std::cin.ignore();
+    std::cin.ignore(40,'\n');
 
     clearScreen(visualBoard);;
 
@@ -478,7 +478,7 @@ void UI::rollDice(std::string currentPlayer, int playerNumber, int diceNumber)
               << color_red << diceMessage << color_green << std::endl
               << "Drücke ENTER um fortzufahren." << color_reset << std::endl;
 
-    std::cin.ignore();
+    std::cin.ignore(40,'\n');
 }
 
 void UI::setUpSmallBoard(int fieldSize)
@@ -796,7 +796,8 @@ int main() {
         }
         std::cout << std::endl;
     }
-    std::cin.ignore();
+    
+    ;
     system("clear");
     return 0;
 }
