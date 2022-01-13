@@ -59,30 +59,37 @@ The settings of the game are given to the game by CL-argument directly or by con
     5. 0/1 - Fill remaining homes with KI-players (0: No; 1: Yes)
     6. 0/1 - Spread players on board (0: No; 1: Yes)(Only if not filled with KI and sensible to spread)
 3. One: This must be a file in same directory (or a path). This must hold the same arguments like the 6 arguments, each in one line. Each name in a new line. With this you can have multiple configuration files to quickly start games. (See also sample file in 'Demo'-directory 'maedngame' for configuration only and 'maedngame1' for a save-file)  
+
 Examples:
-Assuming you used MAKEFILE and are still in the Source-directory.
+Assuming you used MAKEFILE and are still in the Source-directory.  
+None:
 ```plain
 ./maedn
 ```
-will start a game with the small board (4 homes), 4 human players, 4 pieces each, the default rules. Names are provided by the game.
-
+will start a game with the small board (4 homes), 4 human players, 4 pieces each, the default rules. Names are provided by the game.  
+Six or more:
 ```plain
 ./maedn 4 3 4 0 1 0 Torsten Ingmar Niklas
 ```
-will start a game with the small board (4 homes), 3 human players, 4 pieces each, the default rules. Remaining homes will be filled with KI-player. Human players have the given names.
+will start a game with the small board (4 homes), 3 human players, 4 pieces each, the default rules. Remaining homes will be filled with KI-player. Human players have the given names.  
 
+Six or more:
 ```plain
 ./maedn 4 2 4 1 0 1 Torsten Ingmar Niklas
 ```
-will start a game with the small board (4 homes), 2 human players, 4 pieces each, the hard rules. Remaining homes will NOT be filled with KI-player. But the 2 playes will be opposite on the field (spread). Human players have the given names. Remaining names will be ignored.
+will start a game with the small board (4 homes), 2 human players, 4 pieces each, the hard rules. Remaining homes will NOT be filled with KI-player. But the 2 playes will be opposite on the field (spread). Human players have the given names. Remaining names will be ignored.  
 
+One:
 ```plain
 ./maedn Demo/maedngame
 ```
-will start a game with the small board (4 homes), 3 human players, 4 pieces each, the hard rules. Remaining homes will be filled with KI-player. Human players have the given names.  
+will start a game with the small board (4 homes), 3 human players, 4 pieces each, the hard rules. Remaining homes will be filled with KI-player. Human players have the given names.    
 
-4. You can load a saved game with one CL-argument too: If you have exported a game state before, just take this file as CL-argument. It will hold game configuration and state.
-6. If you are in the game you can exit the game and save the state if you wish. The saved file ('maedngame' or if already there with a number following will hold configuration and state of the game)
+One:
+```plain
+./maedn Demo/maedngame1
+```
+will start a game like configured in 'maedngame1' and resume from the state in the file. This file can be exported from a running game (will not overwrite existing) or can be edited by hand (Be careful when editing by hand!).
 - See also in 'Demo'-directory for explanation of config/state-file
 ## Play
 Well, everyone should know Mensch-ärgere-dich-nicht. If not, buy the real game or draw it on a paper and have fun getting annoyed by your fellow players. :D
