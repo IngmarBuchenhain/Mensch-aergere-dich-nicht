@@ -64,6 +64,11 @@ The settings of the game are selected by CL-argument or by configuration file. O
         ./maedn 4 3 4
 ```
     - One: This must be a file in same directory (or a path). This must hold the same arguments like the 6 arguments, each in one line. Each name in a new line. With this you can have multiple configuration files to quickly start games. (See also sample file in 'Demo'-directory 'maedngame' for configuration only and 'maedngame1' for a save-file)
+Examples:
+```plain
+./maedn 4 3 4 0 1 0 Torsten Ingmar Niklas
+```
+will start a game with the small board (4 homes), 3 human players, 4 pieces each, the default rules. Remaining homes will be filled with KI-player. Human players have the given names.
 2. You can run via 'make run' a pre-configured game (4 Homes, 3 Players (Torsten, Niklas, Ingmar), 4 Pieces each, Default rules, Fill remaining homes with KI)
 3. You can load a saved game with one CL-argument too: If you have exported a game state before, just take this file as CL-argument. It will hold game configuration and state.
 4. If you are in the game you can exit the game and save the state if you wish. The saved file ('maedngame' or if already there with a number following will hold configuration and state of the game)
