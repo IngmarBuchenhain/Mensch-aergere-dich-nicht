@@ -1,10 +1,9 @@
 # Mensch-aergere-dich-nicht
 This is a simple board game known by most people which can be played by CLI.
 
- [➤ Thoughts on development](https://github.com/IngmarBuchenhain/Mensch-aergere-dich-nicht#user-content-thoughts-on-development)\
- [➤ HowToPlay](https://github.com/IngmarBuchenhain/Mensch-Aergere-Dich-Nicht#user-content-Thoughts on development)\
- [➤ Building](https://github.com/DHBW-Inf20/CppMuhle#user-content-building)\
- [➤ Demo](https://github.com/DHBW-Inf20/CppMuhle#user-content-demo)
+ [➤ Thoughts on development](https://github.com/IngmarBuchenhain/Mensch-aergere-dich-nicht#thoughts-on-development)\
+ [➤ How to play](https://github.com/IngmarBuchenhain/Mensch-aergere-dich-nicht#how-to-play)\
+ [➤ Rule Sets](https://github.com/IngmarBuchenhain/Mensch-aergere-dich-nicht#rule-sets)\
 
 ## Thoughts on development
 - Developed for unix-based os (tested on macos 12 (Arm/Intel) and ubuntu 20)
