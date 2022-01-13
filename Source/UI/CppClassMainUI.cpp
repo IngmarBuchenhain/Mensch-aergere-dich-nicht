@@ -7,7 +7,6 @@ void UI::clearScreen(std::string visualBoard[21][21]) {
 
 void UI::initBoard(IBoardUI_SPTR board)
 {
-    std::cout << "initBoard" << std::endl;
     fieldSize = board->getNumberOfFields();
 
     numberOfPlayers = board->getNumberOfPlayers();
@@ -43,9 +42,9 @@ void UI::initBoard(IBoardUI_SPTR board)
 }
 
  void UI::showWinners(std::vector<std::string> winners) {
-     std::cout << "showWinners" << std::endl;
      clearScreen(visualBoard);;
      std::cout << std::endl;
+     showInformation("Das Spiel ist zu Ende. Hier sind die Gewinner... GLÜCKWUNSCH!", color_green);
      for (int i = 0; i < winners.size(); i++) {
          if (i == 0) {
              std::cout << color_green << "1. " << winners[i] << color_reset << std::endl;
@@ -58,12 +57,22 @@ void UI::initBoard(IBoardUI_SPTR board)
              std::cout << (i+1) << ". " << winners[i] << std::endl;
          }
      }
+
+
+     showInformation("Weiter mit ENTER.", color_green);
+     std::cin.ignore();
+     std::cin.ignore();
  }
 
 void UI::updateBoard(std::vector<std::vector<IGamePieceUI_SPTR>> gamePieces)
 {
-    std::cout << "updateBoard" << std::endl;
     setUpSmallBoard(40);
+
+    int doubleRed = 0;
+    int doubleBlue = 0;
+    int doubleYellow = 0;
+    int doubleGreen = 0;
+    //visualBoard[7][0];
 
     for (int i = 0; i < numberOfPlayers; i++)
     {
@@ -112,16 +121,21 @@ void UI::updateBoard(std::vector<std::vector<IGamePieceUI_SPTR>> gamePieces)
                 int x = fields[gamePieces[i][j]->getPosition() - 1][1];
                 
                 visualBoard[y][x] = colorOrder[i] + basicField + color_reset;
+
+                if (x == 0 && y == 8) { doubleRed++; }
+                if (x == 12 && y == 0) { doubleBlue++; }
+                if (x == 20 && y == 12) { doubleYellow++; }
+                if (x == 8 && y == 20) { doubleGreen++; }
+
+                if (doubleRed > 1) { visualBoard[7][0] = color_red + "! " + color_reset; }
+                if (doubleBlue > 1) { visualBoard[0][13] = color_red + "! " + color_reset; }
+                if (doubleYellow > 1) { visualBoard[13][20] = color_red + " !" + color_reset; }
+                if (doubleGreen > 1) { visualBoard[20][7] = color_red + " !" + color_reset; }
+                
                 
             }
         }
     }
-
-    printBoard(visualBoard);
-
-    showInformation("Drücke ENTER um fortzufahren.", color_green);
-
-    std::cin.ignore();
     
 }
 
@@ -139,7 +153,6 @@ void UI::printBoard(std::string visualBoard[21][21]) {
 
 std::pair<IGamePieceUI_SPTR, std::pair<int, bool>> UI::chooseOneGamePiece(std::map<IGamePieceUI_SPTR, std::vector<std::pair<int, bool>>> &possiblePieces, std::string currentPlayer, int playerNumber)
 {
-    std::cout << "chooseOneGamePiece" << std::endl;
     std::map<IGamePieceUI_SPTR, std::vector<std::pair<int, bool>>>::iterator it;
     int i = 0;
     for (it = possiblePieces.begin(); it != possiblePieces.end(); it++)
@@ -147,7 +160,6 @@ std::pair<IGamePieceUI_SPTR, std::pair<int, bool>> UI::chooseOneGamePiece(std::m
         if (it->first->getPosition() == 0) {
             int x;
             int y;
-            std::cout << startFields[i] << std::endl;
             if (colorOrder[playerNumber] == color_red) {
                 y = houses[it->first->getID() % 4][0];
                 x = houses[it->first->getID() % 4][1];
@@ -161,7 +173,6 @@ std::pair<IGamePieceUI_SPTR, std::pair<int, bool>> UI::chooseOneGamePiece(std::m
                 y = houses[(it->first->getID() % 4) + 12][0];
                 x = houses[(it->first->getID() % 4) + 12][1];
             }
-                std::cout << x << ", " << y << std::endl;
             
             visualBoard[y][x] = colorOrder[playerNumber] + halfField + std::to_string(i+1) + color_reset;
 
@@ -203,10 +214,9 @@ std::pair<IGamePieceUI_SPTR, std::pair<int, bool>> UI::chooseOneGamePiece(std::m
         i++;
     }
 
-    printBoard(visualBoard);
+    clearScreen(visualBoard);
 
     showInformation(colorOrder[playerNumber] + currentPlayer + color_green + ": Wähle die Figur mit der du ziehen möchtest. (Zahl eingeben und mit ENTER bestätigen)", color_green);
-    std::cout << possiblePieces.size() << std::endl;
 
     int selection;
     std::cin >> selection;
@@ -231,12 +241,8 @@ std::pair<IGamePieceUI_SPTR, std::pair<int, bool>> UI::chooseOneGamePiece(std::m
 
     selection--;
 
-    std::cout << "Gewählte Figur:" << selection << std::endl;
-
     auto iterator = possiblePieces.begin();
     std::advance(iterator, selection);
-
-    std::cout << "possibilities:" << iterator->second.size() << std::endl;
 
     selection = 0;
 
@@ -259,12 +265,6 @@ std::pair<IGamePieceUI_SPTR, std::pair<int, bool>> UI::chooseOneGamePiece(std::m
         }
     }
 
-    
-    std::cout << "selection:" << selection << std::endl;
-    std::cout << "zweites:" << iterator->second[selection].first << std::endl;
-    std::cout << "erstes:" << iterator->second[0].first << std::endl;
-    std::cout << "zweites:" << iterator->second[1].first << std::endl;
-
     std::pair<IGamePieceUI_SPTR, std::pair<int, bool>> output{iterator->first, iterator->second[selection]};
 
     if (exitWanted == true) {
@@ -281,21 +281,100 @@ std::pair<IGamePieceUI_SPTR, std::pair<int, bool>> UI::chooseOneGamePiece(std::m
 
 void UI::showInformation(std::string message, std::string color)
 {
-    std::cout << "showInfo 1" << std::endl;
     std::cout << std::endl
               << color << message << color_reset << std::endl;
 }
 
 void UI::showInformation(std::string message)
 {
-    std::cout << "showInfo 2" << std::endl;
     std::cout << std::endl
               << color_red << message << color_reset << std::endl;
 }
 
+void UI::rollDice(std::string currentPlayer, int diceNumber)
+{
+    clearScreen(visualBoard);
+
+    std::string visualDice[9][9];
+    for (int i = 0; i < 9; i++)
+    {
+        for (int j = 0; j < 9; j++)
+        {
+            if (i == 0 || i == 8 || j == 0 || j == 8)
+            {
+                visualDice[i][j] = basicField;
+            }
+            else
+            {
+                visualDice[i][j] = "  ";
+            }
+        }
+    }
+
+    std::string diceMessage;
+    switch (diceNumber)
+    {
+    case 1:
+        visualDice[4][4] = basicField;
+        diceMessage = currentPlayer + " hat eine Eins gewürfelt";
+        break;
+    case 2:
+        visualDice[6][2] = basicField;
+        visualDice[2][6] = basicField;
+        diceMessage = currentPlayer + " hat eine Zwei gewürfelt";
+        break;
+    case 3:
+        visualDice[6][2] = basicField;
+        visualDice[4][4] = basicField;
+        visualDice[2][6] = basicField;
+        diceMessage = currentPlayer + " hat eine Drei gewürfelt";
+        break;
+    case 4:
+        visualDice[2][2] = basicField;
+        visualDice[6][2] = basicField;
+        visualDice[2][6] = basicField;
+        visualDice[6][6] = basicField;
+        diceMessage = currentPlayer + " hat eine Vier gewürfelt";
+        break;
+    case 5:
+        visualDice[2][2] = basicField;
+        visualDice[6][2] = basicField;
+        visualDice[4][4] = basicField;
+        visualDice[2][6] = basicField;
+        visualDice[6][6] = basicField;
+        diceMessage = currentPlayer + " hat eine Fünf gewürfelt";
+        break;
+
+    default:
+        visualDice[2][2] = basicField;
+        visualDice[4][2] = basicField;
+        visualDice[6][2] = basicField;
+        visualDice[2][6] = basicField;
+        visualDice[4][6] = basicField;
+        visualDice[6][6] = basicField;
+        diceMessage = currentPlayer + " hat eine Sechs gewürfelt";
+        break;
+    }
+
+    std::cout << std::endl;
+    for (int i = 0; i < 9; i++)
+    {
+        for (int j = 0; j < 9; j++)
+        {
+            std::cout << visualDice[i][j];
+        }
+        std::cout << std::endl;
+    }
+
+    std::cout << std::endl
+              << color_red << diceMessage << color_green << std::endl
+              << "Drücke ENTER um fortzufahren." << color_reset << std::endl;
+
+    std::cin.ignore();
+}
+
 void UI::rollDice(std::string currentPlayer, int playerNumber, int diceNumber)
 {
-    std::cout << "rollDice"  << currentPlayer << playerNumber << diceNumber << std::endl;
     clearScreen(visualBoard);
 
     std::cout << std::endl;
@@ -377,6 +456,7 @@ void UI::rollDice(std::string currentPlayer, int playerNumber, int diceNumber)
         break;
     }
 
+    std::cout << std::endl;
     for (int i = 0; i < 9; i++)
     {
         for (int j = 0; j < 9; j++)
@@ -395,7 +475,6 @@ void UI::rollDice(std::string currentPlayer, int playerNumber, int diceNumber)
 
 void UI::setUpSmallBoard(int fieldSize)
 {
-    std::cout << "setUpSmallBoard" << std::endl;
     // 1 - 10
     fields[0][0] = 8;
     fields[0][1] = 0;
@@ -644,6 +723,15 @@ void UI::setUpSmallBoard(int fieldSize)
             visualBoard[finishFields[i][0]][finishFields[i][1]] = color_green + lightField + color_reset;
         }
     }
+
+    if (numberOfGamePiecesPerPlayer == 3)
+    {
+        visualBoard[finishFields[3][0]][finishFields[3][1]] = "  ";
+        visualBoard[finishFields[7][0]][finishFields[7][1]] = "  ";
+        visualBoard[finishFields[11][0]][finishFields[11][1]] = "  ";
+        visualBoard[finishFields[15][0]][finishFields[15][1]] = "  ";
+    }
+    
 }
 
 bool UI::exitIsWanted()
@@ -658,7 +746,6 @@ bool UI::exportIsWanted()
 
 void UI::showDiceStats(std::shared_ptr<Statistics> stats)
 {
-    std::cout << "showDiceStats" << std::endl;
     clearScreen(visualBoard);
     std::cout << std::endl
               << "Dice statistics" << std::endl;

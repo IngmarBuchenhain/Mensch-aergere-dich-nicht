@@ -50,6 +50,7 @@ public:
 
 
     virtual void rollDice(std::string currentPlayer, int playerNumber, int diceNumber) = 0;
+    virtual void rollDice(std::string currentPlayer, int diceNumber) = 0;
 
 
 public:
