@@ -216,7 +216,7 @@ std::pair<IGamePieceUI_SPTR, std::pair<int, bool>> UI::chooseOneGamePiece(std::m
 
     clearScreen(visualBoard);
 
-    showInformation(colorOrder[playerNumber] + currentPlayer + color_green + ": Wähle die Figur mit der du ziehen möchtest. (Zahl eingeben und mit ENTER bestätigen)", color_green);
+    showInformation(colorOrder[playerNumber] + currentPlayer + color_green + ": Wähle die Figur mit der du ziehen möchtest. (Zahl eingeben und mit ENTER bestätigen; '0' beendet nach dem Zug das Spiel)", color_green);
 
     int selection;
     std::cin >> selection;
@@ -225,7 +225,7 @@ std::pair<IGamePieceUI_SPTR, std::pair<int, bool>> UI::chooseOneGamePiece(std::m
         showInformation("Das Spiel wird nach diesem Spielzug beendet", color_green);
         exitWanted = true;
 
-        showInformation("Wähle die Figur mit der du ziehen möchtest. (Zahl eingeben und mit ENTER bestätigen)", color_green);
+        showInformation("Wähle die Figur mit der du ziehen möchtest. (Zahl eingeben und mit ENTER bestätigen; '0' beendet nach dem Zug das Spiel)", color_green);
         while (selection <= 0 || selection > possiblePieces.size()) {
             std::cin >> selection;
             if (selection <= 0 || selection > possiblePieces.size()) {
@@ -421,7 +421,7 @@ void UI::rollDice(std::string currentPlayer, int playerNumber, int diceNumber)
     case 2:
         visualDice[6][2] = basicField;
         visualDice[2][6] = basicField;
-        diceMessage = "Nur weil es Augenzahl heiß, heißt das nicht, dass du auch nur ein Zwei würfeln darfst.";
+        diceMessage = "Nur weil es Augenzahl heißt, heißt das nicht, dass du nur ein Zwei würfeln darfst.";
         break;
     case 3:
         visualDice[6][2] = basicField;
@@ -748,9 +748,9 @@ void UI::showDiceStats(std::shared_ptr<Statistics> stats)
 {
     clearScreen(visualBoard);
     std::cout << std::endl
-              << "Dice statistics" << std::endl;
-    std::cout << "Number of total dice rolls: " << stats->getNumberOfTotalRolls() << std::endl;
-    std::cout << "Dice distribution:" << std::endl;
+              << "Würfel Statistik" << std::endl;
+    std::cout << "Anzahl Gesamtwürfe: " << stats->getNumberOfTotalRolls() << std::endl;
+    std::cout << "Würfel-Verteilung:" << std::endl;
     for (int diceNumber = 1; diceNumber < 7; diceNumber++)
     {
         std::cout << diceNumber << ": ";

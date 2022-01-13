@@ -36,7 +36,7 @@ public:
 
 
     virtual void showInformation(std::string message, std::string color) = 0;
-    virtual void showWinners(std::vector<std::string> winners) = 0;
+ 
 
 
     virtual void updateBoard(std::vector<std::vector<IGamePieceUI_SPTR>> gamePieces) = 0;
@@ -48,6 +48,11 @@ public:
      * Does not really produces a number, but simply provides interaction with user and maybe animation..
      */
     virtual void rollDice(std::string currentPlayer, int playerNumber, int diceNumber) = 0;
+
+public:
+    /**
+     * Present the dice roll of a KI player
+     */
     virtual void rollDice(std::string currentPlayer, int diceNumber) = 0;
 
 public:
