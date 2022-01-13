@@ -22,6 +22,8 @@ std::map<IGamePiece_SPTR, std::vector<std::pair<int, bool>>> MainLogicDefault::g
     std::map<IGamePiece_SPTR, std::vector<std::pair<int, bool>>> walkAblePieces;
     std::vector<IGamePiece_SPTR> team = board->getTeam(currentPlayer);
     bool alreadyFinished = false;
+
+    // check the whole team for walkable pieces
     for (int pieceIndex = 0; pieceIndex < team.size(); pieceIndex++)
     {
         IGamePiece_SPTR currentPiece = team[pieceIndex];
@@ -31,7 +33,7 @@ std::map<IGamePiece_SPTR, std::vector<std::pair<int, bool>>> MainLogicDefault::g
             break;
         }
         if (lastPiece != nullptr)
-        {
+        { // We have to take the same piece. So set the last piece to the one we determine position and note that we are finished after thate.
             printDebug("Take same piece");
 
             currentPiece = lastPiece;
@@ -54,19 +56,19 @@ std::map<IGamePiece_SPTR, std::vector<std::pair<int, bool>>> MainLogicDefault::g
         }
         else
         {
-            // No 6 or not an
+            // No 6 or not a home piece
             // Get possibilities
             bool getPossibilities = true;
             if (diceRoll == 6 && board->getHomeAreaTeam(currentPlayer).size() != 0)
             {
-
+                // If we have a six and we have home pieces, we do not search longer for this piece, as it is not allowed to walk.
                 getPossibilities = false;
             }
             if (getPossibilities)
             {
                 if (currentPiece->isInTargetArea() && (currentPiece->getPosition() + diceRoll) <= board->getNumberOfGamePiecesPerPlayer() && wayIsFree(currentPiece->getPosition(), currentPiece->getPosition() + diceRoll, currentPlayer))
-                {
-                    // Check if way is free, if so add
+                { // If in target area, check if we can walk.
+                    // Check if way is free, if so add and note that we are in target area.
                     printDebug("Is in target area");
                     std::pair<int, bool> position;
                     position.first = currentPiece->getPosition() + diceRoll;
@@ -76,7 +78,7 @@ std::map<IGamePiece_SPTR, std::vector<std::pair<int, bool>>> MainLogicDefault::g
                 }
                 else if (!currentPiece->isInTargetArea() && currentPiece->getPosition() != 0)
                 {
-
+                    // If it is a field piece, check if we can go to the target area.
                     // Check if endField is in range
                     int targetAreaPosition;
                     if ((targetAreaPosition = containsEndField(currentPiece->getPosition(), diceRoll, currentPlayer)) != -1)
@@ -94,7 +96,7 @@ std::map<IGamePiece_SPTR, std::vector<std::pair<int, bool>>> MainLogicDefault::g
                     else
                     {
                         if (!waitBeforeEndField(currentPiece->getPosition(), diceRoll, currentPlayer))
-                        {
+                        { // Check if we can wait before the target area, if so we don't have to walk. But when in here, we can walk so check the new position out.
                             // Get new position
                             printDebug("Normal walk");
                             int newPosition = (currentPiece->getPosition() + diceRoll) % board->getNumberOfFields();
@@ -192,7 +194,6 @@ bool MainLogicDefault::gameIsNotFinished()
         }
         if (allPiecesFinished)
         {
-
             addPlayerToWinnersIfNotPresent(player);
             return false;
         }

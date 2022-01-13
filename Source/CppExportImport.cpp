@@ -9,7 +9,8 @@ namespace maednhelper
 {
     bool loadFile(std::string fileName, std::shared_ptr<GameConfig> config, std::shared_ptr<GameState> state)
     {
-        if(config == nullptr){
+        if (config == nullptr)
+        {
             config.reset(new GameConfig());
         }
         std::string line;
@@ -49,10 +50,9 @@ namespace maednhelper
 
             if (std::stoi(line) == 1)
             {
-
-                getline(maednfile, line);
-
+                // Get Statistics
                 state->stats.reset(new Statistics());
+                getline(maednfile, line);
                 for (int number = 0; number < std::stoi(line); number++)
                 {
                     state->stats->addDiceRoll(1);
@@ -129,7 +129,8 @@ namespace maednhelper
 
     void saveFile(std::shared_ptr<GameConfig> config, std::shared_ptr<GameState> state)
     {
-        if(config == nullptr || state == nullptr){
+        if (config == nullptr || state == nullptr)
+        {
             throw new argument_nullptr_exception;
         }
         std::vector<std::shared_ptr<GamePieceState>> pieces = state->pieceStates;
@@ -159,6 +160,8 @@ namespace maednhelper
         maednfile << config->rules << std::endl;
         maednfile << config->fillKI << std::endl;
         maednfile << config->spread << std::endl;
+
+        // Names
         for (int index = 0; index < 6; index++)
         {
             if (index < config->names.size())
@@ -171,6 +174,7 @@ namespace maednhelper
             }
         }
 
+        // Statistics
         maednfile << 1 << std::endl;
         maednfile << stats->getNumberRolls(1) << std::endl;
         maednfile << stats->getNumberRolls(2) << std::endl;
@@ -184,6 +188,7 @@ namespace maednhelper
         maednfile << lastPieceID << std::endl;
         maednfile << pieces.size() << std::endl;
 
+        // Pieces
         for (int inIndex = 0; inIndex < pieces.size(); inIndex++)
         {
             std::shared_ptr<GamePieceState> currentPiece = pieces[inIndex];
