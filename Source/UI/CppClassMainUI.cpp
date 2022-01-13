@@ -214,12 +214,14 @@ std::pair<IGamePieceUI_SPTR, std::pair<int, bool>> UI::chooseOneGamePiece(std::m
         i++;
     }
 
-    clearScreen(visualBoard);
-
     showInformation(colorOrder[playerNumber] + currentPlayer + color_green + ": Wähle die Figur mit der du ziehen möchtest. (Zahl eingeben und mit ENTER bestätigen; '0' beendet nach dem Zug das Spiel)", color_green);
 
     int selection;
-    std::cin >> selection;
+    while (!(std::cin >> selection)) {
+        cout << color_red << "Bitte gebe einen gültigen Wert an."<< color_reset << endl;
+        cin.clear();
+        cin.ignore(40,'\n');
+    }
 
     if (selection == 0) {
         showInformation("Das Spiel wird nach diesem Spielzug beendet", color_green);
