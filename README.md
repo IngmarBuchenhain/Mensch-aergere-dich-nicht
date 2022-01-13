@@ -2,7 +2,7 @@
 This is a simple board game known by most people which can be played by CLI.
 
  [➤ Thoughtsondevelopment](https://github.com/IngmarBuchenhain/Mensch-Aergere-Dich-Nicht#user-content-Thoughts on development)\
- [➤ HowToPlay](https://github.com/DHBW-Inf20/CppMuhle#user-content-dependencies)\
+ [➤ HowToPlay](https://github.com/IngmarBuchenhain/Mensch-Aergere-Dich-Nicht#user-content-Thoughts on development)\
  [➤ Building](https://github.com/DHBW-Inf20/CppMuhle#user-content-building)\
  [➤ Demo](https://github.com/DHBW-Inf20/CppMuhle#user-content-demo)
 
