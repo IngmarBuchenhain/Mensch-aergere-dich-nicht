@@ -54,6 +54,7 @@ std::vector<int> endFields;
 std::vector<IJumpPair_SPTR> jumpFields;
 std::vector<std::vector<IGamePieceUI_SPTR>> gamePieces;
 std::vector<std::string> colorOrder;
+int diceNumberSafe;
 
 };
 
