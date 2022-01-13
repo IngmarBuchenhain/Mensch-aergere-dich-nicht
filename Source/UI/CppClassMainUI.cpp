@@ -781,7 +781,7 @@ void UI::showDiceStats(std::shared_ptr<Statistics> stats)
         std::cout << stats->getNumberRolls(diceNumber) << " ";
 
         // Normalize for bars
-        double normalizedNumber = ((double)stats->getNumberRolls(diceNumber) / (double)stats->getNumberOfTotalRolls()) * 400;
+        double normalizedNumber = ((double)stats->getNumberRolls(diceNumber) / (double)stats->getNumberOfTotalRolls()) * 250;
         int temp = (int)normalizedNumber;
         // Show bars
         for (int index = 0; index < temp; index++)
