@@ -438,9 +438,15 @@ void LARGEUI::rollDice(std::string currentPlayer, int playerNumber, int diceNumb
     if (playerNumber != currentDiceRoller && currentDiceRoller != 7)
     {
         currentDiceRoller = playerNumber;
-        showInformation("Nächster Spieler. ENTER.", color_green);
-        std::cin.clear();
-        std::cin.get();
+        int helper = 0;
+        showInformation(colorOrder[playerNumber] + currentPlayer + color_green + " ist nun an der Reihe. Berei? Dann bestätige mit der (1).", color_green);
+        std::cin >> helper;
+
+        while (helper != 1)
+        {
+            showInformation(colorOrder[playerNumber] + currentPlayer + color_red + ": Bitte bestätige mit der Eins (1) und ENTER, dass du bereit bist.", color_red);
+            std::cin >> helper;
+        }
     }
 
 
@@ -468,9 +474,9 @@ void LARGEUI::rollDice(std::string currentPlayer, int playerNumber, int diceNumb
     {
         for (int j = 0; j < 9; j++)
         {
-            std::cout << visualDice[i][j];
+            std::cout << colorOrder[playerNumber] << visualDice[i][j];
         }
-        std::cout << std::endl;
+        std::cout << color_reset << std::endl;
     }
 
     std::cout << std::endl
@@ -533,9 +539,9 @@ void LARGEUI::rollDice(std::string currentPlayer, int playerNumber, int diceNumb
     {
         for (int j = 0; j < 9; j++)
         {
-            std::cout << visualDice[i][j];
+            std::cout << colorOrder[playerNumber] << visualDice[i][j];
         }
-        std::cout << std::endl;
+        std::cout << color_reset << std::endl;
     }
 
     std::cout << std::endl
