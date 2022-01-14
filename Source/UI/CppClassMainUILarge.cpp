@@ -39,6 +39,8 @@ void LARGEUI::initBoard(IBoardUI_SPTR board)
         }        
     }
 
+    currentDiceRoller = 7;
+
     //std::cout << startFields[0] << ", " << startFields[1] << ", " << startFields[2] << ", " << startFields[3] << ", " << startFields[4] << ", " << startFields[5] << std::endl;
     //std::cin.ignore();
 
@@ -68,7 +70,8 @@ void LARGEUI::initBoard(IBoardUI_SPTR board)
 
      showInformation("Weiter mit ENTER.", color_green);
      std::cin.clear();
-     std::cin.ignore(40,'\n');
+     std::cin.get();
+     //std::cin.ignore(40,'\n');
  }
 
 void LARGEUI::updateBoard(std::vector<std::vector<IGamePieceUI_SPTR>> gamePieces)
@@ -264,7 +267,8 @@ std::pair<IGamePieceUI_SPTR, std::pair<int, bool>> LARGEUI::chooseOneGamePiece(s
     while (!(std::cin >> selection)) {
         std::cout << color_red << "Bitte gebe einen gültigen Wert an."<< color_reset << std::endl;
         std::cin.clear();
-        std::cin.ignore(40,'\n');
+        std::cin.get();
+        //std::cin.ignore(40,'\n');
     }
 
     if (selection == 0) {
@@ -418,11 +422,28 @@ void LARGEUI::rollDiceKI(std::string currentPlayer, int playerNumber, int diceNu
               << "Drücke ENTER um fortzufahren." << color_reset << std::endl;
 
     std::cin.clear();
+    std::cin.get();
     std::cin.ignore(40,'\n');
 }
 
 void LARGEUI::rollDice(std::string currentPlayer, int playerNumber, int diceNumber)
 {
+    if (diceNumberSafe == 6)
+    {
+        showInformation("Du darfst nochmal würfeln. ENTER.", color_green);
+        std::cin.clear();
+        std::cin.get();
+    }
+
+    if (playerNumber != currentDiceRoller)
+    {
+        currentDiceRoller = playerNumber;
+        showInformation("Nächster Spieler. ENTER.", color_green);
+        std::cin.clear();
+        std::cin.get();
+    }
+    
+
     diceNumberSafe = diceNumber;
     clearScreen(visualBoard);
 
@@ -456,8 +477,13 @@ void LARGEUI::rollDice(std::string currentPlayer, int playerNumber, int diceNumb
               << colorOrder[playerNumber] << currentPlayer << color_reset << ", du bist an der Reihe zu würfeln." << std::endl
               << color_green << "Drücke ENTER um fortzufahren." << color_reset << std::endl;
 
-    std::cin.clear();
-    std::cin.ignore(40,'\n');
+    if (playerNumber != 0)
+    {     
+        std::cin.clear();
+        std::cin.get();
+        //std::cin.ignore(40,'\n');
+    }
+    
 
     clearScreen(visualBoard);;
 
@@ -521,7 +547,8 @@ void LARGEUI::rollDice(std::string currentPlayer, int playerNumber, int diceNumb
               << "Drücke ENTER um fortzufahren." << color_reset << std::endl;
 
     std::cin.clear();
-    std::cin.ignore(40,'\n');
+    std::cin.get();
+    //std::cin.ignore(40,'\n');
 }
 
 void LARGEUI::setUpLargeBoard(int fieldSize)
