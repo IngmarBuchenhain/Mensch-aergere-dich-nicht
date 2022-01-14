@@ -268,7 +268,7 @@ std::pair<IGamePieceUI_SPTR, std::pair<int, bool>> LARGEUI::chooseOneGamePiece(s
         std::cout << color_red << "Bitte gebe einen gültigen Wert an."<< color_reset << std::endl;
         std::cin.clear();
         std::cin.get();
-        //std::cin.ignore(40,'\n');
+        
     }
 
     if (selection == 0) {
@@ -434,7 +434,6 @@ void LARGEUI::rollDice(std::string currentPlayer, int playerNumber, int diceNumb
         std::cin.clear();
         std::cin.get();
     }
-
     
     if (playerNumber != currentDiceRoller && currentDiceRoller != 7)
     {
@@ -482,7 +481,7 @@ void LARGEUI::rollDice(std::string currentPlayer, int playerNumber, int diceNumb
     {     
         std::cin.clear();
         std::cin.get();
-        //std::cin.ignore(40,'\n');
+        
     }
     
 
@@ -549,7 +548,7 @@ void LARGEUI::rollDice(std::string currentPlayer, int playerNumber, int diceNumb
 
     std::cin.clear();
     std::cin.get();
-    //std::cin.ignore(40,'\n');
+    
 }
 
 void LARGEUI::setUpLargeBoard(int fieldSize)

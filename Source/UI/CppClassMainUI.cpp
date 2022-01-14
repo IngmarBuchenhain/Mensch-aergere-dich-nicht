@@ -35,6 +35,8 @@ void UI::initBoard(IBoardUI_SPTR board)
         }        
     }
 
+    currentDiceRoller = 7;
+
     clearScreen(visualBoard);
 
     updateBoard(gamePieces);
@@ -61,6 +63,7 @@ void UI::initBoard(IBoardUI_SPTR board)
 
      showInformation("Weiter mit ENTER.", color_green);
      std::cin.clear();
+     std::cin.get();
      std::cin.ignore(40,'\n');
  }
 
@@ -223,7 +226,7 @@ std::pair<IGamePieceUI_SPTR, std::pair<int, bool>> UI::chooseOneGamePiece(std::m
     while (!(std::cin >> selection)) {
         std::cout << color_red << "Bitte gebe einen gültigen Wert an."<< color_reset << std::endl;
         std::cin.clear();
-        std::cin.ignore(40,'\n');
+        std::cin.get();
     }
 
     if (selection == 0) {
@@ -377,11 +380,26 @@ void UI::rollDiceKI(std::string currentPlayer, int playerNumber, int diceNumber)
               << "Drücke ENTER um fortzufahren." << color_reset << std::endl;
 
     std::cin.clear();
-    std::cin.ignore(40,'\n');
+    std::cin.get();
 }
 
 void UI::rollDice(std::string currentPlayer, int playerNumber, int diceNumber)
 {
+    if (diceNumberSafe == 6)
+    {
+        showInformation("Du darfst nochmal würfeln. ENTER.", color_green);
+        std::cin.clear();
+        std::cin.get();
+    }
+    
+    if (playerNumber != currentDiceRoller && currentDiceRoller != 7)
+    {
+        currentDiceRoller = playerNumber;
+        showInformation("Nächster Spieler. ENTER.", color_green);
+        std::cin.clear();
+        std::cin.get();
+    }
+
     diceNumberSafe = diceNumber;
     clearScreen(visualBoard);
 
@@ -416,7 +434,7 @@ void UI::rollDice(std::string currentPlayer, int playerNumber, int diceNumber)
               << color_green << "Drücke ENTER um fortzufahren." << color_reset << std::endl;
 
     std::cin.clear();
-    std::cin.ignore(40,'\n');
+    std::cin.get();
 
     clearScreen(visualBoard);;
 
@@ -480,7 +498,7 @@ void UI::rollDice(std::string currentPlayer, int playerNumber, int diceNumber)
               << "Drücke ENTER um fortzufahren." << color_reset << std::endl;
 
     std::cin.clear();
-    std::cin.ignore(40,'\n');
+    std::cin.get();
 }
 
 void UI::setUpSmallBoard(int fieldSize)
