@@ -435,7 +435,8 @@ void LARGEUI::rollDice(std::string currentPlayer, int playerNumber, int diceNumb
         std::cin.get();
     }
 
-    if (playerNumber != currentDiceRoller)
+    
+    if (playerNumber != currentDiceRoller && currentDiceRoller != 7)
     {
         currentDiceRoller = playerNumber;
         showInformation("Nächster Spieler. ENTER.", color_green);
