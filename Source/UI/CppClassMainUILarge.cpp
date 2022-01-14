@@ -442,7 +442,7 @@ void LARGEUI::rollDice(std::string currentPlayer, int playerNumber, int diceNumb
         std::cin.clear();
         std::cin.get();
     }
-    
+
 
     diceNumberSafe = diceNumber;
     clearScreen(visualBoard);
@@ -477,13 +477,9 @@ void LARGEUI::rollDice(std::string currentPlayer, int playerNumber, int diceNumb
               << colorOrder[playerNumber] << currentPlayer << color_reset << ", du bist an der Reihe zu würfeln." << std::endl
               << color_green << "Drücke ENTER um fortzufahren." << color_reset << std::endl;
 
-    if (playerNumber != 0)
-    {     
-        std::cin.clear();
-        std::cin.get();
+    std::cin.clear();
+    std::cin.get();
         
-    }
-    
 
     clearScreen(visualBoard);;
 
