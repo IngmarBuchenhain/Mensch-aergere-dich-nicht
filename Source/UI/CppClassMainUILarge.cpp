@@ -71,7 +71,7 @@ void LARGEUI::initBoard(IBoardUI_SPTR board)
      showInformation("Weiter mit ENTER.", color_green);
      std::cin.clear();
      std::cin.get();
-     //std::cin.ignore(40,'\n');
+     std::cin.ignore(40,'\n');
  }
 
 void LARGEUI::updateBoard(std::vector<std::vector<IGamePieceUI_SPTR>> gamePieces)
