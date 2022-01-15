@@ -9,7 +9,7 @@
 #include <utility>
 
 class LARGEUI:public IUI {
-
+void waitForUser();
 void clearScreen(std::string visualBoard[21][37]);
 void printBoard(std::string visualBoard[21][37]);
 void setUpLargeBoard(int fieldSize);

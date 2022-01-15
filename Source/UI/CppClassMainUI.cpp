@@ -218,8 +218,14 @@ std::pair<IGamePieceUI_SPTR, std::pair<int, bool>> UI::chooseOneGamePiece(std::m
     
     clearScreen(visualBoard);
     
-    showInformation("Du kannst " + std::to_string(diceNumberSafe) + " Felder fahren.", color_green);
-
+    if (diceNumberSafe == 6)
+    {
+        showInformation("Du hast eine 6.", color_green);
+    }
+    else
+    {
+        showInformation("Du kannst " + std::to_string(diceNumberSafe) + " Felder fahren.", color_green);
+    }
     showInformation(colorOrder[playerNumber] + currentPlayer + color_green + ": Wähle die Figur mit der du ziehen möchtest. (Zahl eingeben und mit ENTER bestätigen; '0' beendet nach dem Zug das Spiel)", color_green);
 
     int selection;
@@ -235,7 +241,13 @@ std::pair<IGamePieceUI_SPTR, std::pair<int, bool>> UI::chooseOneGamePiece(std::m
 
         showInformation("Wähle die Figur mit der du ziehen möchtest. (Zahl eingeben und mit ENTER bestätigen; '0' beendet nach dem Zug das Spiel)", color_green);
         while (selection <= 0 || selection > possiblePieces.size()) {
-            std::cin >> selection;
+                        while (!(std::cin >> selection))
+            {
+                std::cout << color_red << "Bitte gebe einen gültigen Wert an." << color_reset << std::endl;
+                std::cin.clear();
+                //std::cin.ignore(100);
+                std::cin.get();
+            }
             if (selection <= 0 || selection > possiblePieces.size()) {
                 showInformation("Ungültige Eingabe! Wähle die Figur mit der du ziehen möchtest.", color_red);
             }
@@ -243,7 +255,13 @@ std::pair<IGamePieceUI_SPTR, std::pair<int, bool>> UI::chooseOneGamePiece(std::m
     } else {
         while (selection <= 0 || selection > possiblePieces.size()) {
             showInformation("Ungültige Eingabe! Wähle die Figur mit der du ziehen möchtest.", color_red);
-            std::cin >> selection;
+                        while (!(std::cin >> selection))
+            {
+                std::cout << color_red << "Bitte gebe einen gültigen Wert an." << color_reset << std::endl;
+                std::cin.clear();
+                //  std::cin.ignore(100);
+                std::cin.get();
+            }
         }
     }
 
@@ -256,7 +274,13 @@ std::pair<IGamePieceUI_SPTR, std::pair<int, bool>> UI::chooseOneGamePiece(std::m
 
     if (iterator->second.size() > 1) {
         showInformation("Rückwärts (0) Vorwärts (1) laufen?", color_green);
-        std::cin >> selection;
+        while (!(std::cin >> selection))
+        {
+            std::cout << color_red << "Bitte gebe einen gültigen Wert an." << color_reset << std::endl;
+            std::cin.clear();
+            //std::cin.ignore(100);
+            std::cin.get();
+        }
 
         if (selection == 0) {
             if (iterator->second[0] > iterator->second[1]) {
@@ -278,7 +302,13 @@ std::pair<IGamePieceUI_SPTR, std::pair<int, bool>> UI::chooseOneGamePiece(std::m
     if (exitWanted == true) {
         clearScreen(visualBoard);
         showInformation("Willst du den aktuellen Spielstand speichern? Ja: 1", color_red);
-        std::cin >> selection;
+        while (!(std::cin >> selection))
+        {
+            std::cout << color_red << "Bitte gebe einen gültigen Wert an." << color_reset << std::endl;
+            std::cin.clear();
+            //std::cin.ignore(100);
+            std::cin.get();
+        }
         if (selection == 1) {
             exportWanted = true;
         }
@@ -397,12 +427,24 @@ void UI::rollDice(std::string currentPlayer, int playerNumber, int diceNumber)
         currentDiceRoller = playerNumber;
         int helper = 0;
         showInformation(colorOrder[playerNumber] + currentPlayer + color_green + " ist nun an der Reihe. Berei? Dann bestätige mit der (1).", color_green);
-        std::cin >> helper;
+               while (!(std::cin >> helper))
+        {
+            std::cout << color_red << "Bitte gebe einen gültigen Wert an." << color_reset << std::endl;
+            std::cin.clear();
+            //std::cin.ignore(100);
+            std::cin.get();
+        }
 
         while (helper != 1)
         {
             showInformation(colorOrder[playerNumber] + currentPlayer + color_red + ": Bitte bestätige mit der Eins (1) und ENTER, dass du bereit bist.", color_red);
-            std::cin >> helper;
+                        while (!(std::cin >> helper))
+            {
+                std::cout << color_red << "Bitte gebe einen gültigen Wert an." << color_reset << std::endl;
+                std::cin.clear();
+                // std::cin.ignore(100);
+                std::cin.get();
+            }
         }
     }
 
@@ -437,10 +479,11 @@ void UI::rollDice(std::string currentPlayer, int playerNumber, int diceNumber)
 
     std::cout << std::endl
               << colorOrder[playerNumber] << currentPlayer << color_reset << ", du bist an der Reihe zu würfeln." << std::endl
-              << color_green << "Drücke ENTER um fortzufahren." << color_reset << std::endl;
+              << color_green << "Drücke 1+ENTER um fortzufahren oder 0+ENTER um einen Spielabbruch nach dem Zug anzufordern." << color_reset << std::endl;
 
-    std::cin.clear();
-    std::cin.get();
+    // std::cin.clear();
+    // std::cin.get();
+    waitForUser();
 
     clearScreen(visualBoard);;
 
@@ -501,10 +544,11 @@ void UI::rollDice(std::string currentPlayer, int playerNumber, int diceNumber)
 
     std::cout << std::endl
               << color_red << diceMessage << color_green << std::endl
-              << "Drücke ENTER um fortzufahren." << color_reset << std::endl;
+              << "Drücke 1+ENTER um fortzufahren oder 0+ENTER um einen Spielabbruch nach dem Zug anzufordern." << color_reset << std::endl;
 
-    std::cin.clear();
-    std::cin.get();
+    // std::cin.clear();
+    // std::cin.get();
+    waitForUser();
 }
 
 void UI::setUpSmallBoard(int fieldSize)
@@ -813,6 +857,23 @@ void UI::showDiceStats(std::shared_ptr<Statistics> stats)
             std::cout << "\u25A0";
         }
         std::cout << std::endl;
+    }
+}
+
+void UI::waitForUser()
+{
+    int input;
+    while (!(std::cin >> input) || (input != 0 && input != 1))
+    {
+        std::cout << color_red << "Bitte gebe einen gültigen Wert an (0 für Spielabbruch nach dem Zug oder 1 für Weiter)." << color_reset << std::endl;
+        std::cin.clear();
+        //std::cin.ignore(100);
+        std::cin.get();
+    }
+    if (input == 0)
+    {
+        showInformation("Das Spiel wird nach diesem Spielzug beendet", color_green);
+        exitWanted = true;
     }
 }
 /*

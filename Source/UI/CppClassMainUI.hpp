@@ -9,7 +9,7 @@
 #include <utility>
 
 class UI:public IUI {
-
+void waitForUser();
 void clearScreen(std::string visualBoard[21][21]);
 void printBoard(std::string visualBoard[21][21]);
 void setUpSmallBoard(int fieldSize);
