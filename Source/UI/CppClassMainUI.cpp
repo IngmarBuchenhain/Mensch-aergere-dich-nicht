@@ -407,10 +407,11 @@ void UI::rollDiceKI(std::string currentPlayer, int playerNumber, int diceNumber)
 
     std::cout << std::endl
               << colorOrder[playerNumber] << currentPlayer << color_reset << diceMessage << color_green << std::endl
-              << "Drücke ENTER um fortzufahren." << color_reset << std::endl;
+              << "Drücke 1+ENTER um fortzufahren oder 0+ENTER um einen Spielabbruch nach dem Zug anzufordern." << color_reset << std::endl;
 
-    std::cin.clear();
-    std::cin.get();
+    // std::cin.clear();
+    // std::cin.get();
+    waitForUser();
 }
 
 void UI::rollDice(std::string currentPlayer, int playerNumber, int diceNumber)

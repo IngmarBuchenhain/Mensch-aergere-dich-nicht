@@ -565,11 +565,28 @@ void LARGEUI::rollDiceKI(std::string currentPlayer, int playerNumber, int diceNu
 
     std::cout << std::endl
               << colorOrder[playerNumber] << currentPlayer << color_reset << diceMessage << color_green << std::endl
-              << "Drücke ENTER um fortzufahren." << color_reset << std::endl;
+              << "Drücke 1+ENTER um fortzufahren oder 0+ENTER um einen Spielabbruch nach dem Zug anzufordern." << color_reset << std::endl;
 
-    std::cin.clear();
-    std::cin.get();
-    std::cin.ignore(40, '\n');
+    // std::cout << std::endl
+    //           << colorOrder[playerNumber] << currentPlayer << color_reset << ", du bist an der Reihe zu würfeln." << std::endl
+    //           << color_green << "Drücke 1+ENTER um fortzufahren oder 0+ENTER um einen Spielabbruch nach dem Zug anzufordern." << color_reset << std::endl;
+
+    //     std::cin.clear();
+    //     int testtesttest = 0;
+    //     while(testtesttest != 1){
+    // std::cin >> testtesttest; //std::cin.get();
+    //     if(std::cin.fail()){
+    //         testtesttest = 0;
+    //     }
+    //     std::cin.clear();
+
+    // }
+    waitForUser();
+
+
+    // std::cin.clear();
+    // std::cin.get();
+    // std::cin.ignore(40, '\n');
 }
 
 void LARGEUI::rollDice(std::string currentPlayer, int playerNumber, int diceNumber)
