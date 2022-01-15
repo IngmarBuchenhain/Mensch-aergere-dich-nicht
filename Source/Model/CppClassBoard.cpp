@@ -15,14 +15,14 @@ Board::Board(bool bigField, int numberOfPlayers, int numberOfPieces, bool spread
 
     if (bigField)
     {
-        numberOfWalkingFields = 48;
+        numberOfWalkingFields = 72;
         numberOfHomes = 6;
 
-        IJumpPair_SPTR jump0 = std::make_shared<JumpPair>(4, 28);
+        IJumpPair_SPTR jump0 = std::make_shared<JumpPair>(5, 41);
         jumpFields.push_back(jump0);
-        IJumpPair_SPTR jump1 = std::make_shared<JumpPair>(12, 36);
+        IJumpPair_SPTR jump1 = std::make_shared<JumpPair>(17, 53);
         jumpFields.push_back(jump1);
-        IJumpPair_SPTR jump2 = std::make_shared<JumpPair>(20, 44);
+        IJumpPair_SPTR jump2 = std::make_shared<JumpPair>(29, 65);
         jumpFields.push_back(jump2);
 
         // Maybe assign end and startfields so, that players are spread on Board
@@ -31,37 +31,37 @@ Board::Board(bool bigField, int numberOfPlayers, int numberOfPieces, bool spread
             if (numberOfPlayers == 2)
             {
                 startFields.push_back(1);
-                startFields.push_back(25);
+                startFields.push_back(37);
 
-                endFields.push_back(48);
-                endFields.push_back(24);
+                endFields.push_back(72);
+                endFields.push_back(36);
             }
             else if (numberOfPlayers == 3)
             {
                 startFields.push_back(1);
-                startFields.push_back(17);
-                startFields.push_back(33);
+                startFields.push_back(25);
+                startFields.push_back(49);
 
+                endFields.push_back(72);
+                endFields.push_back(24);
                 endFields.push_back(48);
-                endFields.push_back(16);
-                endFields.push_back(32);
             }
         }
         else
         {
             startFields.push_back(1);
-            startFields.push_back(9);
-            startFields.push_back(17);
+            startFields.push_back(13);
             startFields.push_back(25);
-            startFields.push_back(33);
-            startFields.push_back(41);
+            startFields.push_back(37);
+            startFields.push_back(49);
+            startFields.push_back(61);
 
-            endFields.push_back(48);
-            endFields.push_back(8);
-            endFields.push_back(16);
+            endFields.push_back(72);
+            endFields.push_back(12);
             endFields.push_back(24);
-            endFields.push_back(32);
-            endFields.push_back(40);
+            endFields.push_back(36);
+            endFields.push_back(48);
+            endFields.push_back(60);
         }
     }
     else

@@ -66,7 +66,7 @@ MainLogicBase::MainLogicBase(IUI_SPTR uiObject, std::shared_ptr<GameConfig> conf
         {
             if (players[index] != nullptr)
             {
-                std::string name = "ThenotsointelligentbutluckyKI ";
+                std::string name = "TheNotSoIntelligentButLuckyKI ";
                 name.append(std::to_string(countKI));
                 config->names.push_back(name);
                 countKI += 1;
@@ -125,7 +125,7 @@ void MainLogicBase::startGame()
         }
         else
         {
-            ui->rollDice(nameOfPlayers[currentPlayer], currentDiceRoll);
+            ui->rollDiceKI(nameOfPlayers[currentPlayer], currentPlayer, currentDiceRoll);
         }
 
         // Indicator whether after this move the next player should be determined or if the current player again

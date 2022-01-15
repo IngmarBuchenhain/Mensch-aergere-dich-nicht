@@ -7,6 +7,7 @@
 
 #include "CppClassTestUI.hpp"
 #include "CppClassMainUI.hpp"
+#include "CppClassMainUILarge.hpp"
 
 #include "CppStructsForConfigAndState.hpp"
 
@@ -134,10 +135,11 @@ int main(int argc, char **argv)
             // Create UI-Object
             printDebug("Try to create UI-object");
             //IUI_SPTR ui(new TestUI);
+            
             IUI_SPTR ui(new UI);
             if (config->homes == 6)
             {
-                ui.reset(new UI); // Hier andere UI KLasse nehmen
+                ui.reset(new LARGEUI); // Take the big field
             }
 
             // Create logic object with UI-object and config as argument

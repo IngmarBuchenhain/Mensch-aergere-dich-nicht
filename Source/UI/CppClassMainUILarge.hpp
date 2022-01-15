@@ -1,5 +1,5 @@
-#ifndef MAEDN_UI_HPP
-#define MAEDN_UI_HPP
+#ifndef MAEDN_UI_LARGE_HPP
+#define MAEDN_UI_LARGE_HPP
 
 #include "CppIUI.hpp"
 
@@ -8,11 +8,11 @@
 #include <map>
 #include <utility>
 
-class UI:public IUI {
+class LARGEUI:public IUI {
 void waitForUser();
-void clearScreen(std::string visualBoard[21][21]);
-void printBoard(std::string visualBoard[21][21]);
-void setUpSmallBoard(int fieldSize);
+void clearScreen(std::string visualBoard[21][37]);
+void printBoard(std::string visualBoard[21][37]);
+void setUpLargeBoard(int fieldSize);
 void updateBoard(std::vector<std::vector<IGamePieceUI_SPTR>> gamePieces) override;
 void showInformation(std::string message) override;
 void showInformation(std::string message, std::string color) override;
@@ -30,6 +30,8 @@ std::string color_red = "\033[31m";
 std::string color_blue = "\033[34m";
 std::string color_green = "\033[32m";
 std::string color_yellow = "\033[33m";
+std::string color_magenta = "\033[35m";
+std::string color_cyan = "\033[36m";
 
 std::string basicField = "██";
 std::string lightField = "▒▒";
@@ -38,10 +40,10 @@ std::string halfField = "█";
 bool exportWanted = false;
 bool exitWanted = false;
 
-int fields[40][2];
-std::string visualBoard[21][21];
-int finishFields [16][2];
-int houses [16][2];
+int fields[72][2];
+std::string visualBoard[21][37];
+int finishFields [24][2];
+int houses [24][2];
 
 
 IBoardUI_SPTR board_ptr;
