@@ -66,7 +66,7 @@ CppClassMainUILarge.o: $(ui)/CppClassMainUILarge.cpp
 
 # make
 run: $(outpath)$(exeName) mostlyclean
-	./$(outpath)$(exeName) 6 6 4 1 1 0 Torsten Ingmar Niklas Alex Lurch Tester
+	./$(outpath)$(exeName) 4 3 4 0 1 0 Torsten Ingmar Niklas
 mostlyclean:
 	rm -f *.o a.out $(mo)/*.o $(lo)/*.o $(ui)/*.o $(ifs)/*.o $(mo)/*.out $(lo)/*.out $(ui)/*.out $(ifs)/*.out
 clean: mostlyclean
