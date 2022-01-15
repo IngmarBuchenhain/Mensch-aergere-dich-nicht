@@ -453,7 +453,7 @@ std::pair<IGamePieceUI_SPTR, std::pair<int, bool>> LARGEUI::chooseOneGamePiece(s
 
     std::pair<IGamePieceUI_SPTR, std::pair<int, bool>> output{iterator->first, iterator->second[selection]};
 
-    if (exitWanted == true)
+    if (exitWanted == true && !exportWanted)
     {
         selection = 0;
         clearScreen(visualBoard);
@@ -582,7 +582,23 @@ void LARGEUI::rollDiceKI(std::string currentPlayer, int playerNumber, int diceNu
 
     // }
     waitForUser();
-
+    if (exitWanted == true && !exportWanted)
+    {
+        clearScreen(visualBoard);
+        showInformation("Willst du den aktuellen Spielstand speichern? Ja: 1", color_red);
+        int selection = 0;
+        while (!(std::cin >> selection))
+        {
+            std::cout << color_red << "Bitte gebe einen gültigen Wert an." << color_reset << std::endl;
+            std::cin.clear();
+            //std::cin.ignore(100);
+            std::cin.get();
+        }
+        if (selection == 1)
+        {
+            exportWanted = true;
+        }
+    }
 
     // std::cin.clear();
     // std::cin.get();
@@ -736,6 +752,23 @@ void LARGEUI::rollDice(std::string currentPlayer, int playerNumber, int diceNumb
     // std::cin.clear();
     // std::cin.get();
     waitForUser();
+    if (exitWanted == true && !exportWanted)
+    {
+        clearScreen(visualBoard);
+        showInformation("Willst du den aktuellen Spielstand speichern? Ja: 1", color_red);
+        int selection = 0;
+        while (!(std::cin >> selection))
+        {
+            std::cout << color_red << "Bitte gebe einen gültigen Wert an." << color_reset << std::endl;
+            std::cin.clear();
+            //std::cin.ignore(100);
+            std::cin.get();
+        }
+        if (selection == 1)
+        {
+            exportWanted = true;
+        }
+    }
 }
 
 void LARGEUI::setUpLargeBoard(int fieldSize)
