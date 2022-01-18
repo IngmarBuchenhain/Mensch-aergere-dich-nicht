@@ -14,13 +14,16 @@ sc = ../Source
 # Define compiler command with version and include paths
 build = g++ $(lv) -I $(ifs) -I $(sc) -I $(mo) -I $(lo) -I $(ui)
 link = g++ $(lv)
+ifdef OS
+	WINLIBS = -lstdc++fs
+endif
 
 # Define executable file name to be able to rename easily.
 exeName = maedn
 
 # Linking
 $(outpath)$(exeName): CppMenschAergereDichNicht.o CppDebugHelper.o CppExportImport.o CppClassMainLogicBase.o CppClassMainLogicDefault.o CppClassMainLogicEasy.o CppClassMainLogicHard.o CppClassDice.o CppClassBoard.o CppClassGamePiece.o CppClassStatistics.o CppClassJumpPair.o CppClassRuleSet.o CppClassKI.o CppClassMainUI.o CppClassMainUILarge.o
-	$(link) -o $(outpath)$(exeName) CppMenschAergereDichNicht.o CppDebugHelper.o CppExportImport.o CppClassMainLogicBase.o CppClassMainLogicDefault.o CppClassMainLogicEasy.o CppClassMainLogicHard.o CppClassDice.o CppClassBoard.o CppClassGamePiece.o CppClassStatistics.o CppClassJumpPair.o CppClassRuleSet.o CppClassKI.o CppClassMainUI.o CppClassMainUILarge.o
+	$(link) -o $(outpath)$(exeName) CppMenschAergereDichNicht.o CppDebugHelper.o CppExportImport.o CppClassMainLogicBase.o CppClassMainLogicDefault.o CppClassMainLogicEasy.o CppClassMainLogicHard.o CppClassDice.o CppClassBoard.o CppClassGamePiece.o CppClassStatistics.o CppClassJumpPair.o CppClassRuleSet.o CppClassKI.o CppClassMainUI.o CppClassMainUILarge.o $(WINLIBS)
 
 # Source
 CppMenschAergereDichNicht.o: CppMenschAergereDichNicht.cpp 
