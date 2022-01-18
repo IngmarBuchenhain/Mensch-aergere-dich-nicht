@@ -1,8 +1,9 @@
 #include "CppClassMainUI.hpp"
+#define CLEAR_SCREEN "\033[2J\33[H"
 
 void UI::clearScreen(std::string visualBoard[21][21])
 {
-    system("clear");
+    std::cout << CLEAR_SCREEN << std::endl;
     printBoard(visualBoard);
 }
 
