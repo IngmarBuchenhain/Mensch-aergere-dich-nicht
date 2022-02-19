@@ -8,7 +8,9 @@
 #include "CppClassTestUI.hpp"
 #include "CppClassMainUI.hpp"
 #include "CppClassMainUILarge.hpp"
-
+#ifdef _WIN32
+#include <windows.h>
+#endif
 #include "CppStructsForConfigAndState.hpp"
 
 /**
@@ -17,6 +19,9 @@
  */
 int main(int argc, char **argv)
 {
+#ifdef _WIN32
+    SetConsoleOutputCP(CP_UTF8);
+#endif                                                                                                                                                              
     // Indicator whether exceptions occured. Used to show message to user before exit.
     bool errorsOccured = true;
     // Indicator whether a game was loaded.
